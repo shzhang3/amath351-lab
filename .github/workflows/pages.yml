@@ -23,7 +23,7 @@ jobs:
       - name: Verify generated page
         run: python3 build.py --check
       - name: Check math and interactions
-        run: node --test tests/experiment.test.cjs
+        run: node --test tests/*.test.cjs
       - name: Prepare public files
         run: |
           mkdir -p _site

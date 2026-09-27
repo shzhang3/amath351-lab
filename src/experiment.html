@@ -33,7 +33,7 @@
     #amath351-slope-lab .lab-course { font-size: 12px; color: var(--lab-muted); }
     #amath351-slope-lab .lab-intro { padding: 24px 26px 20px; display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 14px; }
     #amath351-slope-lab .lab-kicker { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--lab-muted); margin-bottom: 5px; }
-    #amath351-slope-lab h1 { font: 400 31px/1.15 Georgia, "Times New Roman", serif; margin: 0 0 7px; color: var(--lab-ink); }
+    #amath351-slope-lab .lab-title { font: 400 31px/1.15 Georgia, "Times New Roman", serif; margin: 0 0 7px; color: var(--lab-ink); }
     #amath351-slope-lab .lab-subtitle { margin: 0; color: var(--lab-muted); font-size: 13px; }
     #amath351-slope-lab .lab-stage { display: flex; gap: 12px; align-items: center; font-size: 12px; color: var(--lab-muted); }
     #amath351-slope-lab .lab-stage span { white-space: nowrap; }
@@ -106,7 +106,7 @@
       #amath351-slope-lab .lab-main { grid-template-columns: minmax(0,1fr); gap: 22px; padding: 0 14px 20px; }
       #amath351-slope-lab .lab-header, #amath351-slope-lab .lab-intro, #amath351-slope-lab .lab-footer { padding-left: 14px; padding-right: 14px; }
       #amath351-slope-lab .lab-intro { padding-top: 18px; }
-      #amath351-slope-lab h1 { font-size: 28px; }
+      #amath351-slope-lab .lab-title { font-size: 28px; }
       #amath351-slope-lab .lab-side { border-top: 1px solid var(--lab-line); padding-top: 18px; }
       #amath351-slope-lab .lab-plot { height: 340px; }
       #amath351-slope-lab .lab-legend { padding-left: 10px; gap: 10px; }
@@ -121,10 +121,10 @@
 
   <header class="lab-header">
     <div class="lab-brand"><span class="lab-monogram" aria-hidden="true">y′</span><span>AMATH 351 <span style="font-weight:400;color:var(--lab-muted)">/ Lab</span></span></div>
-    <div class="lab-course">University of Washington · Autumn 2026</div>
+    <div class="lab-course"><a href="#amath351-intro" style="color:var(--lab-muted);text-underline-offset:3px">Back to the opening experiments ↑</a></div>
   </header>
   <div class="lab-intro">
-    <div><div class="lab-kicker">Experiment 01 · Sections 1.1–1.3</div><h1>Follow the slope.</h1><p class="lab-subtitle">A local rule. A whole curve to discover.</p></div>
+    <div><div class="lab-kicker">Experiment 01 · Sections 1.1–1.3</div><h2 class="lab-title">Follow the slope.</h2><p class="lab-subtitle">A local rule. A whole curve to discover.</p></div>
     <div class="lab-stage" aria-label="Learning sequence"><span id="al-stage-predict" data-active="true">01 Predict</span><b>→</b><span id="al-stage-observe">02 Observe</span><b>→</b><span id="al-stage-explain">03 Explain</span></div>
   </div>
   <div class="lab-main">

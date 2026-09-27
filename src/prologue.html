@@ -1,0 +1,430 @@
+<section id="amath351-intro" aria-labelledby="ai-title">
+  <style>
+    #amath351-intro {
+      --intro-paper: light-dark(#faf9f6, #19191d);
+      --intro-surface: light-dark(#fff, #222228);
+      --intro-ink: light-dark(#252331, #efedf4);
+      --intro-muted: light-dark(#6e697a, #b5b0c3);
+      --intro-line: light-dark(#e5e1e9, #3c3846);
+      --intro-soft: light-dark(#efecf5, #30293e);
+      --intro-purple: light-dark(#624298, #bba0ed);
+      --intro-on-purple: light-dark(#fff, #241634);
+      --intro-teal: light-dark(#48766e, #8fbbb0);
+      --intro-orange: light-dark(#ad5e19, #e8ad71);
+      --intro-grid: light-dark(#e8e5ec, #383440);
+      background: var(--intro-paper); color: var(--intro-ink);
+      border-radius: 12px; overflow: clip; font-size: 14px; line-height: 1.5;
+      margin-bottom: 24px; scroll-margin-top: 16px;
+    }
+    #amath351-intro *, #amath351-intro *::before, #amath351-intro *::after { box-sizing: border-box; }
+    #amath351-intro [hidden] { display: none !important; }
+    #amath351-intro button, #amath351-intro input { font: inherit; }
+    #amath351-intro button { cursor: pointer; }
+    #amath351-intro button, #amath351-intro a, #amath351-intro input, #amath351-intro summary { outline-offset: 4px; }
+    #amath351-intro :focus-visible { outline: 3px solid var(--intro-purple); }
+    #amath351-intro a { color: var(--intro-purple); text-underline-offset: 3px; }
+    #amath351-intro .intro-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; border-bottom: 1px solid var(--intro-line); padding: 17px 26px; }
+    #amath351-intro .intro-brand { font-weight: 500; letter-spacing: .02em; }
+    #amath351-intro .intro-brand span { font: 25px/1 Georgia, serif; margin-right: 10px; color: var(--intro-purple); }
+    #amath351-intro .intro-course { font-size: 12px; color: var(--intro-muted); }
+    #amath351-intro .intro-heading { padding: 25px 26px 18px; }
+    #amath351-intro .intro-kicker { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--intro-muted); margin-bottom: 6px; }
+    #amath351-intro h1 { font: 400 34px/1.18 Georgia, serif; margin: 0 0 10px; }
+    #amath351-intro .intro-lede { color: var(--intro-muted); margin: 0; max-width: 760px; }
+    #amath351-intro .intro-news { margin: 0 26px 22px; padding: 13px 16px; border-left: 3px solid var(--intro-teal); background: var(--intro-surface); font-size: 12px; line-height: 1.7; }
+    #amath351-intro .intro-news p { margin: 0 0 6px; }
+    #amath351-intro .intro-news a { display: inline-block; margin-right: 18px; }
+    #amath351-intro .intro-nav { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 0 26px 22px; }
+    #amath351-intro .intro-tabs { display: flex; flex-wrap: wrap; gap: 8px; }
+    #amath351-intro .intro-tab, #amath351-intro .intro-btn { border: 1px solid var(--intro-line); border-radius: 7px; padding: 9px 12px; background: var(--intro-surface); color: var(--intro-ink); font-size: 12px; }
+    #amath351-intro .intro-tab:hover, #amath351-intro .intro-btn:hover { background: var(--intro-soft); }
+    #amath351-intro .intro-tab[aria-selected="true"], #amath351-intro .intro-btn[aria-pressed="true"] { background: var(--intro-soft); border-color: var(--intro-purple); color: var(--intro-purple); }
+    #amath351-intro .intro-nav > a { font-size: 12px; padding: 9px 4px; margin-left: auto; }
+    #amath351-intro .intro-panel { padding: 0 26px 22px; }
+    #amath351-intro .intro-layout { display: grid; grid-template-columns: minmax(0, 1fr) 256px; gap: 24px; }
+    #amath351-intro .intro-visual { min-width: 0; }
+    #amath351-intro .intro-figure { border: 1px solid var(--intro-line); border-radius: 9px; background: var(--intro-surface); overflow: hidden; margin: 0; }
+    #amath351-intro .intro-figure-top { padding: 14px 18px 0; display: flex; gap: 12px; justify-content: space-between; align-items: baseline; flex-wrap: wrap; }
+    #amath351-intro .intro-math { font: 22px/1.5 Georgia, serif; }
+    #amath351-intro .intro-small { font-size: 12px; color: var(--intro-muted); }
+    #amath351-intro .intro-svg { display: block; width: 100%; height: auto; }
+    #amath351-intro .intro-svg text { fill: var(--intro-muted); font: 12px -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+    #amath351-intro .intro-svg .intro-tick { font-size: 13px; }
+    #amath351-intro .intro-grid { stroke: var(--intro-grid); stroke-width: 1; fill: none; }
+    #amath351-intro .intro-axis { stroke: var(--intro-muted); stroke-width: 1; fill: none; opacity: .55; }
+    #amath351-intro .intro-guide { stroke: var(--intro-teal); stroke-width: 1; fill: none; opacity: .16; }
+    #amath351-intro .intro-trail { stroke: var(--intro-teal); stroke-width: 1.35; fill: none; opacity: .58; }
+    #amath351-intro .intro-selected { stroke: var(--intro-purple); stroke-width: 3; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+    #amath351-intro .intro-exponential { stroke: var(--intro-teal); stroke-width: 2; stroke-dasharray: 6 4; fill: none; }
+    #amath351-intro .intro-legend { display: flex; flex-wrap: wrap; gap: 14px; padding: 0 18px 14px; font-size: 11px; color: var(--intro-muted); }
+    #amath351-intro .intro-legend span { display: inline-flex; align-items: center; gap: 6px; }
+    #amath351-intro .intro-swatch { width: 17px; border-top: 2px solid var(--intro-purple); }
+    #amath351-intro .intro-swatch.teal { border-color: var(--intro-teal); }
+    #amath351-intro .intro-swatch.dashed { border-style: dashed; }
+    #amath351-intro .intro-caption { margin: 10px 0 0; color: var(--intro-muted); font-size: 12px; line-height: 1.6; }
+    #amath351-intro .intro-readouts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; border-top: 1px solid var(--intro-line); padding: 12px 18px; }
+    #amath351-intro .intro-readout-label { color: var(--intro-muted); font-size: 11px; display: block; }
+    #amath351-intro .intro-readouts output { font-size: 17px; font-variant-numeric: tabular-nums; }
+    #amath351-intro h2 { font-size: 15px; font-weight: 500; margin: 0 0 8px; }
+    #amath351-intro .intro-question { margin: 0 0 18px; line-height: 1.65; font-size: 13px; }
+    #amath351-intro .intro-control { margin: 0 0 17px; }
+    #amath351-intro .intro-label { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; font-size: 12px; margin-bottom: 5px; }
+    #amath351-intro .intro-label output { font-variant-numeric: tabular-nums; }
+    #amath351-intro input[type="range"] { width: 100%; accent-color: var(--intro-purple); margin: 5px 0; height: 22px; }
+    #amath351-intro .intro-limits { display: flex; justify-content: space-between; color: var(--intro-muted); font-size: 11px; }
+    #amath351-intro .intro-choices { display: flex; gap: 6px; }
+    #amath351-intro .intro-choices button { flex: 1; padding: 7px 4px; }
+    #amath351-intro .intro-actions { display: flex; gap: 8px; margin-top: 12px; }
+    #amath351-intro .intro-primary { background: var(--intro-purple); color: var(--intro-on-purple); border-color: var(--intro-purple); flex: 1; font-size: 13px; }
+    #amath351-intro .intro-primary:hover { background: var(--intro-purple); filter: brightness(.94); }
+    #amath351-intro .intro-timeline { padding-top: 15px; border-top: 1px solid var(--intro-line); }
+    #amath351-intro .intro-note { border-radius: 7px; background: var(--intro-soft); padding: 12px; font-size: 12px; line-height: 1.65; margin-top: 16px; }
+    #amath351-intro .intro-note p { margin: 0; }
+    #amath351-intro .intro-check { display: flex; align-items: center; gap: 8px; font-size: 12px; margin: 18px 0; }
+    #amath351-intro .intro-check input { accent-color: var(--intro-teal); width: 16px; height: 16px; }
+    #amath351-intro .intro-details { font-size: 12px; color: var(--intro-muted); padding-top: 12px; }
+    #amath351-intro .intro-details summary { cursor: pointer; color: var(--intro-ink); }
+    #amath351-intro .intro-details p { margin: 9px 0; }
+    #amath351-intro .intro-formulas { font: 16px/1.9 Georgia, serif; color: var(--intro-ink); }
+    #amath351-intro .intro-next { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; border-top: 1px solid var(--intro-line); padding: 15px 26px; font-size: 12px; }
+    #amath351-intro .intro-next span { color: var(--intro-muted); }
+    #amath351-intro .intro-next button { background: none; border: 0; padding: 4px 0; color: var(--intro-purple); text-decoration: underline; text-underline-offset: 3px; font: inherit; }
+    #amath351-intro .intro-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; }
+    #amath351-slope-lab { scroll-margin-top: 16px; }
+    @media (max-width: 800px) {
+      #amath351-intro .intro-layout { grid-template-columns: minmax(0,1fr) 225px; gap: 18px; }
+      #amath351-intro .intro-heading, #amath351-intro .intro-header, #amath351-intro .intro-panel, #amath351-intro .intro-next { padding-left: 18px; padding-right: 18px; }
+      #amath351-intro .intro-news, #amath351-intro .intro-nav { margin-left: 18px; margin-right: 18px; }
+    }
+    @media (max-width: 640px) {
+      #amath351-intro { margin-bottom: 16px; }
+      #amath351-intro h1 { font-size: 29px; }
+      #amath351-intro .intro-layout { grid-template-columns: minmax(0,1fr); gap: 22px; }
+      #amath351-intro .intro-heading, #amath351-intro .intro-header, #amath351-intro .intro-panel, #amath351-intro .intro-next { padding-left: 14px; padding-right: 14px; }
+      #amath351-intro .intro-news, #amath351-intro .intro-nav { margin-left: 14px; margin-right: 14px; }
+      #amath351-intro .intro-nav > a { margin-left: 0; }
+      #amath351-intro .intro-tabs { display: grid; grid-template-columns: 1fr 1fr; width: 100%; }
+      #amath351-intro .intro-side { padding-top: 16px; border-top: 1px solid var(--intro-line); }
+      #amath351-intro .intro-svg text { font-size: 15px; }
+    }
+    @media (pointer: coarse) {
+      #amath351-intro button, #amath351-intro .intro-check, #amath351-intro summary { min-height: 44px; }
+      #amath351-intro input[type="range"] { height: 32px; }
+    }
+  </style>
+
+  <header class="intro-header">
+    <div class="intro-brand"><span aria-hidden="true">y′</span>AMATH 351 / Lab</div>
+    <div class="intro-course">University of Washington · Autumn 2026</div>
+  </header>
+  <div class="intro-heading">
+    <div class="intro-kicker">Lecture 01 · From fluids to differential equations</div>
+    <h1 id="ai-title">How far can a rule take us?</h1>
+    <p class="intro-lede">A swirling fluid. A moving particle. A simple question: if we know how something changes, can we predict its future?</p>
+  </div>
+  <div class="intro-news">
+    <p><strong>A question from current research.</strong> On September 8, 2026, OpenAI reported a Navier–Stokes construction with smooth external forcing: velocity becomes unbounded in finite time while total kinetic energy stays bounded.</p>
+    <a href="https://openai.com/index/navier-stokes-solution/" target="_blank" rel="noopener">Official explanation &amp; flow illustration ↗</a>
+    <a href="https://cdn.openai.com/pdf/32d9f210-8b73-45e0-91bc-82a30aef8a9a/navier-stokes.pdf#page=4" target="_blank" rel="noopener">Paper · Figure 1 ↗</a>
+    <a href="https://github.com/openai/NavierStokesAndEuler" target="_blank" rel="noopener">Lean proof ↗</a>
+  </div>
+  <nav class="intro-nav" aria-label="Opening experiments">
+    <div class="intro-tabs" role="tablist" aria-label="Choose an opening experiment">
+      <button class="intro-tab" id="ai-tab-flow" role="tab" aria-selected="true" aria-controls="ai-flow" type="button">01 · Track a particle</button>
+      <button class="intro-tab" id="ai-tab-blowup" role="tab" aria-selected="false" aria-controls="ai-blowup" tabindex="-1" type="button">02 · Can a solution end?</button>
+    </div>
+    <a href="#amath351-slope-lab">Go to the direction field ↓</a>
+  </nav>
+
+  <div class="intro-panel" id="ai-flow" role="tabpanel" aria-labelledby="ai-tab-flow" tabindex="0">
+    <div class="intro-layout">
+      <div class="intro-visual">
+        <figure class="intro-figure">
+          <div class="intro-figure-top"><span class="intro-math"><i>X</i>′(<i>t</i>) = <i>u</i>(<i>X</i>(<i>t</i>), <i>t</i>)</span><span class="intro-small">A prescribed local velocity field</span></div>
+          <svg class="intro-svg" id="ai-flow-plot" viewBox="0 0 660 410" role="img" aria-labelledby="ai-flow-title ai-flow-desc">
+            <title id="ai-flow-title">Particle trajectories in a simple three-dimensional swirling field</title>
+            <desc id="ai-flow-desc">Particles spiral toward the vertical axis. Those above the midplane move up, those below move down, and those on it stay on it. Purple marks your particle. Use the labeled controls to change its starting point and advance time.</desc>
+            <defs><marker id="ai-arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0 0L6 3L0 6" fill="var(--intro-purple)"/></marker><clipPath id="ai-flow-clip"><rect x="14" y="14" width="632" height="382"/></clipPath></defs>
+            <g id="ai-flow-grid"></g>
+            <g clip-path="url(#ai-flow-clip)"><g id="ai-flow-guides"></g><g id="ai-flow-tracers"></g><g id="ai-flow-selected"></g></g>
+          </svg>
+          <figcaption class="intro-legend"><span><i class="intro-swatch"></i>Your particle &amp; velocity arrow</span><span><i class="intro-swatch teal"></i>Other tracers</span></figcaption>
+          <div class="intro-readouts" aria-label="Current particle position">
+            <div><span class="intro-readout-label">Distance to axis</span><output id="ai-radius-now">1.10</output></div>
+            <div><span class="intro-readout-label">Turns completed</span><output id="ai-turns-now">0.00</output></div>
+            <div><span class="intro-readout-label">Height <i>z</i></span><output id="ai-height-now">0.14</output></div>
+          </div>
+        </figure>
+        <p class="intro-caption"><strong>Teaching model.</strong> This smooth, incompressible local field illustrates particle motion. It has no finite-time singularity and does not reproduce the paper’s Navier–Stokes solution. The view is a fixed 3D projection.</p>
+        <details class="intro-details"><summary>See the rule behind the motion</summary>
+          <div class="intro-formulas">x′ = −ax − ωy &nbsp; · &nbsp; y′ = ωx − ay &nbsp; · &nbsp; z′ = 2az<br>a = 0.24, &nbsp; ω = rotation rate</div>
+          <p>The divergence is −a − a + 2a = 0: contraction in the horizontal plane is balanced by vertical stretching. The displayed trajectories are evaluated exactly.</p>
+          <p>Navier–Stokes describes the whole velocity field through a PDE. Once a field is given, tracking a particle is an ODE problem. We will return to systems like this later in the course.</p>
+        </details>
+      </div>
+      <aside class="intro-side" aria-label="Particle controls">
+        <h2>Where will this particle go?</h2>
+        <p class="intro-question">Move the starting point, then press Play. Predict what happens to its distance from the axis and its height.</p>
+        <div class="intro-control">
+          <label class="intro-label" for="ai-radius"><span>Starting distance from axis</span><output id="ai-radius-value">1.10</output></label>
+          <input id="ai-radius" type="range" min="0.4" max="1.4" step="0.05" value="1.1">
+          <div class="intro-limits"><span>Closer</span><span>Farther</span></div>
+        </div>
+        <div class="intro-control">
+          <div class="intro-label" id="ai-plane-label">Starting height</div>
+          <div class="intro-choices" role="group" aria-labelledby="ai-plane-label">
+            <button class="intro-btn" id="ai-below" type="button" aria-pressed="false">Below</button>
+            <button class="intro-btn" id="ai-midplane" type="button" aria-pressed="false">Midplane</button>
+            <button class="intro-btn" id="ai-above" type="button" aria-pressed="true">Above</button>
+          </div>
+        </div>
+        <div class="intro-control">
+          <label class="intro-label" for="ai-rotation"><span>Rotation rate ω</span><output id="ai-rotation-value">2.0 rad / time</output></label>
+          <input id="ai-rotation" type="range" min="0" max="3" step="0.1" value="2">
+          <div class="intro-limits"><span>No rotation</span><span>Faster rotation</span></div>
+        </div>
+        <div class="intro-timeline">
+          <label class="intro-label" for="ai-flow-time"><span>Time <i>t</i></span><output id="ai-flow-time-value">0.00</output></label>
+          <input id="ai-flow-time" type="range" min="0" max="3" step="0.01" value="0">
+          <div class="intro-limits"><span>0</span><span>3</span></div>
+          <div class="intro-actions"><button class="intro-btn intro-primary" id="ai-flow-play" type="button">Play motion</button><button class="intro-btn" id="ai-flow-reset" type="button">Reset</button></div>
+        </div>
+        <div class="intro-note"><p id="ai-flow-note">One local arrow gives a velocity. Following those arrows gives a trajectory.</p></div>
+      </aside>
+    </div>
+  </div>
+
+  <div class="intro-panel" id="ai-blowup" role="tabpanel" aria-labelledby="ai-tab-blowup" tabindex="0" hidden>
+    <div class="intro-layout">
+      <div class="intro-visual">
+        <figure class="intro-figure">
+          <div class="intro-figure-top"><span class="intro-math"><i>y</i>′ = <i>y</i>²</span><span class="intro-math"><i>y</i>(0) = 1</span></div>
+          <svg class="intro-svg" id="ai-blowup-plot" viewBox="0 0 660 410" role="img" aria-labelledby="ai-blowup-title ai-blowup-desc">
+            <title id="ai-blowup-title">Finite-time blowup for y prime equals y squared</title>
+            <desc id="ai-blowup-desc">The exact solution is one over one minus t, for t less than one. The graph has a fixed vertical scale from zero to eight. As time approaches one, the value continues above the plot. The displayed numeric value gives its actual height.</desc>
+            <defs><clipPath id="ai-blowup-clip"><rect x="56" y="30" width="580" height="326"/></clipPath></defs>
+            <g id="ai-blowup-grid"></g>
+            <g clip-path="url(#ai-blowup-clip)"><path id="ai-exp-curve" class="intro-exponential" hidden></path><path id="ai-blowup-curve" class="intro-selected"></path><path id="ai-blowup-cursor" class="intro-axis" stroke-dasharray="4 4"></path></g>
+            <g id="ai-blowup-marker"></g>
+          </svg>
+          <figcaption class="intro-legend"><span><i class="intro-swatch"></i>y′ = y²</span><span id="ai-exp-legend" hidden><i class="intro-swatch teal dashed"></i>y′ = y, same initial value</span></figcaption>
+          <div class="intro-readouts" aria-label="Current solution values">
+            <div><span class="intro-readout-label">Time <i>t</i></span><output id="ai-b-time-now">0.00</output></div>
+            <div><span class="intro-readout-label">Value <i>y</i>(<i>t</i>)</span><output id="ai-b-value-now">1.00</output></div>
+            <div><span class="intro-readout-label">Time left until 1</span><output id="ai-b-left-now">1.00</output></div>
+          </div>
+        </figure>
+        <p class="intro-caption"><strong>A separate ODE example.</strong> This demonstrates the meaning of finite-time blowup. It is not a reduction of the Navier–Stokes construction. The plot stops at y = 8; the solution does not.</p>
+        <details class="intro-details"><summary>Reveal the exact solution</summary>
+          <div class="intro-formulas">y(t) = 1 / (1 − t), &nbsp; t &lt; 1.</div>
+          <p>Differentiate to check y′ = y², then check y(0) = 1. As t approaches 1 from below, y grows without bound. There is no finite value at t = 1 through which this solution can continue.</p>
+          <p>The formula also gives values for t &gt; 1, but that disconnected branch is not a continuation of the solution starting at t = 0.</p>
+        </details>
+      </div>
+      <aside class="intro-side" aria-label="Finite-time blowup controls">
+        <h2>Does a smooth rule last forever?</h2>
+        <p class="intro-question">The rule y′ = y² is smooth everywhere. Predict whether the solution can reach every future time.</p>
+        <div class="intro-control">
+          <label class="intro-label" for="ai-blowup-time"><span>Move toward <i>t</i> = 1</span><output id="ai-blowup-time-value">0.00</output></label>
+          <input id="ai-blowup-time" type="range" min="0" max="0.99" step="0.01" value="0">
+          <div class="intro-limits"><span>0</span><span>0.99</span></div>
+          <div class="intro-actions"><button class="intro-btn intro-primary" id="ai-blowup-play" type="button">Approach t = 1</button><button class="intro-btn" id="ai-blowup-reset" type="button">Reset</button></div>
+        </div>
+        <label class="intro-check"><input id="ai-compare" type="checkbox">Compare with y′ = y</label>
+        <div class="intro-note"><p id="ai-blowup-note">Start at y = 1. A larger value gives a larger derivative, which makes the value grow faster still.</p></div>
+        <p class="intro-caption" id="ai-compare-note" hidden>For y′ = y, the solution eᵗ stays finite at every finite time. Both grow without bound, but only y′ = y² does so before time runs out.</p>
+      </aside>
+    </div>
+  </div>
+  <footer class="intro-next"><span id="ai-next-text">A local rule makes a whole path. How long can that path exist?</span><button id="ai-next" type="button">Next: can a solution end? →</button><a id="ai-next-slope" href="#amath351-slope-lab" hidden>Next: follow the slope ↓</a></footer>
+  <div class="intro-sr" id="ai-announcement" aria-live="polite"></div>
+  <script>{{AMATH351_INTRO_MODEL}}</script>
+  <script>
+    (() => {
+      const root = document.getElementById('amath351-intro');
+      if (!root || root.dataset.initialized) return;
+      root.dataset.initialized = 'true';
+      const q = id => root.querySelector('#' + id);
+      root.querySelectorAll('output').forEach(output => output.setAttribute('aria-live', 'off'));
+      const { particleAt, velocityAt, blowupAt } = globalThis.Amath351Intro;
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+      const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+      const number = (v, places = 2) => (Math.abs(v) < 0.00001 ? 0 : v).toFixed(places).replace('-', '−');
+      const state = { tab: 'flow', radius: 1.1, height: .14, omega: 2, flow: 0, blowup: 0, compare: false };
+      let playing = null, frame = 0, last = null, playhead = 0;
+      const project = p => ({ x: 330 + 113 * (.94 * p.x - .64 * p.y), y: 218 + 64 * (.38 * p.x + .42 * p.y) - 114 * p.z });
+      const xy = p => p.x.toFixed(2) + ',' + p.y.toFixed(2);
+      const pathFrom = points => points.map((p, i) => (i ? 'L' : 'M') + xy(p)).join('');
+      const sample = (fn, end, count = 100) => Array.from({ length: count + 1 }, (_, i) => fn(end * i / count));
+      const seeds = Array.from({ length: 24 }, (_, i) => ({ radius: 1.28, angle: (i % 12) * Math.PI / 6, z: i < 12 ? .20 : -.20 }));
+      const bx = t => 56 + t / 1.15 * 580, by = y => 356 - y / 8 * 326;
+      const announce = message => { q('ai-announcement').textContent = message; };
+      function flowPath(seed, end) { return pathFrom(sample(t => project(particleAt(seed, t, state.omega)), end, 90)); }
+      function renderFlowBackground() {
+        let grid = '';
+        for (const radius of [.5, 1, 1.5]) {
+          const ring = sample(angle => project({ x: radius * Math.cos(angle), y: radius * Math.sin(angle), z: 0 }), Math.PI * 2, 72);
+          grid += '<path class="intro-grid" d="' + pathFrom(ring) + 'Z"/>';
+        }
+        for (const [axis, start, end] of [
+          ['x', {x:-1.7,y:0,z:0}, {x:1.8,y:0,z:0}],
+          ['y', {x:0,y:-1.7,z:0}, {x:0,y:1.8,z:0}],
+          ['z', {x:0,y:0,z:-1.45}, {x:0,y:0,z:1.5}]
+        ]) {
+          const p = project(end);
+          grid += '<path class="intro-axis" d="M' + xy(project(start)) + 'L' + xy(p) + '"/><text x="' + (p.x + 10) + '" y="' + (p.y + 4) + '">' + axis + '</text>';
+        }
+        const label = project({x:-1.5,y:-.75,z:0});
+        grid += '<text x="' + (label.x - 22) + '" y="' + (label.y - 13) + '">z = 0</text>';
+        q('ai-flow-grid').innerHTML = grid;
+        q('ai-flow-guides').innerHTML = seeds.map(seed => '<path class="intro-guide" d="' + flowPath(seed, 3) + '"/>').join('');
+      }
+      function renderFlow() {
+        q('ai-flow-tracers').innerHTML = seeds.map(seed => {
+          const p = project(particleAt(seed, state.flow, state.omega));
+          return '<path class="intro-trail" d="' + flowPath(seed, state.flow) + '"/><circle cx="' + p.x + '" cy="' + p.y + '" r="2.6" fill="var(--intro-teal)"/>';
+        }).join('');
+        const seed = {radius:state.radius, angle:0, z:state.height};
+        const point = particleAt(seed, state.flow, state.omega), screen = project(point), origin = project(particleAt(seed, 0, state.omega));
+        const velocity = velocityAt(point, state.omega);
+        const end = project({x:point.x + .17 * velocity.x, y:point.y + .17 * velocity.y, z:point.z + .17 * velocity.z});
+        q('ai-flow-selected').innerHTML = '<path class="intro-selected" d="' + flowPath(seed, state.flow) + '"/>' +
+          '<circle cx="' + origin.x + '" cy="' + origin.y + '" r="5" fill="var(--intro-surface)" stroke="var(--intro-purple)" stroke-width="1.5"/>' +
+          '<path d="M' + xy(screen) + 'L' + xy(end) + '" stroke="var(--intro-purple)" stroke-width="2" marker-end="url(#ai-arrow)"/>' +
+          '<circle cx="' + screen.x + '" cy="' + screen.y + '" r="6" fill="var(--intro-purple)" stroke="var(--intro-surface)" stroke-width="2"/>';
+        q('ai-radius-now').textContent = number(Math.hypot(point.x, point.y));
+        q('ai-turns-now').textContent = number(state.omega * state.flow / (2 * Math.PI));
+        q('ai-height-now').textContent = number(point.z);
+        q('ai-radius-value').textContent = number(state.radius);
+        q('ai-rotation-value').textContent = number(state.omega, 1) + ' rad / time';
+        q('ai-flow-time-value').textContent = number(state.flow);
+        q('ai-flow-time').value = state.flow.toFixed(2);
+        q('ai-flow-time').setAttribute('aria-valuetext', 'Time ' + number(state.flow));
+        q('ai-flow-plot').dataset.time = String(state.flow);
+        for (const [id, z] of [['ai-below', -.14], ['ai-midplane', 0], ['ai-above', .14]]) q(id).setAttribute('aria-pressed', String(state.height === z));
+        q('ai-flow-note').textContent = state.flow === 0 ? 'One local arrow gives a velocity. Following those arrows gives a trajectory.' :
+          (state.omega === 0 ? 'With rotation off, the inward motion remains. ' : 'The particle circles the axis while moving inward. ') +
+          (state.height === 0 ? 'Starting on z = 0 keeps it on that plane.' : 'Its distance from the midplane grows.');
+        updateButtons();
+      }
+      function renderBlowupBackground() {
+        let markup = '<rect x="' + bx(1) + '" y="30" width="' + (bx(1.15) - bx(1)) + '" height="326" fill="var(--intro-soft)" opacity=".55"/>';
+        for (const y of [0, 1, 2, 4, 6, 8]) markup += '<path class="intro-grid" d="M56,' + by(y) + 'H636"/><text class="intro-tick" text-anchor="end" x="44" y="' + (by(y) + 4) + '">' + y + '</text>';
+        for (const t of [0, .25, .5, .75, 1]) markup += '<path class="intro-grid" d="M' + bx(t) + ',30V356"/><text class="intro-tick" text-anchor="middle" x="' + bx(t) + '" y="380">' + t + '</text>';
+        markup += '<path class="intro-axis" d="M56,30V356H636"/><path d="M' + bx(1) + ',30V356" stroke="var(--intro-orange)" stroke-width="1.5" stroke-dasharray="5 4"/>' +
+          '<text x="' + (bx(1) - 10) + '" y="20" text-anchor="end">t = 1 · endpoint of this solution</text><text x="632" y="397">t</text><text x="24" y="23">y</text>';
+        q('ai-blowup-grid').innerHTML = markup;
+        q('ai-exp-curve').setAttribute('d', pathFrom(sample(t => ({x:bx(t), y:by(Math.exp(t))}), 1.15, 100)));
+      }
+      function renderBlowup() {
+        const value = blowupAt(state.blowup), x = bx(state.blowup);
+        // End the visible curve exactly at the top boundary; never flatten it.
+        const visibleEnd = Math.min(state.blowup, 1 - 1 / 8);
+        q('ai-blowup-curve').setAttribute('d', pathFrom(sample(t => ({x:bx(t), y:by(blowupAt(t))}), visibleEnd, 140)));
+        q('ai-blowup-cursor').setAttribute('d', 'M' + x + ',356V' + Math.max(30, by(value)));
+        q('ai-blowup-marker').innerHTML = value <= 8 ? '<circle cx="' + x + '" cy="' + by(value) + '" r="5" fill="var(--intro-purple)"/>' :
+          '<path d="M' + (x - 5) + ',42L' + x + ',32L' + (x + 5) + ',42" fill="none" stroke="var(--intro-purple)" stroke-width="2"/><text x="' + (x - 10) + '" y="58" text-anchor="end">y = ' + number(value) + ' ↑</text>';
+        q('ai-blowup-time').value = state.blowup.toFixed(2);
+        q('ai-blowup-time').setAttribute('aria-valuetext', 'Time ' + number(state.blowup) + ', y equals ' + number(value));
+        q('ai-blowup-time-value').textContent = number(state.blowup);
+        q('ai-b-time-now').textContent = number(state.blowup);
+        q('ai-b-value-now').textContent = number(value);
+        q('ai-b-left-now').textContent = number(1 - state.blowup);
+        q('ai-blowup-plot').dataset.time = String(state.blowup);
+        q('ai-exp-curve').hidden = !state.compare;
+        q('ai-exp-legend').hidden = !state.compare;
+        q('ai-compare-note').hidden = !state.compare;
+        // SVG has no reflected .hidden property in some browsers.
+        q('ai-exp-curve').setAttribute('display', state.compare ? 'inline' : 'none');
+        if (state.compare) q('ai-exp-curve').removeAttribute('hidden');
+        else q('ai-exp-curve').setAttribute('hidden', '');
+        q('ai-blowup-note').textContent = state.blowup === 0 ? 'Start at y = 1. A larger value gives a larger derivative, which makes the value grow faster still.' :
+          value <= 8 ? 'The slope is y² = ' + number(value * value) + '. Watch how quickly it steepens as y increases.' :
+          'The value is now ' + number(value) + ', above the plot. At t = 1 this solution has no finite value. A taller graph cannot remove that endpoint.';
+        updateButtons();
+      }
+      function updateButtons() {
+        q('ai-flow-play').textContent = playing === 'flow' ? 'Pause motion' : state.flow >= 3 ? 'Replay motion' : state.flow > 0 ? 'Continue motion' : 'Play motion';
+        q('ai-blowup-play').textContent = playing === 'blowup' ? 'Pause' : state.blowup >= .99 ? 'Replay approach' : state.blowup > 0 ? 'Continue toward 1' : 'Approach t = 1';
+        if (reduced.matches) {
+          q('ai-flow-play').textContent = state.flow >= 3 ? 'Restart & step' : 'Step time +0.5';
+          q('ai-blowup-play').textContent = state.blowup >= .99 ? 'Restart & step' : 'Step toward 1';
+        }
+      }
+      function stop() { playing = null; cancelAnimationFrame(frame); frame = 0; last = null; updateButtons(); }
+      function tick(now) {
+        if (!playing) return;
+        const elapsed = last === null ? 0 : Math.min((now - last) / 1000, .1);
+        last = now;
+        const mode = playing, limit = mode === 'flow' ? 3 : .99;
+        playhead = Math.min(limit, playhead + elapsed * (mode === 'flow' ? .5 : .14));
+        const previous = state[mode];
+        // The displayed time and the evaluated value must refer to the same instant.
+        state[mode] = Math.min(limit, Math.round(playhead * 100) / 100);
+        if (state[mode] !== previous) { if (mode === 'flow') renderFlow(); else renderBlowup(); }
+        if (playhead >= limit) {
+          stop(); announce(mode === 'flow' ? 'Time 3. Try a different starting height or turn rotation off.' : 'Time 0.99. The value is 100, and there is only 0.01 time left until 1.');
+        } else frame = requestAnimationFrame(tick);
+      }
+      function play(mode) {
+        if (playing === mode) { stop(); return; }
+        stop();
+        const limit = mode === 'flow' ? 3 : .99;
+        if (state[mode] >= limit) state[mode] = 0;
+        if (reduced.matches) {
+          state[mode] = Math.min(limit, Math.round((state[mode] + (mode === 'flow' ? .5 : .1)) * 100) / 100);
+          if (mode === 'flow') renderFlow(); else renderBlowup();
+          announce('Reduced motion: advanced time to ' + number(state[mode]) + '. Use the time slider to explore.');
+          return;
+        }
+        playhead = state[mode]; playing = mode; updateButtons(); frame = requestAnimationFrame(tick);
+      }
+      function selectTab(mode, focus = false) {
+        stop(); state.tab = mode;
+        for (const name of ['flow', 'blowup']) {
+          q('ai-' + name).hidden = name !== mode;
+          q('ai-tab-' + name).setAttribute('aria-selected', String(name === mode));
+          q('ai-tab-' + name).tabIndex = name === mode ? 0 : -1;
+        }
+        q('ai-next').hidden = mode !== 'flow'; q('ai-next-slope').hidden = mode === 'flow';
+        q('ai-next-text').textContent = mode === 'flow' ? 'A local rule makes a whole path. How long can that path exist?' : 'Now try reading a local rule directly from a direction field.';
+        if (focus) q('ai-tab-' + mode).focus();
+      }
+      for (const mode of ['flow', 'blowup']) {
+        q('ai-tab-' + mode).addEventListener('click', () => selectTab(mode));
+        q('ai-tab-' + mode).addEventListener('keydown', event => {
+          if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+          event.preventDefault(); selectTab(event.key === 'Home' ? 'flow' : event.key === 'End' ? 'blowup' : mode === 'flow' ? 'blowup' : 'flow', true);
+        });
+        q('ai-' + mode + '-play').addEventListener('click', () => play(mode));
+        q('ai-' + mode + '-time').addEventListener('input', event => {
+          stop(); state[mode] = clamp(Number(event.target.value) || 0, 0, mode === 'flow' ? 3 : .99);
+          if (mode === 'flow') renderFlow(); else renderBlowup();
+        });
+      }
+      q('ai-radius').addEventListener('input', event => {
+        stop(); state.radius = clamp(Number(event.target.value) || .4, .4, 1.4); state.flow = 0; renderFlow();
+      });
+      q('ai-rotation').addEventListener('input', event => {
+        stop(); state.omega = clamp(Number(event.target.value) || 0, 0, 3); state.flow = 0; renderFlowBackground(); renderFlow();
+      });
+      for (const [id, z] of [['ai-below', -.14], ['ai-midplane', 0], ['ai-above', .14]]) q(id).addEventListener('click', () => {
+        stop(); state.height = z; state.flow = 0; renderFlow();
+      });
+      q('ai-flow-reset').addEventListener('click', () => {
+        stop(); state.flow = 0; state.radius = 1.1; state.height = .14; state.omega = 2;
+        q('ai-radius').value = '1.1'; q('ai-rotation').value = '2'; renderFlowBackground(); renderFlow(); announce('Particle experiment reset.');
+      });
+      q('ai-blowup-reset').addEventListener('click', () => {
+        stop(); state.blowup = 0; state.compare = false; q('ai-compare').checked = false; renderBlowup(); announce('Blowup experiment reset.');
+      });
+      q('ai-compare').addEventListener('change', event => { state.compare = event.target.checked; renderBlowup(); });
+      q('ai-next').addEventListener('click', () => { selectTab('blowup', true); q('ai-tab-blowup').scrollIntoView({block:'start', behavior:'instant'}); });
+      root.querySelectorAll('a[href="#amath351-slope-lab"]').forEach(link => link.addEventListener('click', stop));
+      document.addEventListener('visibilitychange', () => { if (document.hidden) stop(); });
+      window.addEventListener('pagehide', stop);
+      reduced.addEventListener?.('change', () => { if (reduced.matches) stop(); });
+      renderFlowBackground(); renderBlowupBackground(); renderFlow(); renderBlowup();
+    })();
+  </script>
+</section>
