@@ -1,0 +1,434 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Explore direction fields, initial conditions, and solution curves in an interactive differential equations lab for AMATH 351.">
+  <meta name="theme-color" content="#624298">
+  <title>AMATH 351 Lab · Follow the slope</title>
+  <link rel="canonical" href="https://shzhang3.github.io/amath351-lab/">
+  <style>
+    :root {
+      color-scheme: light dark;
+      background: light-dark(#f0eef3, #121215);
+      color: light-dark(#252331, #efedf4);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    body { margin: 0; padding: 24px; }
+    main { max-width: 1120px; margin: 0 auto; }
+    noscript { display: block; padding: 16px; margin-bottom: 16px; }
+    @media (max-width: 640px) { body { padding: 8px; } }
+  </style>
+</head>
+<body>
+  <main>
+    <noscript>This experiment needs JavaScript to draw the direction field and run the interactive controls.</noscript>
+    <div id="amath351-slope-lab" lang="en">
+  <style>
+    #amath351-slope-lab {
+      --lab-paper: light-dark(#faf9f6, #19191d);
+      --lab-surface: light-dark(#ffffff, #222228);
+      --lab-ink: light-dark(#252331, #efedf4);
+      --lab-muted: light-dark(#6e697a, #b5b0c3);
+      --lab-line: light-dark(#e5e1e9, #3c3846);
+      --lab-soft: light-dark(#efecf5, #30293e);
+      --lab-purple: light-dark(#624298, #bba0ed);
+      --lab-on-purple: light-dark(#ffffff, #241634);
+      --lab-orange: light-dark(#ad5e19, #e8ad71);
+      --lab-compare: light-dark(#48766e, #8fbbb0);
+      --lab-field: light-dark(#a9a5b1, #686374);
+      --lab-grid: light-dark(#efedf1, #2e2b34);
+      --lab-axis: light-dark(#c3bccd, #736b80);
+      --lab-accent-bg: light-dark(#f6efe5, #322b23);
+      color: var(--lab-ink); background: var(--lab-paper);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 14px; line-height: 1.5;
+      width: 100%; overflow: clip; border-radius: 12px;
+      text-align: left; box-sizing: border-box;
+    }
+    #amath351-slope-lab *, #amath351-slope-lab *::before, #amath351-slope-lab *::after { box-sizing: border-box; }
+    #amath351-slope-lab button, #amath351-slope-lab input { font: inherit; }
+    #amath351-slope-lab .cursor-interaction { cursor: pointer; }
+    #amath351-slope-lab button:disabled { cursor: default; opacity: .45; }
+    #amath351-slope-lab button:focus-visible, #amath351-slope-lab input:focus-visible { outline: 3px solid var(--lab-purple); outline-offset: 3px; }
+    #amath351-slope-lab [hidden] { display: none !important; }
+    #amath351-slope-lab .lab-header { padding: 17px 26px; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; border-bottom: 1px solid var(--lab-line); }
+    #amath351-slope-lab .lab-brand { display: flex; gap: 10px; align-items: center; font-weight: 500; letter-spacing: .02em; }
+    #amath351-slope-lab .lab-monogram { font-family: Georgia, serif; font-size: 25px; color: var(--lab-purple); line-height: 1; }
+    #amath351-slope-lab .lab-course { font-size: 12px; color: var(--lab-muted); }
+    #amath351-slope-lab .lab-intro { padding: 24px 26px 20px; display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 14px; }
+    #amath351-slope-lab .lab-kicker { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--lab-muted); margin-bottom: 5px; }
+    #amath351-slope-lab h1 { font: 400 31px/1.15 Georgia, "Times New Roman", serif; margin: 0 0 7px; color: var(--lab-ink); }
+    #amath351-slope-lab .lab-subtitle { margin: 0; color: var(--lab-muted); font-size: 13px; }
+    #amath351-slope-lab .lab-stage { display: flex; gap: 12px; align-items: center; font-size: 12px; color: var(--lab-muted); }
+    #amath351-slope-lab .lab-stage span { white-space: nowrap; }
+    #amath351-slope-lab .lab-stage span[data-active="true"] { color: var(--lab-ink); font-weight: 500; }
+    #amath351-slope-lab .lab-stage b { font-weight: 400; opacity: .5; }
+    #amath351-slope-lab .lab-main { display: grid; grid-template-columns: minmax(0, 1fr) 256px; gap: 24px; padding: 0 26px 22px; }
+    #amath351-slope-lab .lab-chart-panel { min-width: 0; }
+    #amath351-slope-lab .lab-equation { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 14px 18px; background: var(--lab-surface); border: 1px solid var(--lab-line); border-radius: 9px 9px 0 0; flex-wrap: wrap; }
+    #amath351-slope-lab .lab-math { font-family: Georgia, "Times New Roman", serif; font-size: 22px; }
+    #amath351-slope-lab .lab-ivp { color: var(--lab-muted); font-family: Georgia, "Times New Roman", serif; font-size: 18px; font-variant-numeric: tabular-nums; }
+    #amath351-slope-lab .lab-plot-wrap { background: var(--lab-surface); border: 1px solid var(--lab-line); border-top: 0; border-radius: 0 0 9px 9px; padding: 0 8px 10px; }
+    #amath351-slope-lab .lab-plot { width: 100%; height: 410px; display: block; touch-action: none; user-select: none; cursor: crosshair; }
+    #amath351-slope-lab .lab-plot text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: var(--lab-muted); font-size: 12px; }
+    #amath351-slope-lab .lab-plot .lab-grid { stroke: var(--lab-grid); stroke-width: 1; fill: none; }
+    #amath351-slope-lab .lab-plot .lab-axis { stroke: var(--lab-axis); stroke-width: 1; fill: none; }
+    #amath351-slope-lab .lab-plot .lab-field { stroke: var(--lab-field); stroke-width: 1.25; stroke-linecap: round; fill: none; opacity: .78; }
+    #amath351-slope-lab .lab-plot .lab-solution { stroke: var(--lab-purple); stroke-width: 3; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+    #amath351-slope-lab .lab-plot .lab-sketch { stroke: var(--lab-orange); stroke-width: 2.4; stroke-dasharray: 6 4; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+    #amath351-slope-lab .lab-plot .lab-kept { stroke: var(--lab-compare); stroke-width: 1.8; fill: none; opacity: .7; }
+    #amath351-slope-lab .lab-plot .lab-tangent { stroke: var(--lab-ink); stroke-width: 2; fill: none; stroke-linecap: round; }
+    #amath351-slope-lab .lab-modes { display: flex; flex-wrap: wrap; gap: 7px; margin: 12px 0 9px; align-items: center; }
+    #amath351-slope-lab .lab-btn { border: 1px solid var(--lab-line); border-radius: 7px; padding: 8px 12px; background: var(--lab-surface); color: var(--lab-ink); font-size: 12px; line-height: 1.4; transition: background .15s; }
+    #amath351-slope-lab .lab-btn:hover:not(:disabled) { background: var(--lab-soft); }
+    #amath351-slope-lab .lab-btn[aria-pressed="true"] { background: var(--lab-soft); border-color: var(--lab-purple); color: var(--lab-purple); }
+    #amath351-slope-lab .lab-btn.lab-primary { background: var(--lab-purple); border-color: var(--lab-purple); color: var(--lab-on-purple); font-size: 14px; font-weight: 500; }
+    #amath351-slope-lab .lab-btn.lab-primary:hover:not(:disabled) { filter: brightness(.94); background: var(--lab-purple); }
+    #amath351-slope-lab .lab-btn.lab-text { border: 0; padding: 6px 0; background: transparent; color: var(--lab-muted); }
+    #amath351-slope-lab .lab-hint { font-size: 12px; color: var(--lab-muted); margin: 0 0 10px; min-height: 18px; }
+    #amath351-slope-lab .lab-legend { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; color: var(--lab-muted); font-size: 11px; padding: 0 10px 1px 42px; }
+    #amath351-slope-lab .lab-legend span { display: inline-flex; align-items: center; gap: 6px; }
+    #amath351-slope-lab .lab-swatch { width: 19px; height: 0; border-top: 2px solid var(--lab-purple); }
+    #amath351-slope-lab .lab-swatch.prediction { border-top: 2px dashed var(--lab-orange); }
+    #amath351-slope-lab .lab-swatch.saved { border-color: var(--lab-compare); }
+    #amath351-slope-lab .lab-chart-options { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+    #amath351-slope-lab .lab-check { display: inline-flex; align-items: center; gap: 7px; font-size: 12px; color: var(--lab-muted); }
+    #amath351-slope-lab .lab-check input { accent-color: var(--lab-purple); width: 15px; height: 15px; margin: 0; }
+    #amath351-slope-lab .lab-probe { font-size: 12px; font-variant-numeric: tabular-nums; color: var(--lab-ink); }
+    #amath351-slope-lab .lab-side { padding-top: 1px; min-width: 0; }
+    #amath351-slope-lab .lab-step-title { display: flex; align-items: center; gap: 9px; margin: 0 0 9px; font-size: 14px; font-weight: 500; }
+    #amath351-slope-lab .lab-step-number { color: var(--lab-muted); font-size: 11px; letter-spacing: .06em; }
+    #amath351-slope-lab .lab-question { margin: 0 0 11px; font-size: 13px; line-height: 1.6; }
+    #amath351-slope-lab .lab-choices { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+    #amath351-slope-lab .lab-choices button { padding: 8px 4px; }
+    #amath351-slope-lab .lab-choice-note { font-size: 12px; color: var(--lab-muted); margin: 10px 0 0; min-height: 38px; }
+    #amath351-slope-lab .lab-divider { border: 0; border-top: 1px solid var(--lab-line); margin: 19px 0; }
+    #amath351-slope-lab .lab-slider-label { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 13px; margin-bottom: 10px; }
+    #amath351-slope-lab .lab-value { font-variant-numeric: tabular-nums; font-family: Georgia, serif; font-size: 19px; }
+    #amath351-slope-lab .lab-range { width: 100%; margin: 5px 0; accent-color: var(--lab-purple); height: 20px; }
+    #amath351-slope-lab .lab-range-limits { display: flex; justify-content: space-between; font-size: 11px; color: var(--lab-muted); }
+    #amath351-slope-lab .lab-reveal { display: block; width: 100%; margin-top: 17px; padding: 11px; }
+    #amath351-slope-lab .lab-play-actions { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: 6px; min-height: 29px; }
+    #amath351-slope-lab .lab-time { font-size: 12px; color: var(--lab-muted); font-variant-numeric: tabular-nums; }
+    #amath351-slope-lab .lab-feedback { margin-top: 14px; background: var(--lab-soft); padding: 12px 13px; border-radius: 7px; font-size: 12px; line-height: 1.6; }
+    #amath351-slope-lab .lab-feedback strong { font-weight: 500; display: block; margin-bottom: 4px; }
+    #amath351-slope-lab .lab-compare { margin-top: 16px; }
+    #amath351-slope-lab .lab-compare > button { width: 100%; }
+    #amath351-slope-lab .lab-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+    #amath351-slope-lab .lab-chip { border: 1px solid var(--lab-line); background: var(--lab-surface); color: var(--lab-ink); border-radius: 5px; padding: 4px 8px; font-size: 11px; font-variant-numeric: tabular-nums; }
+    #amath351-slope-lab .lab-footer { border-top: 1px solid var(--lab-line); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; padding: 12px 26px; font-size: 11px; color: var(--lab-muted); }
+    #amath351-slope-lab .lab-footer-links { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; }
+    #amath351-slope-lab .lab-footer-links a { color: var(--lab-muted); text-decoration: underline; text-underline-offset: 3px; }
+    #amath351-slope-lab .lab-footer-links a:focus-visible { outline: 3px solid var(--lab-purple); outline-offset: 3px; }
+    #amath351-slope-lab .lab-sr { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+    @media (max-width: 800px) {
+      #amath351-slope-lab .lab-main { grid-template-columns: minmax(0,1fr) 225px; gap: 18px; padding-left: 18px; padding-right: 18px; }
+      #amath351-slope-lab .lab-header, #amath351-slope-lab .lab-intro, #amath351-slope-lab .lab-footer { padding-left: 18px; padding-right: 18px; }
+      #amath351-slope-lab .lab-stage { gap: 8px; }
+    }
+    @media (max-width: 640px) {
+      #amath351-slope-lab .lab-main { grid-template-columns: minmax(0,1fr); gap: 22px; padding: 0 14px 20px; }
+      #amath351-slope-lab .lab-header, #amath351-slope-lab .lab-intro, #amath351-slope-lab .lab-footer { padding-left: 14px; padding-right: 14px; }
+      #amath351-slope-lab .lab-intro { padding-top: 18px; }
+      #amath351-slope-lab h1 { font-size: 28px; }
+      #amath351-slope-lab .lab-side { border-top: 1px solid var(--lab-line); padding-top: 18px; }
+      #amath351-slope-lab .lab-plot { height: 340px; }
+      #amath351-slope-lab .lab-legend { padding-left: 10px; gap: 10px; }
+      #amath351-slope-lab .lab-equation { padding: 12px; }
+    }
+    @media (pointer: coarse) {
+      #amath351-slope-lab .lab-btn, #amath351-slope-lab .lab-chip, #amath351-slope-lab .lab-check { min-height: 44px; }
+      #amath351-slope-lab .lab-range { height: 32px; }
+    }
+    @media (prefers-reduced-motion: reduce) { #amath351-slope-lab * { transition: none !important; } }
+  </style>
+
+  <header class="lab-header">
+    <div class="lab-brand"><span class="lab-monogram" aria-hidden="true">y′</span><span>AMATH 351 <span style="font-weight:400;color:var(--lab-muted)">/ Lab</span></span></div>
+    <div class="lab-course">University of Washington · Autumn 2026</div>
+  </header>
+  <div class="lab-intro">
+    <div><div class="lab-kicker">Experiment 01 · Sections 1.1–1.3</div><h1>Follow the slope.</h1><p class="lab-subtitle">A local rule. A whole curve to discover.</p></div>
+    <div class="lab-stage" aria-label="Learning sequence"><span id="al-stage-predict" data-active="true">01 Predict</span><b>→</b><span id="al-stage-observe">02 Observe</span><b>→</b><span id="al-stage-explain">03 Explain</span></div>
+  </div>
+  <div class="lab-main">
+    <section class="lab-chart-panel" aria-label="Direction field experiment">
+      <div class="lab-equation"><span class="lab-math"><i>dy</i>/<i>dt</i> = <i>t</i> − <i>y</i></span><span class="lab-ivp"><i>y</i>(0) = <span id="al-ivp-value">1.0</span></span></div>
+      <div class="lab-plot-wrap">
+        <svg id="al-plot" class="lab-plot" role="img" aria-labelledby="al-chart-title al-chart-desc">
+          <title id="al-chart-title">Direction field for y prime equals t minus y</title>
+          <desc id="al-chart-desc">Time t is horizontal, y is vertical. Click to inspect a slope, or drag the initial point on t equals zero. The initial value slider provides a keyboard alternative. The solution is hidden until revealed.</desc>
+        </svg>
+        <div class="lab-legend" aria-label="Plot legend">
+          <span><i class="lab-swatch prediction"></i>Your sketch</span>
+          <span id="al-solution-legend" hidden><i class="lab-swatch"></i>Solution</span>
+          <span id="al-saved-legend" hidden><i class="lab-swatch saved"></i>Kept curves</span>
+        </div>
+      </div>
+      <div class="lab-modes" role="group" aria-label="Plot interaction">
+        <button class="lab-btn cursor-interaction" id="al-inspect" type="button" aria-pressed="true">Inspect slopes</button>
+        <button class="lab-btn cursor-interaction" id="al-draw" type="button" aria-pressed="false">Sketch prediction</button>
+        <button class="lab-btn lab-text cursor-interaction" id="al-erase" type="button" hidden>Erase sketch</button>
+      </div>
+      <p class="lab-hint" id="al-mode-hint">Click a point to inspect its slope. Drag the initial point to change y(0).</p>
+      <div class="lab-chart-options">
+        <label class="lab-check"><input id="al-zero" type="checkbox">Show zero-slope line</label>
+        <output class="lab-probe" id="al-probe-readout" aria-label="Selected point and its slope">At (0.00, 1.00), y′ = −1.00</output>
+      </div>
+    </section>
+    <aside class="lab-side" aria-label="Experiment controls">
+      <h2 class="lab-step-title"><span class="lab-step-number">01</span>Make a prediction</h2>
+      <p class="lab-question">At the initial point, which way does the solution start?</p>
+      <div class="lab-choices" role="group" aria-label="Predict the initial direction">
+        <button class="lab-btn cursor-interaction" type="button" data-prediction="rising" aria-pressed="false">↗ Rising</button>
+        <button class="lab-btn cursor-interaction" type="button" data-prediction="falling" aria-pressed="false">↘ Falling</button>
+        <button class="lab-btn cursor-interaction" type="button" data-prediction="flat" aria-pressed="false">→ Flat</button>
+      </div>
+      <p class="lab-choice-note" id="al-choice-note">Then sketch how you think the curve will continue.</p>
+      <hr class="lab-divider">
+      <label class="lab-slider-label" for="al-initial"><span>Initial value <i>y</i>(0)</span><output class="lab-value" id="al-initial-value">1.0</output></label>
+      <input class="lab-range" id="al-initial" type="range" min="-1.5" max="4" step="0.1" value="1" aria-valuetext="y of zero equals 1">
+      <div class="lab-range-limits"><span>−1.5</span><span>4.0</span></div>
+      <button class="lab-btn lab-primary lab-reveal cursor-interaction" id="al-reveal" type="button">Reveal the solution</button>
+      <div class="lab-play-actions"><span class="lab-time" id="al-time">Your prediction comes first.</span><button class="lab-btn lab-text cursor-interaction" id="al-hide" type="button" hidden>Hide solution</button></div>
+      <div class="lab-feedback" id="al-feedback" hidden><strong id="al-feedback-title"></strong><span id="al-feedback-text"></span></div>
+      <div class="lab-compare">
+        <button class="lab-btn cursor-interaction" id="al-keep" type="button" disabled>Keep this curve to compare</button>
+        <div class="lab-chips" id="al-kept-chips" aria-label="Saved initial conditions"></div>
+      </div>
+    </aside>
+  </div>
+  <footer class="lab-footer"><span id="al-footer-note">One equation. Many initial conditions.</span><div class="lab-footer-links"><a href="https://shzhang3.github.io/#teaching">Teaching</a><a href="https://github.com/shzhang3/amath351-lab" target="_blank" rel="noopener">Source on GitHub</a><button class="lab-btn lab-text cursor-interaction" id="al-reset" type="button">Reset experiment</button></div></footer>
+  <div id="al-announcement" class="lab-sr" aria-live="polite"></div>
+  <script>
+    (() => {
+      const root = document.getElementById('amath351-slope-lab');
+      if (!root || root.dataset.initialized) return;
+      root.dataset.initialized = 'true';
+      const q = (id) => root.querySelector('#' + id);
+      const svg = q('al-plot');
+      const ids = ['al-ivp-value','al-initial-value','al-initial','al-reveal','al-hide','al-keep','al-kept-chips','al-time','al-feedback','al-feedback-title','al-feedback-text','al-choice-note','al-inspect','al-draw','al-erase','al-mode-hint','al-probe-readout','al-zero','al-footer-note','al-solution-legend','al-saved-legend','al-announcement'];
+      const el = Object.fromEntries(ids.map(id => [id, q(id)]));
+      const choices = Array.from(root.querySelectorAll('[data-prediction]'));
+      const X = [-0.45, 5], Y = [-2, 5.5], T = 5, DURATION = 6200;
+      const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+      const num = (v, places = 2) => (Math.abs(v) < Math.pow(10, -places) / 2 ? 0 : v).toFixed(places).replace('-', '−');
+      const answer = (v) => v > 0 ? 'falling' : v < 0 ? 'rising' : 'flat';
+      const solution = (t, y0) => t - 1 + (y0 + 1) * Math.exp(-t);
+      const fresh = () => ({ y0: 1, prediction: null, mode: 'inspect', sketch: [], kept: [], zero: false, revealed: false, progress: 0, probe: {t:0, y:1} });
+      let state = fresh(), playing = false, frame = 0, last = 0, gesture = null, size = null;
+      let groups = {}, disposed = false;
+      const STORAGE_KEY = 'amath351:follow-the-slope:v1';
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+      const sx = t => size.left + (t - X[0]) / (X[1] - X[0]) * size.pw;
+      const sy = y => size.top + (Y[1] - y) / (Y[1] - Y[0]) * size.ph;
+      const wx = x => X[0] + (x - size.left) / size.pw * (X[1] - X[0]);
+      const wy = y => Y[1] - (y - size.top) / size.ph * (Y[1] - Y[0]);
+      const point = (t, y) => sx(t).toFixed(2) + ',' + sy(y).toFixed(2);
+      function announce(text) { el['al-announcement'].textContent = text; }
+      function stop() { playing = false; cancelAnimationFrame(frame); frame = 0; last = 0; }
+      function save() {
+        const sketch = state.sketch.filter((p, i) => i % Math.max(1, Math.ceil(state.sketch.length / 180)) === 0);
+        const snapshot = {
+          modelContent: {experiment:'amath351-slope-01', equation:"y'=t-y", initialValue:state.y0, prediction:state.prediction, solutionVisible:state.revealed, comparedInitialValues:state.kept},
+          privateContent: {mode:state.mode, sketch:sketch, zero:state.zero, progress:state.progress, probe:state.probe}
+        };
+        try { window.localStorage.setItem(STORAGE_KEY, JSON.stringify(snapshot)); } catch (_) {}
+      }
+      function restore(snapshot) {
+        if (!snapshot || snapshot.modelContent?.experiment !== 'amath351-slope-01') return;
+        const m = snapshot.modelContent, p = snapshot.privateContent || {};
+        stop(); state = fresh();
+        if (Number.isFinite(m.initialValue)) state.y0 = Math.round(clamp(m.initialValue,-1.5,4)*10)/10;
+        state.prediction = ['rising','falling','flat'].includes(m.prediction) ? m.prediction : null;
+        state.revealed = m.solutionVisible === true;
+        state.kept = Array.isArray(m.comparedInitialValues) ? Array.from(new Set(m.comparedInitialValues.filter(v=>Number.isFinite(v)&&v>=-1.5&&v<=4))).slice(0,3) : [];
+        state.mode = p.mode === 'draw' ? 'draw' : 'inspect';
+        state.zero = p.zero === true;
+        state.progress = state.revealed ? clamp(Number(p.progress)||0,0,1) : 0;
+        state.probe = p.probe && Number.isFinite(p.probe.t) && Number.isFinite(p.probe.y) ? {t:clamp(p.probe.t,X[0],X[1]),y:clamp(p.probe.y,Y[0],Y[1])} : {t:0,y:state.y0};
+        state.sketch = Array.isArray(p.sketch) ? p.sketch.filter(v=>Array.isArray(v)&&v.length===2&&v.every(Number.isFinite)).slice(0,200).map(v=>[clamp(v[0],0,T),clamp(v[1],Y[0],Y[1])]) : [];
+        if (size) { update(); drawDynamic(); }
+      }
+      function tangent(t, y, half) {
+        const dx = size.pw/(X[1]-X[0]), dy = -(t-y)*size.ph/(Y[1]-Y[0]);
+        const norm = Math.hypot(dx,dy), ux = dx/norm*half, uy=dy/norm*half;
+        return 'M'+(sx(t)-ux).toFixed(2)+','+(sy(y)-uy).toFixed(2)+'L'+(sx(t)+ux).toFixed(2)+','+(sy(y)+uy).toFixed(2);
+      }
+      function curve(y0, end=T) {
+        const count = Math.max(1,Math.ceil(end*65));
+        let d='';
+        for (let i=0;i<=count;i++) { const t=end*i/count; d+=(i?'L':'M')+point(t,solution(t,y0)); }
+        return d;
+      }
+      function drawStatic() {
+        const w=svg.getBoundingClientRect().width, h=svg.getBoundingClientRect().height;
+        if (w < 80 || h < 80) return;
+        size={w,h,left:46,right:14,top:24,bottom:39,pw:w-60,ph:h-63};
+        svg.setAttribute('viewBox','0 0 '+w+' '+h);
+        let grid='', axes='', labels='', field='';
+        const xticks=w<390?[0,2,4]:[0,1,2,3,4,5];
+        for (let x=0;x<=5;x++) {
+          grid+='M'+point(x,Y[0])+'L'+point(x,Y[1]);
+          if(xticks.includes(x)) labels+='<text text-anchor="middle" x="'+sx(x)+'" y="'+(sy(Y[0])+21)+'">'+x+'</text>';
+        }
+        for(let y=-2;y<=5;y++){
+          grid+='M'+point(X[0],y)+'L'+point(X[1],y);
+          labels+='<text text-anchor="end" dominant-baseline="middle" x="'+(size.left-10)+'" y="'+sy(y)+'">'+String(y).replace('-','−')+'</text>';
+        }
+        axes='M'+point(0,Y[0])+'L'+point(0,Y[1])+'M'+point(X[0],0)+'L'+point(X[1],0);
+        const nx=Math.max(9,Math.floor(size.pw/26)), ny=Math.max(10,Math.floor(size.ph/25));
+        for(let ix=0;ix<nx;ix++) for(let iy=0;iy<ny;iy++){
+          const t=X[0]+(ix+.5)/nx*(X[1]-X[0]), y=Y[0]+(iy+.5)/ny*(Y[1]-Y[0]);
+          field+=tangent(t,y,6.8);
+        }
+        svg.innerHTML='<title id="al-chart-title">Direction field for y prime equals t minus y</title><desc id="al-chart-desc">Time t is horizontal and y is vertical. Each short segment shows the derivative t minus y. Use the initial value slider and reveal button to explore solution curves.</desc>'+
+          '<defs><clipPath id="al-clip"><rect x="'+size.left+'" y="'+size.top+'" width="'+size.pw+'" height="'+size.ph+'"/></clipPath></defs>'+
+          '<path class="lab-grid" d="'+grid+'"/><path class="lab-axis" d="'+axes+'"/>'+labels+
+          '<text x="'+(w-15)+'" y="'+(h-7)+'" text-anchor="end" class="axis-title" data-axis="x">t</text>'+
+          '<text x="20" y="16" text-anchor="middle" class="axis-title" data-axis="y">y</text>'+
+          '<g clip-path="url(#al-clip)"><path class="lab-field" d="'+field+'"/><g id="al-zero-layer"></g><g id="al-kept-layer"></g><path id="al-sketch-path" class="lab-sketch"/><path id="al-solution-path" class="lab-solution"/><g id="al-probe-layer"></g><g id="al-moving-layer"></g><g id="al-initial-layer"></g></g>';
+        groups={zero:q('al-zero-layer'),kept:q('al-kept-layer'),sketch:q('al-sketch-path'),solution:q('al-solution-path'),probe:q('al-probe-layer'),moving:q('al-moving-layer'),initial:q('al-initial-layer')};
+        drawDynamic();
+      }
+      function dot(t,y,fill,r=4) {return '<circle cx="'+sx(t)+'" cy="'+sy(y)+'" r="'+r+'" fill="'+fill+'" stroke="var(--lab-surface)" stroke-width="2"/>';}
+      function drawDynamic() {
+        if(!size || !groups.solution) return;
+        groups.zero.innerHTML=state.zero?'<path d="M'+point(X[0],X[0])+'L'+point(X[1],X[1])+'" stroke="var(--lab-axis)" stroke-width="1.5" stroke-dasharray="5 5" fill="none"/><text x="'+(sx(3.65)+6)+'" y="'+(sy(3.65)-7)+'">y = t</text>':'';
+        groups.kept.innerHTML=state.kept.map(v=>'<path class="lab-kept" d="'+curve(v)+'"/>'+dot(0,v,'var(--lab-compare)',3.5)).join('');
+        groups.sketch.setAttribute('d',state.sketch.map((p,i)=>(i?'L':'M')+point(p[0],p[1])).join(''));
+        groups.solution.setAttribute('d',state.revealed?curve(state.y0,state.progress*T):'');
+        const p=state.probe;
+        groups.probe.innerHTML=state.mode==='inspect'?'<path class="lab-tangent" d="'+tangent(p.t,p.y,21)+'"/>'+dot(p.t,p.y,'var(--lab-ink)',3):'';
+        if(state.revealed){
+          const t=state.progress*T, y=solution(t,state.y0);
+          groups.moving.innerHTML='<path d="'+tangent(t,y,18)+'" stroke="var(--lab-purple)" stroke-width="1.6" fill="none"/>'+dot(t,y,'var(--lab-purple)',4.5);
+        }else groups.moving.innerHTML='';
+        groups.initial.innerHTML='<circle cx="'+sx(0)+'" cy="'+sy(state.y0)+'" r="16" fill="var(--lab-purple)" opacity=".09"/>'+dot(0,state.y0,'var(--lab-purple)',6);
+        el['al-probe-readout'].textContent='At ('+num(p.t)+', '+num(p.y)+'), y′ = '+num(p.t-p.y);
+        el['al-time'].textContent=state.revealed?'t = '+num(state.progress*T)+' / 5.00':'Your prediction comes first.';
+        svg.dataset.y0=String(state.y0); svg.dataset.progress=String(state.progress); svg.dataset.solutionVisible=String(state.revealed);
+      }
+      function update() {
+        el['al-ivp-value'].textContent=num(state.y0,1);
+        el['al-initial-value'].textContent=num(state.y0,1);
+        el['al-initial'].value=state.y0;
+        el['al-initial'].setAttribute('aria-valuetext','y of zero equals '+state.y0);
+        choices.forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.prediction===state.prediction)));
+        el['al-choice-note'].textContent=state.prediction?'Prediction saved. Add a sketch, or reveal the solution.':'Then sketch how you think the curve will continue.';
+        el['al-inspect'].setAttribute('aria-pressed',String(state.mode==='inspect'));
+        el['al-draw'].setAttribute('aria-pressed',String(state.mode==='draw'));
+        el['al-mode-hint'].textContent=state.mode==='draw'?'Draw your predicted curve from the initial point. A new stroke replaces your sketch.':'Click a point to inspect its slope. Drag the initial point to change y(0).';
+        el['al-erase'].hidden=!state.sketch.length;
+        el['al-zero'].checked=state.zero;
+        el['al-reveal'].textContent=!state.revealed?'Reveal the solution':playing?'Pause animation':state.progress>=1?'Replay the solution':'Continue animation';
+        el['al-hide'].hidden=!state.revealed;
+        el['al-solution-legend'].hidden=!state.revealed;
+        el['al-saved-legend'].hidden=!state.kept.length;
+        const already=state.kept.includes(state.y0);
+        el['al-keep'].disabled=!state.revealed||already||state.kept.length>=3;
+        el['al-keep'].textContent=already?'This curve is kept':state.kept.length>=3?'Three curves kept':'Keep this curve to compare';
+        el['al-kept-chips'].innerHTML=state.kept.map(v=>'<button class="lab-chip cursor-interaction" type="button" data-remove="'+v+'" aria-label="Remove saved curve with initial value '+v+'">y(0) = '+num(v,1)+' <span aria-hidden="true">×</span></button>').join('');
+        el['al-feedback'].hidden=!state.revealed;
+        if(state.revealed){
+          const direction=answer(state.y0), correct=state.prediction===direction;
+          el['al-feedback-title'].textContent=state.prediction?(correct?'Your starting direction checks out.':'Compare your prediction with the slope.'):'Start with the local rule.';
+          const behavior=direction==='falling'?'initially falls':direction==='rising'?'initially rises':'starts with a horizontal tangent';
+          el['al-feedback-text'].textContent='At t = 0, y′ = '+num(-state.y0,1)+', so the solution '+behavior+'. '+(state.y0>0?'Does it keep falling? Find where its tangent becomes horizontal.':'How does the direction field explain what happens next?');
+        }
+        const stage=!state.revealed?'predict':state.progress>=1?'explain':'observe';
+        ['predict','observe','explain'].forEach(s=>q('al-stage-'+s).dataset.active=String(s===stage));
+        el['al-footer-note'].textContent=state.kept.length?'Change the initial value and compare. Can these solution curves cross?':'One equation. Many initial conditions.';
+      }
+      function initial(value) {
+        const v=Math.round(clamp(value,-1.5,4)*10)/10;
+        if(v===state.y0) return;
+        stop(); state.y0=v; state.prediction=null; state.sketch=[]; state.revealed=false; state.progress=0; state.probe={t:0,y:v};
+        update(); drawDynamic();
+      }
+      function animate(now) {
+        if(!playing || disposed) return;
+        if(!root.isConnected){stop();disposed=true;resize.disconnect();return;}
+        if(last) state.progress=clamp(state.progress+(now-last)/DURATION,0,1);
+        last=now; drawDynamic();
+        if(state.progress>=1){stop();update();save();announce('Solution revealed. '+el['al-feedback-text'].textContent);}
+        else frame=requestAnimationFrame(animate);
+      }
+      function play() {
+        if(playing){stop();update();save();return;}
+        if(!state.revealed){state.revealed=true;state.progress=0;state.mode='inspect';}
+        if(state.progress>=1) state.progress=0;
+        if(reduced.matches){state.progress=1;update();drawDynamic();save();return;}
+        playing=true;last=0;update();drawDynamic();save();frame=requestAnimationFrame(animate);
+      }
+      el['al-reveal'].addEventListener('click',play);
+      el['al-hide'].addEventListener('click',()=>{stop();state.revealed=false;state.progress=0;update();drawDynamic();save();});
+      el['al-initial'].addEventListener('input',e=>initial(Number(e.target.value)));
+      el['al-initial'].addEventListener('change',()=>{save();announce('Initial value changed to '+state.y0+'. Make a new prediction.');});
+      choices.forEach(b=>b.addEventListener('click',()=>{state.prediction=b.dataset.prediction;update();save();announce('Prediction: '+state.prediction);}));
+      function mode(value){state.mode=value;update();drawDynamic();save();}
+      el['al-inspect'].addEventListener('click',()=>mode('inspect'));
+      el['al-draw'].addEventListener('click',()=>mode('draw'));
+      el['al-erase'].addEventListener('click',()=>{state.sketch=[];update();drawDynamic();save();});
+      el['al-zero'].addEventListener('change',()=>{state.zero=el['al-zero'].checked;drawDynamic();save();});
+      el['al-keep'].addEventListener('click',()=>{
+        if(!state.revealed||state.kept.includes(state.y0)||state.kept.length>=3)return;
+        state.kept.push(state.y0);update();drawDynamic();save();announce('Curve kept. Change the initial value to compare.');
+      });
+      el['al-kept-chips'].addEventListener('click',e=>{
+        const b=e.target.closest('[data-remove]');if(!b)return;
+        state.kept=state.kept.filter(v=>v!==Number(b.dataset.remove));update();drawDynamic();save();
+      });
+      q('al-reset').addEventListener('click',()=>{stop();state=fresh();update();drawDynamic();save();announce('Experiment reset. The solution is hidden.');});
+      function eventPoint(e){
+        const rect=svg.getBoundingClientRect(),x=(e.clientX-rect.left)*size.w/rect.width,y=(e.clientY-rect.top)*size.h/rect.height;
+        return {x,y,t:clamp(wx(x),X[0],X[1]),v:clamp(wy(y),Y[0],Y[1]),inside:x>=size.left&&x<=size.left+size.pw&&y>=size.top&&y<=size.top+size.ph};
+      }
+      svg.addEventListener('pointerdown',e=>{
+        if(!size||e.button!==0)return;
+        const p=eventPoint(e);if(!p.inside)return;
+        e.preventDefault();svg.setPointerCapture(e.pointerId);
+        if(state.mode==='draw'){gesture='draw';state.sketch=[[clamp(p.t,0,T),p.v]];update();}
+        else if(Math.hypot(p.x-sx(0),p.y-sy(state.y0))<22){gesture='initial';}
+        else{gesture='probe';state.probe={t:p.t,y:p.v};}
+        drawDynamic();
+      });
+      svg.addEventListener('pointermove',e=>{
+        if(!gesture||!size)return;
+        const p=eventPoint(e);
+        if(gesture==='initial')initial(p.v);
+        else if(gesture==='draw'){
+          const next=[clamp(p.t,0,T),p.v],prev=state.sketch[state.sketch.length-1];
+          if(!prev||Math.hypot(sx(next[0])-sx(prev[0]),sy(next[1])-sy(prev[1]))>2)state.sketch.push(next);
+          if(state.sketch.length>720)state.sketch=state.sketch.filter((_,i)=>i%2===0);
+          drawDynamic();
+        }else{state.probe={t:p.t,y:p.v};drawDynamic();}
+      });
+      function endGesture(e){
+        if(!gesture)return;
+        const kind=gesture;gesture=null;
+        if(svg.hasPointerCapture(e.pointerId))svg.releasePointerCapture(e.pointerId);
+        update();save();
+        if(kind==='probe')announce(el['al-probe-readout'].textContent);
+        if(kind==='initial')announce('Initial value changed to '+state.y0+'.');
+      }
+      svg.addEventListener('pointerup',endGesture);
+      svg.addEventListener('pointercancel',endGesture);
+      svg.addEventListener('lostpointercapture',()=>{gesture=null;});
+      document.addEventListener('visibilitychange',()=>{if(document.hidden&&playing){stop();update();save();}});
+      window.addEventListener('storage',event=>{
+        if(event.key!==STORAGE_KEY||!event.newValue)return;
+        try { restore(JSON.parse(event.newValue)); } catch (_) {}
+      });
+      try { restore(JSON.parse(window.localStorage.getItem(STORAGE_KEY))); } catch (_) {}
+      update();
+      const resize=new ResizeObserver(drawStatic);resize.observe(svg);
+      drawStatic();
+    })();
+  </script>
+</div>
+
+  </main>
+</body>
+</html>
