@@ -7,6 +7,24 @@ of Washington.
 
 **Repository:** https://github.com/shzhang3/amath351-lab
 
+## Navigation
+
+The site follows **chapter index → chapter's examples → individual experiment**.
+
+1. [First-order equations](https://shzhang3.github.io/amath351-lab/chapters/first-order/)
+2. [Higher-order linear equations](https://shzhang3.github.io/amath351-lab/chapters/higher-order/)
+3. [Linear systems](https://shzhang3.github.io/amath351-lab/chapters/linear-systems/)
+
+Chapter 1 currently includes the fluid-motion opening, direction fields, and
+separable equations. The other examples are explicitly labeled as planned and
+have no inactive or broken experiment links. Chapter groupings follow the
+Autumn 2026 syllabus, rather than the textbook's chapter numbering.
+
+Each available experiment has its own URL, breadcrumbs, and previous/next
+navigation. The personal homepage still links to the lab's root chapter index.
+Old root-page fragment links to the direction field or opening sequence redirect
+to their new pages.
+
 ## Lecture 01: From fluids to differential equations
 
 A short opening sequence connects a current research question to the ODEs in
@@ -25,7 +43,7 @@ this course. Allow about 5–8 minutes before the direction-field experiment.
    `y' = y`. The exact solution `1/(1-t)` is evaluated only before `t = 1`.
    Values above the fixed plot height remain visible in a numeric readout.
    This scalar example explains finite-time blowup; it is not a reduction of NS.
-4. Continue to **Follow the slope** below. Return to the particle example when
+4. Continue to **Follow the slope** using the next-example link. Return to the particle example when
    the course reaches systems of ODEs.
 
 The page links to the official materials and includes our own drawings. No
@@ -39,7 +57,7 @@ Both opening experiments start paused. Keyboard controls, time sliders,
 chapter navigation, and a reduced-motion mode are provided. Opening experiments
 reset on reload; the direction-field experiment retains its existing local state.
 
-## Experiment 01: Follow the slope
+## Follow the slope
 
 Explore the initial value problem y′ = t − y, y(0) = y₀.
 
@@ -59,24 +77,53 @@ initial conditions. Numerical approximation will be a separate learning step.
 Interaction state is stored locally in the viewer's browser when storage is
 available. No login or server-side application is required.
 
+## Match two areas: separable equations
+
+[Open the experiment](https://shzhang3.github.io/amath351-lab/chapters/first-order/separable/).
+For `y' = t*y`, `y(0) = 1`, the integral condition is
+`integral(1/y, 1..y(t)) = integral(t, 0..t)`, or `ln(y) = t^2/2`.
+
+- Choose a time and manually adjust y to match the two accumulated areas.
+- Use **Match for me** to see the exact matching value.
+- Keep up to 12 approximately matching points, with area error at most 0.002.
+  Changing the time asks for a new match; an existing time updates its point.
+- Reveal `y(t) = exp(t^2/2)` and compare the curve with the collected points.
+- Revisit finite-time blowup through `integral(1/u^2, 1..infinity) = 1`.
+
+The area plots share a pixel-area scale. Their numeric integrals and exact
+solution are analytic; drawn paths are sampled for display. The explanation
+uses the chain rule and explicitly retains the equilibrium `y = 0` before
+division. Browser-local storage preserves points and reveal state; reduced
+motion replaces the short matching animation with an immediate update.
+
 ## Edit and build
 
-The direction-field experiment is **src/experiment.html**. The opening sequence
-is **src/prologue.html**, with exact mathematical models in
-**src/prologue-model.cjs**. **src/page.html** supplies the standalone document.
-**build.py** embeds all three into **index.html**, the deployable page. The lab
-has no runtime dependencies, external scripts, or background network requests.
+**src/catalog.json** defines the three chapters and their example lists. An
+example with a `source` is published; an example without one is shown as planned.
+Add an example's source fragment and its catalog entry to extend the lab.
+
+The experiment sources are **src/experiment.html**, **src/prologue.html**, and
+**src/separable.html**. Exact mathematical helpers live in the corresponding
+**-model.cjs** files, embedded during the build. **src/page.html** and
+**src/site.css** supply shared navigation and styles.
+
+**build.py** generates **index.html**, chapter indexes and individual example
+pages under **chapters/**, and **assets/lab.css**. Do not edit generated output
+directly. The lab has no runtime dependencies, external scripts, or background
+network requests.
 
 After editing the source:
 
     python3 build.py
     python3 build.py --check
+    python3 tests/check_site.py
     node --test tests/*.test.cjs
 
 The build uses only the Python standard library. Node.js checks the ODEs,
 incompressibility, singular-time behavior, and application events with a small
 DOM substitute. These checks do not replace visual or browser accessibility
-testing. To preview from the repository root:
+testing. The site check verifies the page graph, links, anchors, stylesheets,
+metadata, and label references. To preview from the repository root:
 
     python3 -m http.server 8000
 
@@ -85,8 +132,9 @@ Open http://localhost:8000/.
 ## Publishing
 
 This repository has its own GitHub Pages workflow. Each push to **main** checks
-the build and interactions, then deploys the standalone page. Shiheng Zhang's
-personal homepage provides a link to this project.
+the build, navigation, and interactions, then publishes all pages and styles.
+To prepare just the public files, run `python3 build.py --check --publish-dir _site`.
+Shiheng Zhang's personal homepage provides a link to this project.
 
 Good contributions include a clearer explanation, a revealing initial
 condition, a classroom prediction question, an accessibility improvement, or a

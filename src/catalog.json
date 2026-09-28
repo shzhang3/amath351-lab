@@ -1,0 +1,44 @@
+[
+  {
+    "slug": "first-order",
+    "title": "First-order equations",
+    "description": "Read a local rule, find a solution, and explore how a model behaves.",
+    "sections": "Sections 1.1–1.6 · 2.1, 2.2, 2.4",
+    "examples": [
+      {"slug": "fluids", "title": "From fluids to ODEs", "description": "Track a particle in a swirling field, then ask whether a solution can last forever.", "section": "Lecture 01 · Section 1.1", "label": "Motion & finite-time blowup", "source": "prologue.html"},
+      {"slug": "direction-fields", "title": "Follow the slope", "description": "Predict, sketch, and reveal a solution. Change the initial condition and compare trajectories.", "section": "Sections 1.1–1.3", "label": "y′ = t − y", "source": "experiment.html"},
+      {"slug": "separable", "title": "Match two areas", "description": "Separate the variables, match accumulated areas, and build a solution one point at a time.", "section": "Section 1.4 · Separable equations", "label": "y′ = ty", "source": "separable.html"},
+      {"slug": "integrating-factors", "title": "Find an integrating factor", "description": "Transform a linear first-order equation into a derivative you can integrate.", "section": "Section 1.5"},
+      {"slug": "exact-equations", "title": "A hidden potential", "description": "Explore substitutions and level curves for exact equations.", "section": "Section 1.6"},
+      {"slug": "population", "title": "Growth with a limit", "description": "Build a logistic population model and explore its carrying capacity.", "section": "Section 2.1"},
+      {"slug": "equilibria", "title": "What happens near equilibrium?", "description": "Use a phase line to predict attraction, repulsion, and long-term behavior.", "section": "Section 2.2"},
+      {"slug": "euler", "title": "Take one small step", "description": "Construct Euler's method from local slopes and compare step sizes.", "section": "Section 2.4"}
+    ]
+  },
+  {
+    "slug": "higher-order",
+    "title": "Higher-order linear equations",
+    "description": "Combine solutions, follow an oscillator, and discover the role of forcing and boundaries.",
+    "sections": "Sections 3.1–3.6 · 3.8",
+    "examples": [
+      {"slug": "superposition", "title": "Build a family of solutions", "description": "Combine independent solutions and choose coefficients to match initial conditions.", "section": "Sections 3.1–3.3"},
+      {"slug": "vibrations", "title": "Set an oscillator in motion", "description": "Explore natural frequency, damping, and the transition between different kinds of motion.", "section": "Section 3.4"},
+      {"slug": "forcing", "title": "Add a driving force", "description": "Separate transient and forced responses in a nonhomogeneous equation.", "section": "Section 3.5"},
+      {"slug": "resonance", "title": "Find the resonant frequency", "description": "Change the driving frequency and observe the oscillator's response.", "section": "Section 3.6"},
+      {"slug": "boundary-values", "title": "Meet both boundaries", "description": "Vary an eigenvalue parameter until a solution satisfies both endpoint conditions.", "section": "Section 3.8"}
+    ]
+  },
+  {
+    "slug": "linear-systems",
+    "title": "Linear systems",
+    "description": "Let matrices shape motion, and read solutions through eigenvalues and the phase plane.",
+    "sections": "Sections 4.1–4.2 · 5.1–5.3, 5.5, 5.7",
+    "examples": [
+      {"slug": "coupled-motion", "title": "Two variables, one motion", "description": "Rewrite an oscillator as a first-order system and track its state in the plane.", "section": "Sections 4.1–4.2"},
+      {"slug": "eigendirections", "title": "Follow an eigendirection", "description": "Connect matrix action, eigenvectors, and the growth or decay of a solution.", "section": "Sections 5.1–5.2"},
+      {"slug": "phase-plane", "title": "Read the phase portrait", "description": "Compare nodes, saddles, spirals, and centers through their trajectories.", "section": "Section 5.3"},
+      {"slug": "repeated-eigenvalues", "title": "Same eigenvalues, different motion", "description": "See how an incomplete set of eigenvectors changes the geometry of a flow.", "section": "Section 5.5"},
+      {"slug": "nonhomogeneous", "title": "Drive a coupled system", "description": "Combine a system's natural evolution with an external input.", "section": "Section 5.7"}
+    ]
+  }
+]

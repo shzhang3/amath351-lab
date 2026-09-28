@@ -3,28 +3,24 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="From swirling fluids to ordinary differential equations: explore particle motion, finite-time blowup, and direction fields in the AMATH 351 Lab.">
+  <meta name="description" content="{{DESCRIPTION}}">
   <meta name="theme-color" content="#624298">
-  <title>AMATH 351 Lab · From fluids to differential equations</title>
-  <link rel="canonical" href="https://shzhang3.github.io/amath351-lab/">
-  <style>
-    :root {
-      color-scheme: light dark;
-      background: light-dark(#f0eef3, #121215);
-      color: light-dark(#252331, #efedf4);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    }
-    body { margin: 0; padding: 24px; }
-    main { max-width: 1120px; margin: 0 auto; }
-    noscript { display: block; padding: 16px; margin-bottom: 16px; }
-    @media (max-width: 640px) { body { padding: 8px; } }
-  </style>
+  <title>{{TITLE}} · AMATH 351 Lab</title>
+  <link rel="canonical" href="{{CANONICAL}}">
+  <link rel="stylesheet" href="{{STYLESHEET}}">
 </head>
 <body>
-  <main>
-    <noscript>These experiments need JavaScript for their interactive plots. The explanations and links to the original research are available below.</noscript>
-    {{AMATH351_PROLOGUE}}
-    {{AMATH351_EXPERIMENT}}
-  </main>
+  <a class="site-skip" href="#main-content">Skip to content</a>
+  <div class="site-wrap">
+    <header class="site-header">
+      <a class="site-brand" href="{{HOME_URL}}"><span class="site-brand-mark" aria-hidden="true">y′</span>AMATH 351 / Lab</a>
+      <nav aria-label="Main navigation">{{HEADER_LINKS}}</nav>
+    </header>
+{{BREADCRUMBS}}
+    <main id="main-content" tabindex="-1">{{NOSCRIPT}}{{CONTENT}}</main>
+{{EXAMPLE_NAV}}
+    <footer class="site-footer"><span>University of Washington · Autumn 2026</span><div><a href="https://shzhang3.github.io/#teaching">Shiheng Zhang · Teaching</a><a href="https://github.com/shzhang3/amath351-lab" target="_blank" rel="noopener">Contribute on GitHub ↗</a></div></footer>
+  </div>
+{{LEGACY_SCRIPT}}
 </body>
 </html>

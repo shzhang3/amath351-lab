@@ -24,10 +24,10 @@ jobs:
         run: python3 build.py --check
       - name: Check math and interactions
         run: node --test tests/*.test.cjs
+      - name: Check chapter and example links
+        run: python3 tests/check_site.py
       - name: Prepare public files
-        run: |
-          mkdir -p _site
-          cp index.html _site/index.html
+        run: python3 build.py --check --publish-dir _site
       - uses: actions/upload-pages-artifact@v4
         with:
           path: _site

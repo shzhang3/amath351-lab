@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Separate the variables, match accumulated areas, and build a solution one point at a time.">
+  <meta name="theme-color" content="#624298">
+  <title>Match two areas · AMATH 351 Lab</title>
+  <link rel="canonical" href="https://shzhang3.github.io/amath351-lab/chapters/first-order/separable/">
+  <link rel="stylesheet" href="../../../assets/lab.css">
+</head>
+<body>
+  <a class="site-skip" href="#main-content">Skip to content</a>
+  <div class="site-wrap">
+    <header class="site-header">
+      <a class="site-brand" href="../../../"><span class="site-brand-mark" aria-hidden="true">y′</span>AMATH 351 / Lab</a>
+      <nav aria-label="Main navigation"><a href="../../../">Chapters</a><a href="https://shzhang3.github.io/#teaching">Teaching</a><a href="https://github.com/shzhang3/amath351-lab" target="_blank" rel="noopener">GitHub ↗</a></nav>
+    </header>
+<nav class="site-breadcrumbs" aria-label="Breadcrumb"><a href="../../../">All chapters</a><span aria-hidden="true">/</span><a href="../">Chapter 01: First-order equations</a><span aria-hidden="true">/</span><span aria-current="page">Match two areas</span></nav>
+    <main id="main-content" tabindex="-1"><noscript>Enable JavaScript to use the interactive plots. Explanations and navigation remain available.</noscript><section id="separable-lab" aria-labelledby="sep-title">
+  <style>
+    #separable-lab { background:var(--site-paper); border-radius:12px; padding:26px; overflow:clip; }
+    #separable-lab .sep-intro { display:flex; align-items:flex-end; justify-content:space-between; flex-wrap:wrap; gap:16px; margin-bottom:20px; }
+    #separable-lab h1 { font:400 32px/1.2 Georgia,serif; margin:0 0 8px; }
+    #separable-lab h2 { font:400 22px/1.25 Georgia,serif; margin:0 0 9px; }
+    #separable-lab p { margin:0 0 12px; }
+    #separable-lab .sep-muted { color:var(--site-muted); font-size:13px; }
+    #separable-lab .sep-stages { display:flex; flex-wrap:wrap; align-items:center; gap:12px; font-size:12px; color:var(--site-muted); }
+    #separable-lab .sep-stages [data-active="true"] { color:var(--site-purple); font-weight:500; }
+    #separable-lab .sep-rule { background:var(--site-soft); border-radius:7px; padding:14px 18px; display:flex; flex-wrap:wrap; align-items:center; gap:12px 28px; justify-content:space-between; margin-bottom:20px; }
+    #separable-lab .sep-math { font:20px/1.6 Georgia,serif; }
+    #separable-lab .sep-integral { display:inline-flex; align-items:center; gap:6px; }
+    #separable-lab .sep-integral-sign { display:inline-grid; grid-template-columns:auto auto; grid-template-rows:1fr 1fr; align-items:center; }
+    #separable-lab .sep-integral-sign b { grid-row:1/3; font-size:31px; font-weight:400; }
+    #separable-lab .sep-integral-sign span { font-size:12px; line-height:1; }
+    #separable-lab .sep-areas { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:20px; }
+    #separable-lab .sep-area-panel { min-width:0; padding:16px; border:1px solid var(--site-line); border-radius:8px; background:var(--site-surface); }
+    #separable-lab .sep-label { display:flex; justify-content:space-between; align-items:baseline; gap:10px; flex-wrap:wrap; font-size:13px; }
+    #separable-lab .sep-label output { font-variant-numeric:tabular-nums; }
+    #separable-lab .sep-chart { display:block; width:100%; height:264px; }
+    #separable-lab .sep-chart text { fill:var(--site-muted); font:12px -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; }
+    #separable-lab .sep-frame, #separable-lab .sep-grid { fill:none; stroke:var(--site-line); stroke-width:1; }
+    #separable-lab .sep-line { fill:none; stroke:var(--site-purple); stroke-width:2.3; stroke-linejoin:round; }
+    #separable-lab .sep-area { fill:var(--site-purple); fill-opacity:.17; }
+    #separable-lab .sep-end { stroke:var(--site-purple); stroke-width:1; stroke-dasharray:3 3; }
+    #separable-lab input[type="range"] { width:100%; accent-color:var(--site-purple); height:24px; margin:8px 0 0; }
+    #separable-lab .sep-actions { display:flex; flex-wrap:wrap; align-items:center; gap:8px; }
+    #separable-lab .sep-match-row { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px; margin:16px 0 12px; }
+    #separable-lab .sep-btn { border:1px solid var(--site-line); border-radius:7px; background:var(--site-surface); color:var(--site-ink); padding:9px 13px; font-size:12px; }
+    #separable-lab .sep-btn:hover:not(:disabled) { background:var(--site-soft); }
+    #separable-lab .sep-primary { background:var(--site-purple); border-color:var(--site-purple); color:var(--site-on-purple); }
+    #separable-lab .sep-primary:hover:not(:disabled) { background:var(--site-purple); filter:brightness(.94); }
+    #separable-lab .sep-status { font-size:13px; font-variant-numeric:tabular-nums; }
+    #separable-lab .sep-collect { display:grid; grid-template-columns:minmax(0,1fr) 255px; gap:24px; border-top:1px solid var(--site-line); margin-top:25px; padding-top:23px; }
+    #separable-lab .sep-solution-wrap { min-width:0; background:var(--site-surface); border:1px solid var(--site-line); border-radius:8px; padding:14px 14px 10px; }
+    #separable-lab .sep-legend { display:flex; flex-wrap:wrap; gap:16px; font-size:11px; color:var(--site-muted); }
+    #separable-lab .sep-legend span { display:inline-flex; gap:6px; align-items:center; }
+    #separable-lab .sep-swatch { display:inline-block; width:16px; border-top:2px solid var(--site-purple); }
+    #separable-lab .sep-swatch.kept { width:8px; height:8px; border:2px solid var(--site-teal); border-radius:50%; }
+    #separable-lab .sep-swatch.candidate { width:8px; height:8px; border:1.5px solid var(--site-muted); transform:rotate(45deg); }
+    #separable-lab .sep-side { font-size:13px; min-width:0; }
+    #separable-lab .sep-side .sep-actions { margin:16px 0; }
+    #separable-lab .sep-formula { background:var(--site-soft); padding:12px; border-radius:7px; margin-top:15px; }
+    #separable-lab .sep-formula p { margin-bottom:5px; }
+    #separable-lab .sep-formula .sep-math { font-size:19px; }
+    #separable-lab .sep-details { padding:18px 0 0; font-size:13px; color:var(--site-muted); }
+    #separable-lab .sep-details summary { color:var(--site-ink); cursor:pointer; }
+    #separable-lab .sep-details p { margin:10px 0; }
+    #separable-lab .sep-connection { padding:17px 18px; background:var(--site-soft); border-radius:8px; margin-top:24px; font-size:13px; }
+    #separable-lab .sep-connection h2 { font-size:20px; }
+    #separable-lab .sep-reset-row { display:flex; justify-content:flex-end; margin-top:18px; }
+    #separable-lab .sep-sr { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; }
+    @media(max-width:760px) { #separable-lab { padding:20px; } #separable-lab .sep-areas, #separable-lab .sep-collect { grid-template-columns:minmax(0,1fr); } }
+    @media(max-width:420px) { #separable-lab { padding:14px; } #separable-lab .sep-area-panel { padding:12px; } #separable-lab h1 { font-size:29px; } #separable-lab .sep-rule { padding:12px; } }
+    @media(pointer:coarse) { #separable-lab .sep-btn, #separable-lab summary { min-height:44px; } #separable-lab input[type="range"] { height:32px; } }
+  </style>
+  <header class="sep-intro">
+    <div><div class="site-kicker">Separable equations · Section 1.4</div><h1 id="sep-title">Match two areas.</h1><p class="sep-muted">Find a solution, one point at a time.</p></div>
+    <div class="sep-stages" aria-label="Learning sequence"><span id="sep-stage-match" data-active="true">01 Match</span><span aria-hidden="true">→</span><span id="sep-stage-collect">02 Collect</span><span aria-hidden="true">→</span><span id="sep-stage-explain">03 Explain</span></div>
+  </header>
+  <div class="sep-rule">
+    <span class="sep-math"><i>y</i>′ = <i>ty</i>, &nbsp; <i>y</i>(0) = 1</span>
+    <span class="sep-math" aria-label="Integral from one to y of one over u du equals integral from zero to t of s ds"><span class="sep-integral"><span class="sep-integral-sign" aria-hidden="true"><b>∫</b><span>y</span><span>1</span></span>du / u</span> = <span class="sep-integral"><span class="sep-integral-sign" aria-hidden="true"><b>∫</b><span>t</span><span>0</span></span>s ds</span></span>
+  </div>
+  <p class="sep-muted">Choose a time on the left. Adjust y on the right until the accumulated areas agree, then keep that point. Choose another time and repeat.</p>
+  <div class="sep-areas">
+    <section class="sep-area-panel" aria-label="Time-side integral">
+      <div class="sep-label"><strong>Time side</strong><output id="sep-time-area" aria-live="off">Area = 0.720</output></div>
+      <svg class="sep-chart" id="sep-time-plot" role="img" aria-label="Area under s from zero to t, equal to t squared divided by two"></svg>
+      <label class="sep-label" for="sep-time"><span>Choose time <i>t</i></span><output id="sep-t" aria-live="off">1.20</output></label>
+      <input id="sep-time" type="range" min="0" max="2" step="0.01" value="1.2">
+    </section>
+    <section class="sep-area-panel" aria-label="State-side integral">
+      <div class="sep-label"><strong>State side</strong><output id="sep-state-area" aria-live="off">Area = 0.405</output></div>
+      <svg class="sep-chart" id="sep-state-plot" role="img" aria-label="Area under one over u from one to y, equal to the natural logarithm of y"></svg>
+      <label class="sep-label" for="sep-value"><span>Adjust the value <i>y</i></span><output id="sep-y" aria-live="off">1.500</output></label>
+      <input id="sep-value" type="range" min="1" max="8" step="0.001" value="1.5">
+    </section>
+  </div>
+  <div class="sep-match-row"><output class="sep-status" id="sep-status" aria-live="off">Time area − state area = 0.315</output><div class="sep-actions"><button class="sep-btn" id="sep-match" type="button">Match for me</button><button class="sep-btn sep-primary" id="sep-keep" type="button" disabled>Keep this point</button></div></div>
+  <p class="sep-muted" id="sep-hint">Try matching by hand first. A small difference, at most 0.002, is enough to keep an approximate point.</p>
+  <section class="sep-collect" aria-label="Construct the solution curve">
+    <div class="sep-solution-wrap">
+      <div class="sep-label"><span>Your solution points</span><output id="sep-count" aria-live="off">0 / 12 kept</output></div>
+      <svg class="sep-chart" id="sep-solution-plot" role="img" aria-label="Kept matching points in the t y plane, starting at zero comma one. The exact solution is hidden until revealed."></svg>
+      <div class="sep-legend"><span><i class="sep-swatch kept"></i>Kept points</span><span><i class="sep-swatch candidate"></i>Current candidate</span><span id="sep-curve-legend" hidden><i class="sep-swatch"></i>Exact solution</span></div>
+    </div>
+    <aside class="sep-side">
+      <h2>What curve is taking shape?</h2>
+      <p class="sep-muted">The initial point (0, 1) is already given. Collect matching points at a few other times before revealing the formula.</p>
+      <div class="sep-actions"><button class="sep-btn sep-primary" id="sep-reveal" type="button">Reveal y(t)</button><button class="sep-btn" id="sep-clear" type="button" disabled>Clear points</button></div>
+      <div class="sep-formula" id="sep-formula" hidden><p class="sep-math">ln y = t² / 2</p><p class="sep-math">y(t) = e<sup>t² / 2</sup></p><p class="sep-muted">Your matched points satisfy this same integral condition. Small manual matching errors may leave them slightly off the exact curve.</p></div>
+    </aside>
+  </section>
+  <details class="sep-details"><summary>Why does separating variables work?</summary>
+    <p>For y′ = f(t)g(y), on an interval where g(y) ≠ 0, define H(y) by H′(y) = 1/g(y). The chain rule gives dH(y(t))/dt = y′/g(y) = f(t). Integrating from the initial time makes the two accumulated quantities equal.</p>
+    <p>Here y stays positive, so H(y) = ln y. Thus d(ln y)/dt = y′/y = t. The two shaded areas show the definite integrals, including the initial condition.</p>
+    <p><strong>Check equilibrium solutions before dividing.</strong> The equation y′ = ty also has the solution y = 0. Division by y omits it, although it does not satisfy this example’s initial condition y(0) = 1.</p>
+  </details>
+  <section class="sep-connection" aria-label="Connection to finite-time blowup">
+    <h2>Back to finite-time blowup</h2>
+    <p>For y′ = y² with y(0) = 1, separation gives t = ∫₁ʸ u⁻² du = 1 − 1/y. The total area from 1 to infinity is only 1. The state can go arbitrarily far while the elapsed time approaches a finite limit.</p>
+    <a href="../fluids/#ai-blowup">Revisit “Can a solution end?” →</a>
+  </section>
+  <div class="sep-reset-row"><button class="sep-btn" id="sep-reset" type="button">Reset experiment</button></div>
+  <div class="sep-sr" id="sep-announcement" aria-live="polite"></div>
+  <script>// Exact quantities behind the area-matching experiment, y' = t*y, y(0) = 1.
+(function (root) {
+  const timeArea = t => t * t / 2;
+  const stateArea = y => Math.log(y);
+  const solution = t => Math.exp(timeArea(t));
+  const tolerance = .002;
+  const matches = (t, y) => Number.isFinite(t) && Number.isFinite(y) && Math.abs(timeArea(t) - stateArea(y)) <= tolerance;
+  const fresh = () => ({ t:1.2, y:1.5, points:[], revealed:false });
+  function restore(raw) {
+    const state = fresh();
+    if (!raw || raw.version !== 1) return state;
+    if (Number.isFinite(raw.t)) state.t = Math.round(Math.max(0, Math.min(2, raw.t)) * 100) / 100;
+    if (Number.isFinite(raw.y)) state.y = Math.max(1, Math.min(8, raw.y));
+    state.revealed = raw.revealed === true;
+    if (Array.isArray(raw.points)) {
+      const seen = new Set();
+      for (const p of raw.points) {
+        if (!p || !Number.isFinite(p.t) || !Number.isFinite(p.y)) continue;
+        const t = Math.round(p.t * 100) / 100;
+        if (t <= 0 || t > 2 || p.y < 1 || p.y > 8 || !matches(t,p.y) || seen.has(t)) continue;
+        seen.add(t); state.points.push({t,y:p.y});
+        if (state.points.length === 12) break;
+      }
+      state.points.sort((a,b)=>a.t-b.t);
+    }
+    return state;
+  }
+  const model = Object.freeze({timeArea,stateArea,solution,tolerance,matches,fresh,restore});
+  if (typeof module === 'object' && module.exports) module.exports = model;
+  else root.Amath351Separable = model;
+})(globalThis);
+</script>
+  <script>
+    (() => {
+      const root=document.getElementById('separable-lab');
+      if (!root || root.dataset.initialized) return;
+      root.dataset.initialized='true';
+      const q=id=>root.querySelector('#'+id);
+      const model=globalThis.Amath351Separable;
+      const reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
+      const clamp=(v,lo,hi)=>Math.max(lo,Math.min(hi,v));
+      const STORAGE='amath351:separable:v1';
+      let state=model.fresh(), frame=0, matching=false;
+      const announce=text=>{q('sep-announcement').textContent=text;};
+      function save(){try{window.localStorage.setItem(STORAGE,JSON.stringify({version:1,...state}));}catch(_){}}
+      function stop(){cancelAnimationFrame(frame);frame=0;matching=false;}
+      const path=points=>points.map((p,i)=>(i?'L':'M')+p.x.toFixed(2)+','+p.y.toFixed(2)).join('');
+      function axes(svg,xmin,xmax,ymax,xticks,yticks,xlabel,ylabel){
+        const w=svg.getBoundingClientRect().width;
+        if(w<120)return null;
+        const h=264,l=48,r=w-15,top=30,bottom=216;
+        const px=x=>l+6+(x-xmin)/(xmax-xmin)*(r-l-12),py=y=>bottom-6-y/ymax*(bottom-top-12);
+        const id=svg.id+'-clip';
+        let html='<defs><clipPath id="'+id+'"><rect x="'+l+'" y="'+top+'" width="'+(r-l)+'" height="'+(bottom-top)+'"/></clipPath></defs>';
+        for(const y of yticks)html+='<path class="sep-grid" d="M'+l+','+py(y)+'H'+r+'"/><text text-anchor="end" x="'+(l-9)+'" y="'+(py(y)+4)+'">'+y+'</text>';
+        for(const x of xticks)html+='<text text-anchor="'+(x===xmin?'start':x===xmax?'end':'middle')+'" x="'+px(x)+'" y="'+(bottom+19)+'">'+x+'</text>';
+        html+='<rect class="sep-frame" x="'+l+'" y="'+top+'" width="'+(r-l)+'" height="'+(bottom-top)+'"/><text x="'+l+'" y="17">'+ylabel+'</text><text text-anchor="end" x="'+r+'" y="260">'+xlabel+'</text>';
+        svg.setAttribute('viewBox','0 0 '+w+' '+h);
+        return {px,py,html,id};
+      }
+      function drawArea(id,isTime){
+        const svg=q(id),start=isTime?0:1,end=isTime?2:8,limit=isTime?state.t:state.y,fn=isTime?x=>x:x=>1/x;
+        // Equal-sized panels have the same pixels per unit of integral.
+        const a=axes(svg,start,end,7.7/(end-start),isTime?[0,1,2]:[1,2,4,8],isTime?[0,1,2,3]:[0,.5,1],isTime?'Time s':'State u',isTime?'s':'1/u');
+        if(!a)return;
+        const p=(x,y)=>({x:a.px(x),y:a.py(y)});
+        const curve=Array.from({length:181},(_,i)=>{const x=start+(end-start)*i/180;return p(x,fn(x));});
+        const area=[p(start,0),...Array.from({length:161},(_,i)=>{const x=start+(limit-start)*i/160;return p(x,fn(x));}),p(limit,0)];
+        svg.innerHTML=a.html+'<g clip-path="url(#'+a.id+')"><path class="sep-area" d="'+path(area)+'Z"/><path class="sep-line" d="'+path(curve)+'"/><path class="sep-end" d="M'+a.px(limit)+','+a.py(0)+'V'+a.py(fn(limit))+'"/><circle cx="'+a.px(limit)+'" cy="'+a.py(fn(limit))+'" r="3" fill="var(--site-purple)"/></g>';
+      }
+      function drawSolution(){
+        const svg=q('sep-solution-plot'),a=axes(svg,0,2,8,[0,1,2],[0,2,4,6,8],'Time t','y');
+        if(!a)return;
+        let content='';
+        if(state.revealed){
+          const curve=Array.from({length:181},(_,i)=>{const t=2*i/180;return {x:a.px(t),y:a.py(model.solution(t))};});
+          content+='<path id="sep-exact-curve" class="sep-line" d="'+path(curve)+'"/>';
+        }
+        for(const point of [{t:0,y:1},...state.points])content+='<circle cx="'+a.px(point.t)+'" cy="'+a.py(point.y)+'" r="4" fill="var(--site-surface)" stroke="var(--site-teal)" stroke-width="2"/>';
+        const x=a.px(state.t),y=a.py(state.y);
+        content+='<path d="M'+x+','+(y-5)+'L'+(x+5)+','+y+'L'+x+','+(y+5)+'L'+(x-5)+','+y+'Z" fill="var(--site-surface)" stroke="var(--site-muted)" stroke-width="1.5"/>';
+        svg.innerHTML=a.html+'<g clip-path="url(#'+a.id+')">'+content+'</g>';
+        svg.dataset.revealed=String(state.revealed);svg.dataset.pointCount=String(state.points.length);
+      }
+      function render(){
+        const ta=model.timeArea(state.t),sa=model.stateArea(state.y),delta=ta-sa,matched=model.matches(state.t,state.y);
+        q('sep-time-area').textContent='Area = '+ta.toFixed(3);q('sep-state-area').textContent='Area = '+sa.toFixed(3);
+        q('sep-t').textContent=state.t.toFixed(2);q('sep-y').textContent=state.y.toFixed(3);
+        q('sep-time').value=state.t.toFixed(2);q('sep-value').value=state.y.toFixed(3);
+        q('sep-time').setAttribute('aria-valuetext','Time '+state.t.toFixed(2));q('sep-value').setAttribute('aria-valuetext','Candidate y '+state.y.toFixed(3));
+        q('sep-status').textContent=Math.abs(delta)<1e-10?'Areas equal.':matched?'Close enough to keep this point.':'Time area − state area = '+delta.toFixed(3).replace('-','−');
+        const existing=state.points.some(p=>p.t===state.t),full=state.points.length>=12&&!existing;
+        q('sep-keep').disabled=!matched||matching||state.t===0||full;
+        q('sep-keep').textContent=state.t===0?'Initial point already given':full?'12 points kept':existing?'Update this point':'Keep this point';
+        q('sep-hint').textContent=matched?'Matching pair: (t, y) ≈ ('+state.t.toFixed(2)+', '+state.y.toFixed(3)+'). Keep it, then choose another time.':'Try matching by hand first. A small difference, at most 0.002, is enough to keep an approximate point.';
+        q('sep-count').textContent=state.points.length+' / 12 kept';q('sep-clear').disabled=!state.points.length;
+        q('sep-formula').hidden=!state.revealed;q('sep-curve-legend').hidden=!state.revealed;
+        q('sep-reveal').textContent=state.revealed?'Hide y(t)':'Reveal y(t)';
+        const stage=state.revealed?'explain':state.points.length?'collect':'match';
+        for(const name of ['match','collect','explain'])q('sep-stage-'+name).dataset.active=String(name===stage);
+        drawArea('sep-time-plot',true);drawArea('sep-state-plot',false);drawSolution();
+      }
+      q('sep-time').addEventListener('input',e=>{stop();state.t=Math.round(clamp(Number(e.target.value)||0,0,2)*100)/100;render();});
+      q('sep-value').addEventListener('input',e=>{stop();state.y=clamp(Number(e.target.value)||1,1,8);render();});
+      for(const id of ['sep-time','sep-value'])q(id).addEventListener('change',()=>{save();announce(q('sep-status').textContent);});
+      q('sep-match').addEventListener('click',()=>{
+        stop();const from=state.y,to=model.solution(state.t);let start=null;
+        if(reduced.matches){state.y=to;render();save();announce('Areas equal. You can keep this point.');return;}
+        matching=true;render();
+        function step(now){
+          if(start===null)start=now;
+          const p=clamp((now-start)/300,0,1);state.y=from+(to-from)*(1-(1-p)**3);
+          if(p===1){frame=0;matching=false;state.y=to;}
+          render();
+          if(p<1)frame=requestAnimationFrame(step);else{save();announce('Areas equal. You can keep this point.');}
+        }
+        frame=requestAnimationFrame(step);
+      });
+      q('sep-keep').addEventListener('click',()=>{
+        if(q('sep-keep').disabled)return;
+        const previous=state.points.findIndex(p=>p.t===state.t),point={t:state.t,y:state.y};
+        if(previous>=0)state.points[previous]=point;else state.points.push(point);
+        state.points.sort((a,b)=>a.t-b.t);render();save();announce('Point kept. '+state.points.length+' points collected. Choose another time.');
+      });
+      q('sep-reveal').addEventListener('click',()=>{state.revealed=!state.revealed;render();save();announce(state.revealed?'Exact solution revealed: y equals exp of t squared over two.':'Exact solution hidden.');});
+      q('sep-clear').addEventListener('click',()=>{state.points=[];render();save();announce('Collected points cleared. The initial point remains.');});
+      q('sep-reset').addEventListener('click',()=>{stop();state=model.fresh();render();save();announce('Experiment reset.');});
+      document.addEventListener('visibilitychange',()=>{if(document.hidden&&matching){stop();state.y=model.solution(state.t);render();save();}});
+      window.addEventListener('pagehide',()=>{stop();save();});
+      window.addEventListener('storage',event=>{if(event.key===STORAGE&&event.newValue){try{stop();state=model.restore(JSON.parse(event.newValue));render();}catch(_){}}});
+      try{state=model.restore(JSON.parse(window.localStorage.getItem(STORAGE)));}catch(_){}
+      const observer=new ResizeObserver(render);observer.observe(root);render();
+    })();
+  </script>
+</section>
+</main>
+<nav class="site-example-nav" aria-label="Example navigation"><a href="../direction-fields/"><small>Previous example</small>← Follow the slope</a><a class="site-all-examples" href="../">All chapter examples</a><span></span></nav>
+    <footer class="site-footer"><span>University of Washington · Autumn 2026</span><div><a href="https://shzhang3.github.io/#teaching">Shiheng Zhang · Teaching</a><a href="https://github.com/shzhang3/amath351-lab" target="_blank" rel="noopener">Contribute on GitHub ↗</a></div></footer>
+  </div>
+
+</body>
+</html>

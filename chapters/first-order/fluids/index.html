@@ -1,4 +1,23 @@
-<section id="amath351-intro" aria-labelledby="ai-title">
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Track a particle in a swirling field, then ask whether a solution can last forever.">
+  <meta name="theme-color" content="#624298">
+  <title>From fluids to ODEs · AMATH 351 Lab</title>
+  <link rel="canonical" href="https://shzhang3.github.io/amath351-lab/chapters/first-order/fluids/">
+  <link rel="stylesheet" href="../../../assets/lab.css">
+</head>
+<body>
+  <a class="site-skip" href="#main-content">Skip to content</a>
+  <div class="site-wrap">
+    <header class="site-header">
+      <a class="site-brand" href="../../../"><span class="site-brand-mark" aria-hidden="true">y′</span>AMATH 351 / Lab</a>
+      <nav aria-label="Main navigation"><a href="../../../">Chapters</a><a href="https://shzhang3.github.io/#teaching">Teaching</a><a href="https://github.com/shzhang3/amath351-lab" target="_blank" rel="noopener">GitHub ↗</a></nav>
+    </header>
+<nav class="site-breadcrumbs" aria-label="Breadcrumb"><a href="../../../">All chapters</a><span aria-hidden="true">/</span><a href="../">Chapter 01: First-order equations</a><span aria-hidden="true">/</span><span aria-current="page">From fluids to ODEs</span></nav>
+    <main id="main-content" tabindex="-1"><noscript>Enable JavaScript to use the interactive plots. Explanations and navigation remain available.</noscript><section id="amath351-intro" aria-labelledby="ai-title">
   <style>
     #amath351-intro {
       --intro-paper: light-dark(#faf9f6, #19191d);
@@ -129,7 +148,7 @@
       <button class="intro-tab" id="ai-tab-flow" role="tab" aria-selected="true" aria-controls="ai-flow" type="button">01 · Track a particle</button>
       <button class="intro-tab" id="ai-tab-blowup" role="tab" aria-selected="false" aria-controls="ai-blowup" tabindex="-1" type="button">02 · Can a solution end?</button>
     </div>
-    <a class="intro-slope-link" href="{{DIRECTION_FIELD_URL}}">Go to the direction field →</a>
+    <a class="intro-slope-link" href="../direction-fields/">Go to the direction field →</a>
   </nav>
 
   <div class="intro-panel" id="ai-flow" role="tabpanel" aria-labelledby="ai-tab-flow" tabindex="0">
@@ -232,9 +251,32 @@
       </aside>
     </div>
   </div>
-  <footer class="intro-next"><span id="ai-next-text">A local rule makes a whole path. How long can that path exist?</span><button id="ai-next" type="button">Next: can a solution end? →</button><a class="intro-slope-link" id="ai-next-slope" href="{{DIRECTION_FIELD_URL}}" hidden>Next: follow the slope →</a></footer>
+  <footer class="intro-next"><span id="ai-next-text">A local rule makes a whole path. How long can that path exist?</span><button id="ai-next" type="button">Next: can a solution end? →</button><a class="intro-slope-link" id="ai-next-slope" href="../direction-fields/" hidden>Next: follow the slope →</a></footer>
   <div class="intro-sr" id="ai-announcement" aria-live="polite"></div>
-  <script>{{AMATH351_INTRO_MODEL}}</script>
+  <script>// Exact teaching models, shared by the page and the mathematical checks.
+// This local velocity field is an illustration, not the paper's NS construction.
+(function (root) {
+  const strain = 0.24;
+  function velocityAt(point, omega) {
+    return {
+      x: -strain * point.x - omega * point.y,
+      y: omega * point.x - strain * point.y,
+      z: 2 * strain * point.z
+    };
+  }
+  function particleAt(seed, time, omega) {
+    const radius = seed.radius * Math.exp(-strain * time);
+    const angle = seed.angle + omega * time;
+    return { x: radius * Math.cos(angle), y: radius * Math.sin(angle), z: seed.z * Math.exp(2 * strain * time) };
+  }
+  function blowupAt(time) {
+    return time < 1 ? 1 / (1 - time) : null;
+  }
+  const model = Object.freeze({ strain, velocityAt, particleAt, blowupAt });
+  if (typeof module === 'object' && module.exports) module.exports = model;
+  else root.Amath351Intro = model;
+})(globalThis);
+</script>
   <script>
     (() => {
       const root = document.getElementById('amath351-intro');
@@ -429,3 +471,10 @@
     })();
   </script>
 </section>
+</main>
+<nav class="site-example-nav" aria-label="Example navigation"><span></span><a class="site-all-examples" href="../">All chapter examples</a><a href="../direction-fields/"><small>Next example</small>Follow the slope →</a></nav>
+    <footer class="site-footer"><span>University of Washington · Autumn 2026</span><div><a href="https://shzhang3.github.io/#teaching">Shiheng Zhang · Teaching</a><a href="https://github.com/shzhang3/amath351-lab" target="_blank" rel="noopener">Contribute on GitHub ↗</a></div></footer>
+  </div>
+
+</body>
+</html>

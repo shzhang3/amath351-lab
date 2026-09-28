@@ -46,7 +46,7 @@ test('the scalar model obeys y prime = y squared and excludes the disconnected b
 });
 
 // Event-level checks only: this is deliberately not a browser or layout test.
-function harness({ reduced = false } = {}) {
+function harness({ reduced = false, hash = '' } = {}) {
   const nodes = new Map(), frames = new Map();
   let time = 0, counter = 0, focused = null;
   class Element {
@@ -65,6 +65,7 @@ function harness({ reduced = false } = {}) {
   const document = new Element('document'), window = new Element('window');
   document.getElementById = id => nodes.get(id);
   window.matchMedia = () => ({ matches: reduced });
+  window.location = { hash };
   const context = vm.createContext({
     document, window, Amath351Intro: { particleAt, velocityAt, blowupAt },
     requestAnimationFrame(fn) { frames.set(++counter, fn); return counter; },
@@ -153,4 +154,11 @@ test('reduced motion advances in discrete steps without starting an animation', 
   app.click('ai-tab-blowup'); app.click('ai-blowup-play');
   assert.equal(app.element('ai-blowup-plot').dataset.time, '0.1');
   assert.equal(app.frames(), 0);
+});
+
+test('a link from the separable example opens the blowup panel immediately', () => {
+  const app = harness({ hash: '#ai-blowup' });
+  assert.equal(app.element('ai-blowup').hidden, false);
+  assert.equal(app.element('ai-flow').hidden, true);
+  assert.equal(app.element('ai-tab-blowup').getAttribute('aria-selected'), 'true');
 });
