@@ -1,0 +1,132 @@
+<section class="lab-intro">
+  <div class="site-kicker">Section 1.2 · Problem 33</div>
+  <h1>Two drops on Planet Gzyx</h1>
+  <p>A ball released from rest falls 20 feet in 2 seconds. Use that observation to infer the planet's gravity, then predict the fall time and impact speed for a 200-foot drop.</p>
+  <p><strong>Make a prediction:</strong> if the height is ten times larger, is the fall time also ten times larger? Release both balls to compare, then change the second height and try again.</p>
+  <p>Assume constant gravity and no air resistance. Both drops use the same height and time scales; the balls stop at the ground. Impact speed is measured immediately before contact.</p>
+</section>
+<div id="gzyx-section12" class="lab-interactive">
+  <h2>Planet Gzyx: two drops, one gravity</h2>
+  <div class="lab-row"><span>Observed drop: 20 ft in 2 s</span><span data-value="gravity" hidden>Gravity: 10 ft/s²</span></div>
+  <div class="lab-controls">
+    <label class="lab-label" for="gzyx-height">Second height: <span class="lab-numbers" data-value="height">200</span> ft
+      <input class="lab-slider" id="gzyx-height" type="range" min="20" max="400" step="20" value="200">
+    </label>
+  </div>
+  <div class="lab-controls">
+    <button class="lab-button lab-primary" type="button" data-action="play">Release both</button>
+    <button class="lab-button" type="button" data-action="gravity" aria-pressed="false">Reveal gravity</button>
+  </div>
+  <label class="lab-label" for="gzyx-time">Time: <span class="lab-numbers" data-value="time">0.00</span> s</label>
+  <input class="lab-slider" id="gzyx-time" type="range" min="0" max="1000" step="1" value="0">
+  <div class="gzyx-figure"><svg class="gzyx-scene" role="img" aria-label="Two balls released from rest, on one shared height scale; dots mark positions at one-second intervals"></svg></div>
+  <div class="gzyx-readouts">
+    <div><span class="gzyx-swatch gzyx-observed"></span>20 ft drop<br><span data-value="short" class="lab-numbers"></span></div>
+    <div><span class="gzyx-swatch gzyx-predicted"></span><span data-value="target">200</span> ft drop<br><span data-value="long" class="lab-numbers"></span></div>
+  </div>
+  <div class="lab-small gzyx-caption">Shared height scale · upward is positive · trail every 1 s</div>
+  <div data-value="status" aria-live="polite"></div>
+</div>
+<details class="lab-explanation">
+  <summary>Infer gravity and explain the scaling</summary>
+  <p>Taking upward as positive gives constant acceleration −g. With release height H and initial velocity zero, integrating twice gives:</p>
+  <p class="lab-math">v(t) = −gt, &nbsp; h(t) = H − ½gt².</p>
+  <p>The observed fall gives 20 = ½g(2²), so g = 10 ft/s². Setting the height to zero gives the fall time; the impact speed is the magnitude of the downward velocity.</p>
+  <p class="lab-math">T = √(2H/g), &nbsp; impact speed = gT = √(2gH).</p>
+  <p>For H = 200 ft, T = √40 ≈ 6.32 s, and the impact speed is 10√40 ≈ 63.25 ft/s. Multiplying height by 10 multiplies both fall time and impact speed by √10, not by 10.</p>
+  <p class="lab-small">The free-fall equations apply up to first contact. The visualization stops each ball there; it does not model the collision or a bounce.</p>
+</details>
+<style>
+  #gzyx-section12 { color:var(--site-ink); }
+  #gzyx-section12 .gzyx-scene { display:block; width:100%; }
+  #gzyx-section12 .gzyx-scene text { fill:var(--site-ink); font-size:12px; }
+  #gzyx-section12 .gzyx-figure { margin-top:8px; }
+  #gzyx-section12 .gzyx-readouts { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+  #gzyx-section12 .gzyx-swatch { display:inline-block; width:9px; height:9px; border-radius:50%; margin-right:6px; }
+  #gzyx-section12 .gzyx-observed { background:var(--site-teal); }
+  #gzyx-section12 .gzyx-predicted { background:var(--site-purple); }
+  #gzyx-section12 .gzyx-caption, #gzyx-section12 [data-value="status"] { margin-top:10px; }
+  @media(max-width:380px) { #gzyx-section12 .gzyx-readouts { grid-template-columns:1fr; gap:8px; } }
+</style>
+<script src="{{D3_URL}}"></script>
+<script>{{MOTION_MODEL}}</script>
+<script>
+(() => {
+  const root=document.getElementById('gzyx-section12');
+  const control={height:root.querySelector('#gzyx-height'),time:root.querySelector('#gzyx-time'),play:root.querySelector('[data-action="play"]'),gravity:root.querySelector('[data-action="gravity"]'),status:root.querySelector('[data-value="status"]')};
+  const {gravity:g, impactTime:impact, altitude} = Amath351Motion;
+  const reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
+  let height=200,time=0,revealed=false,playing=false,last=null,frame=0;
+  const storageKey = 'amath351:gzyx:v1';
+  try {
+    const restored = Amath351Motion.restoreDrop(JSON.parse(window.localStorage.getItem(storageKey)));
+    height=restored.height; time=restored.time; revealed=restored.gravityRevealed;
+  } catch (_) {}
+  function save() {
+    try { window.localStorage.setItem(storageKey, JSON.stringify({version:1,height,time,gravityRevealed:revealed})); } catch (_) {}
+  }
+  const fmt=n=>n.toFixed(2);
+  function announce(){const next=time>=impact(height)-1e-8?`Height ×${fmt(height/20)} · fall time ×${fmt(impact(height)/2)}`:time>=2?'The 20 ft ball has landed.':'Released from rest · constant gravity · no air resistance';if(control.status.textContent!==next)control.status.textContent=next;}
+  function label(svg,x,y,text,anchor='start'){return svg.append('text').attr('x',x).attr('y',y).attr('text-anchor',anchor).text(text);}
+  function scene(){
+    const node=root.querySelector('.gzyx-scene'),w=Math.max(240,node.parentElement.getBoundingClientRect().width),h=340;
+    const svg=d3.select(node).attr('viewBox',`0 0 ${w} ${h}`).attr('height',h);svg.selectAll('*').remove();
+    const box={left:64,right:w-16,top:30,bottom:h-35};
+    const data=[0,20,height],ext=d3.extent(data),ys=d3.scaleLinear().domain([ext[0],ext[1]*1.08]).range([box.bottom-7,box.top+7]);
+    const floor=ys(0),space=box.right-box.left,cols=[box.left+space*.28,box.left+space*.77];
+    svg.append('rect').attr('data-chart-frame','').attr('x',box.left).attr('y',box.top).attr('width',space).attr('height',box.bottom-box.top).attr('fill','none').attr('stroke','var(--site-line)');
+    const axis=svg.append('g').attr('transform',`translate(${box.left},0)`).call(d3.axisLeft(ys).ticks(5).tickSize(0).tickPadding(8));axis.select('.domain').remove();
+    label(svg,box.left,16,'Height (ft)').attr('class','axis-title').attr('data-axis','y');
+    svg.append('line').attr('x1',box.left).attr('x2',box.right).attr('y1',floor).attr('y2',floor).attr('stroke','var(--site-ink)').attr('stroke-width',1);
+    label(svg,box.right,h-9,'Ground','end');
+    [20,height].forEach((height0,i)=>{
+      const cx=cols[i],color=i?'var(--site-purple)':'var(--site-teal)',hit=impact(height0),flight=Math.min(time,hit),y=ys(altitude(height0,flight));
+      svg.append('rect').attr('x',cx-19).attr('y',ys(height0)).attr('width',38).attr('height',floor-ys(height0)).attr('fill',color).attr('fill-opacity',.08);
+      svg.append('line').attr('x1',cx-24).attr('x2',cx+24).attr('y1',ys(height0)).attr('y2',ys(height0)).attr('stroke',color).attr('stroke-width',1.5);
+      label(svg,cx,Math.max(box.top+16,ys(height0)-12),`${height0} ft`,'middle');
+      for(let second=0;second<flight;second++)svg.append('circle').attr('cx',cx).attr('cy',ys(altitude(height0,second))).attr('r',3).attr('fill',color).attr('fill-opacity',.35);
+      svg.append('circle').attr('cx',cx).attr('cy',y).attr('r',7).attr('fill',color);
+      if(time<hit-1e-8&&time>0){
+        const length=Math.min(42,g*time*.6),base=y+12,end=Math.min(floor,base+length);
+        if(end>base+7)svg.append('path').attr('d',`M ${cx+14} ${base} V ${end} M ${cx+10} ${end-5} L ${cx+14} ${end} L ${cx+18} ${end-5}`).attr('stroke',color).attr('stroke-width',2).attr('fill','none');
+      }
+    });
+    svg.attr('aria-label',`At ${fmt(time)} seconds, the 20-foot ball is at ${fmt(altitude(20,Math.min(time,2)))} feet and the ${height}-foot ball is at ${fmt(altitude(height,time))} feet. Equal-time trail markers spread apart during each fall.`);
+  }
+  function readout(height0){const hit=impact(height0);return time>=hit-1e-8?`Landed at ${fmt(hit)} s · impact speed ${fmt(g*hit)} ft/s`:`Height ${fmt(altitude(height0,time))} ft · velocity ${time===0?'0.00':fmt(-g*time)} ft/s`;}
+  function draw(){
+    control.height.value=height;control.time.value=1000*time/impact(height);
+    control.time.setAttribute("aria-valuetext",fmt(time)+" seconds");
+    root.querySelector('[data-value="time"]').textContent=fmt(time);
+    root.querySelector('[data-value="height"]').textContent=height;
+    root.querySelector('[data-value="target"]').textContent=height;
+    root.querySelector('[data-value="short"]').textContent=readout(20);
+    root.querySelector('[data-value="long"]').textContent=readout(height);
+    root.querySelector('[data-value="gravity"]').hidden=!revealed;
+    control.gravity.setAttribute('aria-pressed',String(revealed));control.gravity.textContent=revealed?'Hide gravity':'Reveal gravity';
+    scene();announce();
+  }
+  function pause(){playing=false;last=null;cancelAnimationFrame(frame);control.play.textContent=reduced.matches?'Advance 0.5 s':time>=impact(height)-1e-8?'Release again':time>0?'Resume':'Release both';}
+  function tick(stamp){
+    if(!playing)return;
+    if(last!==null)time=Math.min(impact(height),time+Math.min((stamp-last)/1000,.08));
+    last=stamp;draw();
+    if(time>=impact(height)){pause();announce();save();}else frame=requestAnimationFrame(tick);
+  }
+  control.height.addEventListener('input',()=>{height=Number(control.height.value);time=0;pause();draw();announce();});
+  control.height.addEventListener('change',save);
+  control.time.addEventListener('input',()=>{time=Number(control.time.value)/1000*impact(height);pause();draw();announce();});
+  control.time.addEventListener('change',save);
+  control.gravity.addEventListener('click',()=>{revealed=!revealed;draw();save();});
+  control.play.addEventListener('click',()=>{
+    if(playing){pause();announce();save();return;}
+    if(time>=impact(height)-1e-8)time=0;
+    if(reduced.matches){time=Math.min(impact(height),time+.5);draw();pause();announce();save();return;}
+    playing=true;last=null;control.play.textContent='Pause';frame=requestAnimationFrame(tick);
+  });
+  reduced.addEventListener('change',()=>{pause();announce();});
+  document.addEventListener('visibilitychange',()=>{if(document.hidden){pause();announce();save();}});
+  new ResizeObserver(scene).observe(root);
+  pause();draw();announce();
+})();
+</script>

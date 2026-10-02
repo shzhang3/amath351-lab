@@ -69,6 +69,9 @@ def main():
     catalog = json.loads((SOURCE / "catalog.json").read_text())
     template = (SOURCE / "page.html").read_text()
     outputs = {"assets/lab.css": (SOURCE / "site.css").read_text()}
+    for vendor_file in (SOURCE / "vendor").iterdir():
+        if vendor_file.is_file():
+            outputs[f"assets/vendor/{vendor_file.name}"] = vendor_file.read_text()
 
     def page(path, title, description, body, chapter=None, example=None, index=0):
         home = href(path, "index.html")
@@ -137,6 +140,8 @@ def main():
                 replacements = {"AMATH351_INTRO_MODEL":(SOURCE / "prologue-model.cjs").read_text(), "DIRECTION_FIELD_URL":href(path,"chapters/first-order/direction-fields/index.html")}
             elif example["slug"] == "separable":
                 replacements = {"SEPARABLE_MODEL":(SOURCE / "separable-model.cjs").read_text(), "BLOWUP_URL":href(path,"chapters/first-order/fluids/index.html")+"#ai-blowup"}
+            elif example["slug"] in ("velocity", "planet-gzyx"):
+                replacements = {"MOTION_MODEL":(SOURCE / "motion-model.cjs").read_text(), "D3_URL":href(path,"assets/vendor/d3.v7.9.0.min.js")}
             fragment = replace(fragment, **replacements)
             page(path, example["title"], example["description"], fragment, chapter=chapter, example=example, index=i)
 
@@ -156,7 +161,8 @@ def main():
             output = destination / relative
             output.parent.mkdir(parents=True,exist_ok=True)
             shutil.copyfile(ROOT / relative,output)
-    print(f"{'Verified' if args.check else 'Built'} {len(outputs)-1} pages and shared styles.")
+    page_count = sum(path.endswith('.html') for path in outputs)
+    print(f"{'Verified' if args.check else 'Built'} {page_count} pages and {len(outputs)-page_count} shared assets.")
 
 
 if __name__ == "__main__":

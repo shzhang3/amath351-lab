@@ -15,8 +15,9 @@ The site follows **chapter index → chapter's examples → individual experimen
 2. [Higher-order linear equations](https://shzhang3.github.io/amath351-lab/chapters/higher-order/)
 3. [Linear systems](https://shzhang3.github.io/amath351-lab/chapters/linear-systems/)
 
-Chapter 1 currently includes the fluid-motion opening, direction fields, and
-separable equations. The other examples are explicitly labeled as planned and
+Chapter 1 currently includes the fluid-motion opening, direction fields,
+position/velocity/acceleration, Planet Gzyx, and separable equations.
+The other examples are explicitly labeled as planned and
 have no inactive or broken experiment links. Chapter groupings follow the
 Autumn 2026 syllabus, rather than the textbook's chapter numbering.
 
@@ -96,21 +97,43 @@ uses the chain rule and explicitly retains the equilibrium `y = 0` before
 division. Browser-local storage preserves points and reveal state; reduced
 motion replaces the short matching animation with an immediate update.
 
+## From acceleration to motion (Section 1.2)
+
+- [Position, velocity & acceleration](https://shzhang3.github.io/amath351-lab/chapters/first-order/velocity/)
+  uses Problem 16: `a(t) = 1/sqrt(t+4)`, `x(0) = 1`, `v(0) = -1`.
+  A particle, direction arrows, and three synchronized plots show how positive
+  acceleration first slows leftward motion, then produces rightward motion.
+  The turning-point button selects `t = 2.25`, where `v = 0`, `x = -1/12`,
+  and `a = 0.4`. Tangents connect position to velocity and velocity to acceleration.
+- [Two drops on Planet Gzyx](https://shzhang3.github.io/amath351-lab/chapters/first-order/planet-gzyx/)
+  uses Problem 33: a 20 ft drop takes 2 s, determining `g = 10 ft/s^2` under
+  constant gravity with no air resistance. Release a second ball from 20–400 ft
+  on the same spatial and time scales. At the default 200 ft, impact occurs at
+  `sqrt(40)` seconds with speed `10*sqrt(40)` ft/s. Each ball stops at first contact;
+  the displayed impact speed is the speed immediately before contact.
+
+Both experiments begin paused, have keyboard-accessible time sliders, retain
+their state in browser-local storage, and use discrete advances for reduced
+motion. Each page includes its assumptions, a prediction prompt, and an expandable
+derivation. No copy of the lecture PDF is published.
+
 ## Edit and build
 
 **src/catalog.json** defines the three chapters and their example lists. An
 example with a `source` is published; an example without one is shown as planned.
 Add an example's source fragment and its catalog entry to extend the lab.
 
-The experiment sources are **src/experiment.html**, **src/prologue.html**, and
-**src/separable.html**. Exact mathematical helpers live in the corresponding
-**-model.cjs** files, embedded during the build. **src/page.html** and
+The experiment sources are **src/experiment.html**, **src/prologue.html**,
+**src/velocity.html**, **src/planet-gzyx.html**, and **src/separable.html**.
+Exact mathematical helpers live in the **-model.cjs** files, embedded during the
+build; the two Section 1.2 experiments share **src/motion-model.cjs**. **src/page.html** and
 **src/site.css** supply shared navigation and styles.
 
 **build.py** generates **index.html**, chapter indexes and individual example
 pages under **chapters/**, and **assets/lab.css**. Do not edit generated output
-directly. The lab has no runtime dependencies, external scripts, or background
-network requests.
+directly. All runtime assets are served locally, with no third-party CDN or
+background network requests. The Section 1.2 plots use the vendored D3 7.9.0
+bundle in **src/vendor/**; the build copies it and its license to **assets/vendor/**.
 
 After editing the source:
 
@@ -142,4 +165,5 @@ small interaction fix. Keep mathematical behavior and learning goals explicit.
 
 ## License
 
-MIT. See LICENSE.
+Original project code: MIT. See LICENSE.
+D3 7.9.0: ISC, copyright Mike Bostock. See [the D3 license](src/vendor/d3.LICENSE.txt).

@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Follow a moving particle and connect its position, velocity, and acceleration. Does positive acceleration always mean speeding up?">
+  <meta name="theme-color" content="#624298">
+  <title>Position, velocity &amp; acceleration · AMATH 351 Lab</title>
+  <link rel="canonical" href="https://shzhang3.github.io/amath351-lab/chapters/first-order/velocity/">
+  <link rel="stylesheet" href="../../../assets/lab.css">
+</head>
+<body>
+  <a class="site-skip" href="#main-content">Skip to content</a>
+  <div class="site-wrap">
+    <header class="site-header">
+      <a class="site-brand" href="../../../"><span class="site-brand-mark" aria-hidden="true">y′</span>AMATH 351 / Lab</a>
+      <nav aria-label="Main navigation"><a href="../../../">Chapters</a><a href="https://shzhang3.github.io/#teaching">Teaching</a><a href="https://github.com/shzhang3/amath351-lab" target="_blank" rel="noopener">GitHub ↗</a></nav>
+    </header>
+<nav class="site-breadcrumbs" aria-label="Breadcrumb"><a href="../../../">All chapters</a><span aria-hidden="true">/</span><a href="../">Chapter 01: First-order equations</a><span aria-hidden="true">/</span><span aria-current="page">Position, velocity &amp; acceleration</span></nav>
+    <main id="main-content" tabindex="-1"><noscript>Enable JavaScript to use the interactive plots. Explanations and navigation remain available.</noscript><section class="lab-intro">
+  <div class="site-kicker">Section 1.2 · Problem 16</div>
+  <h1>Can positive acceleration slow you down?</h1>
+  <p>A particle starts at position 1 with velocity −1. Its acceleration stays positive. Predict its initial direction and whether its speed increases or decreases, then play the motion.</p>
+  <p class="lab-math">a(t) = 1 / √(t + 4), &nbsp; x(0) = 1, &nbsp; v(0) = −1.</p>
+  <p>Move the time slider to compare all three curves. The dashed tangents show the slope of the position and velocity graphs; <strong>Turning point</strong> jumps to the instant the particle reverses direction.</p>
+</section>
+<div id="motion-section12" class="lab-interactive">
+  <h2>Position, velocity &amp; acceleration</h2>
+  <div class="lab-controls">
+    <button class="lab-button lab-primary" type="button" data-action="play">Play motion</button>
+    <button class="lab-button" type="button" data-action="turn">Turning point</button>
+  </div>
+  <label class="lab-label" for="motion-time">Time: <span data-value="time" class="lab-numbers">0.00</span> units</label>
+  <input class="lab-slider" id="motion-time" type="range" min="0" max="6" step="0.01" value="0">
+  <div class="motion-line"><svg class="motion-track" role="img" aria-label="A particle moving on a position axis, with separate velocity and acceleration arrows"></svg></div>
+  <div class="motion-charts">
+    <div><div class="lab-row">Position <span class="lab-numbers" data-value="position"></span></div><svg class="motion-plot" data-plot="x" role="img" aria-label="Position versus time; the short dashed line is the tangent"></svg></div>
+    <div><div class="lab-row">Velocity <span class="lab-numbers" data-value="velocity"></span></div><svg class="motion-plot" data-plot="v" role="img" aria-label="Velocity versus time; the short dashed line is the tangent"></svg></div>
+    <div><div class="lab-row">Acceleration <span class="lab-numbers" data-value="acceleration"></span></div><svg class="motion-plot" data-plot="a" role="img" aria-label="Acceleration versus time; acceleration stays positive"></svg></div>
+  </div>
+  <div class="lab-row lab-small"><span class="motion-key"></span><span>Current value</span><span class="motion-tangent-key"></span><span>Tangent</span><span>Velocity and acceleration arrows use separate scales.</span></div>
+  <div data-value="status" aria-live="polite"></div>
+</div>
+<details class="lab-explanation">
+  <summary>Connect the motion to the mathematics</summary>
+  <p>Integrate the acceleration and use the initial velocity to determine the first constant. Integrate once more and use the initial position to determine the second.</p>
+  <p class="lab-math">v(t) = 2√(t + 4) − 5<br>x(t) = 1 + (4/3)[(t + 4)<sup>3/2</sup> − 8] − 5t</p>
+  <p>Before t = 2.25, velocity is negative and acceleration is positive: the particle moves left while slowing down. At t = 2.25, velocity is zero, position is −1/12, and acceleration is 0.4. It then moves right and speeds up.</p>
+  <p>Position tells you where the particle is; velocity tells you its direction and rate of motion. Speed is |v|. The sign of acceleration alone does not tell you whether speed is increasing.</p>
+  <p class="lab-small">The example does not specify physical units. The axes use consistent position and time units. Curves and motion use the exact solution, for t ≥ 0.</p>
+</details>
+<style>
+  #motion-section12 { color:var(--site-ink); }
+  #motion-section12 .motion-charts { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; }
+  #motion-section12 .motion-line { margin:8px 0; }
+  #motion-section12 .motion-track, #motion-section12 .motion-plot { display:block; width:100%; overflow:visible; }
+  #motion-section12 .motion-track text, #motion-section12 .motion-plot text { fill:var(--site-ink); font-size:12px; }
+  #motion-section12 .motion-key { width:9px; height:9px; border-radius:50%; background:var(--site-purple); }
+  #motion-section12 .motion-tangent-key { width:20px; border-top:2px dashed var(--site-ink); }
+  #motion-section12 [data-value="status"] { margin-top:10px; }
+  @media (max-width:760px) { #motion-section12 .motion-charts { grid-template-columns:1fr; gap:12px; } }
+</style>
+<script src="../../../assets/vendor/d3.v7.9.0.min.js"></script>
+<script>// Exact trajectories used by the Section 1.2 motion experiments.
+(function (root) {
+  const position = t => 1 + (4 / 3) * ((t + 4) ** 1.5 - 8) - 5 * t;
+  const velocity = t => 2 * Math.sqrt(t + 4) - 5;
+  const acceleration = t => 1 / Math.sqrt(t + 4);
+  const gravity = 2 * 20 / (2 * 2);
+  const impactTime = height => Math.sqrt(2 * height / gravity);
+  const altitude = (height, time) => Math.max(0, height - gravity * time * time / 2);
+  const fallingVelocity = time => -gravity * time;
+  const impactSpeed = height => gravity * impactTime(height);
+  function restoreMotion(raw) {
+    return raw?.version === 1 && Number.isFinite(raw.time) ? Math.max(0, Math.min(6, raw.time)) : 0;
+  }
+  function restoreDrop(raw) {
+    const state = {height:200, time:0, gravityRevealed:false};
+    if (raw?.version !== 1) return state;
+    if (Number.isFinite(raw.height)) state.height = Math.max(20, Math.min(400, Math.round(raw.height / 20) * 20));
+    if (Number.isFinite(raw.time)) state.time = Math.max(0, Math.min(impactTime(state.height), raw.time));
+    state.gravityRevealed = raw.gravityRevealed === true;
+    return state;
+  }
+  const model = Object.freeze({position, velocity, acceleration, gravity, impactTime, altitude, fallingVelocity, impactSpeed, restoreMotion, restoreDrop});
+  if (typeof module === 'object' && module.exports) module.exports = model;
+  else root.Amath351Motion = model;
+})(globalThis);
+</script>
+<script>
+(() => {
+  const root = document.getElementById('motion-section12');
+  const controls = {
+    time: root.querySelector('#motion-time'), play: root.querySelector('[data-action="play"]'),
+    turn: root.querySelector('[data-action="turn"]'), status: root.querySelector('[data-value="status"]')
+  };
+  const {position, velocity, acceleration} = Amath351Motion;
+  const models = { x:position, v:velocity, a:acceleration };
+  const samples = d3.range(301).map(i => ({t:i/50, x:position(i/50), v:velocity(i/50), a:acceleration(i/50)}));
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  let time = 0, playing = false, frame = 0, last = null;
+  const fmt = n => (Math.abs(n) < 0.00005 ? 0 : n).toFixed(3);
+  const storageKey = 'amath351:velocity:v1';
+  try { time = Amath351Motion.restoreMotion(JSON.parse(window.localStorage.getItem(storageKey))); } catch (_) {}
+  function save() {
+    try { window.localStorage.setItem(storageKey, JSON.stringify({version:1,time})); } catch (_) {}
+  }
+  const message = () => Math.abs(velocity(time)) < 1e-8 ? 'Momentarily at rest · acceleration points right' : velocity(time) < 0 ? 'Moving left · slowing down · acceleration points right' : 'Moving right · speeding up · acceleration points right';
+  function announce() { const next=message(); if(controls.status.textContent!==next)controls.status.textContent=next; }
+  function makeText(svg,x,y,label,anchor='start') { return svg.append('text').attr('x',x).attr('y',y).attr('text-anchor',anchor).text(label); }
+  function arrow(svg,x,y,length) {
+    if (Math.abs(length)<0.05) { svg.append('circle').attr('cx',x).attr('cy',y).attr('r',3).attr('fill','var(--site-purple)'); return; }
+    const end=x+length, direction=Math.sign(length);
+    svg.append('path').attr('d',`M ${x} ${y} H ${end} M ${end-direction*6} ${y-4} L ${end} ${y} L ${end-direction*6} ${y+4}`).attr('fill','none').attr('stroke','var(--site-purple)').attr('stroke-width',2);
+  }
+  function track() {
+    const node=root.querySelector('.motion-track'), w=Math.max(240,node.parentElement.getBoundingClientRect().width), h=153;
+    const svg=d3.select(node).attr('viewBox',`0 0 ${w} ${h}`).attr('height',h); svg.selectAll('*').remove();
+    const extent=d3.extent(samples,d=>d.x), pad=(extent[1]-extent[0])*.24;
+    const scale=d3.scaleLinear().domain([extent[0]-pad,extent[1]+pad]).range([64,w-28]);
+    const px=scale(position(time)), y=37;
+    const axis=svg.append('g').attr('transform',`translate(0,${y})`).call(d3.axisBottom(scale).ticks(w<420?4:6).tickSize(4));
+    axis.selectAll('path,line').attr('stroke','var(--site-line)');
+    svg.append('circle').attr('cx',px).attr('cy',y).attr('r',7).attr('fill','var(--site-purple)');
+    makeText(svg,w-8,16,'Position (units)','end');
+    const ax=Math.max(146,Math.min(w-80,px));
+    makeText(svg,8,94,'Velocity'); arrow(svg,ax,90,velocity(time)*Math.min(40,(w-200)/3));
+    makeText(svg,8,132,'Acceleration'); arrow(svg,ax,128,acceleration(time)*65);
+    svg.attr('aria-label',`Position ${fmt(position(time))}. Velocity ${fmt(velocity(time))}. Acceleration ${fmt(acceleration(time))}. ${message()}. Arrow lengths have separate scales.`);
+  }
+  function plot(key) {
+    const node=root.querySelector(`[data-plot="${key}"]`), w=Math.max(220,node.parentElement.getBoundingClientRect().width), h=210;
+    const svg=d3.select(node).attr('viewBox',`0 0 ${w} ${h}`).attr('height',h); svg.selectAll('*').remove();
+    const box={left:64,right:w-12,top:30,bottom:h-46};
+    const vals=samples.map(d=>d[key]).concat(0), ext=d3.extent(vals), pad=Math.max((ext[1]-ext[0])*.13,.06);
+    const tx=d3.scaleLinear().domain(d3.extent(samples,d=>d.t)).range([box.left+6,box.right-6]);
+    const yy=d3.scaleLinear().domain([ext[0]-pad,ext[1]+pad]).range([box.bottom-6,box.top+6]);
+    svg.append('rect').attr('data-chart-frame','').attr('x',box.left).attr('y',box.top).attr('width',box.right-box.left).attr('height',box.bottom-box.top).attr('fill','none').attr('stroke','var(--site-line)');
+    const clip=`motion-clip-${key}`;
+    svg.append('defs').append('clipPath').attr('id',clip).append('rect').attr('x',box.left).attr('y',box.top).attr('width',box.right-box.left).attr('height',box.bottom-box.top);
+    const xaxis=svg.append('g').attr('transform',`translate(0,${box.bottom})`).call(d3.axisBottom(tx).tickValues([0,2,4,6]).tickSize(0).tickPadding(8));
+    const yaxis=svg.append('g').attr('transform',`translate(${box.left},0)`).call(d3.axisLeft(yy).ticks(3).tickSize(0).tickPadding(8));
+    xaxis.select('.domain').remove(); yaxis.select('.domain').remove();
+    makeText(svg,(box.left+box.right)/2,h-8,'Time (units)','middle').attr('class','axis-title').attr('data-axis','x');
+    makeText(svg,box.left,14,({x:'Position (units)',v:'Velocity (units/time)',a:'Accel. (units/time²)'})[key]).attr('class','axis-title').attr('data-axis','y');
+    const marks=svg.append('g').attr('clip-path',`url(#${clip})`);
+    marks.append('line').attr('x1',box.left).attr('x2',box.right).attr('y1',yy(0)).attr('y2',yy(0)).attr('stroke','var(--site-line)');
+    const path=d3.line().x(d=>tx(d.t)).y(d=>yy(d[key]));
+    marks.append('path').datum(samples).attr('d',path).attr('fill','none').attr('stroke','var(--site-purple)').attr('stroke-opacity',.3).attr('stroke-width',2);
+    const past=samples.filter(d=>d.t<time).concat({t:time,[key]:models[key](time)});
+    marks.append('path').datum(past).attr('d',path).attr('fill','none').attr('stroke','var(--site-purple)').attr('stroke-width',2.5);
+    marks.append('line').attr('x1',tx(time)).attr('x2',tx(time)).attr('y1',box.top).attr('y2',box.bottom).attr('stroke','var(--site-line)');
+    if(key!=='a') {
+      const slope=key==='x'?velocity(time):acceleration(time), left=Math.max(0,time-.6), right=Math.min(6,time+.6);
+      marks.append('line').attr('x1',tx(left)).attr('x2',tx(right)).attr('y1',yy(models[key](time)+slope*(left-time))).attr('y2',yy(models[key](time)+slope*(right-time))).attr('stroke','var(--site-ink)').attr('stroke-width',2).attr('stroke-dasharray','5 3');
+    }
+    marks.append('circle').attr('cx',tx(time)).attr('cy',yy(models[key](time))).attr('r',4.5).attr('fill','var(--site-purple)');
+    const texts=svg.selectAll('text').nodes();
+    for(let i=0;i<texts.length;i++) {
+      if(!texts[i].isConnected) continue;
+      const a=texts[i].getBoundingClientRect();
+      if(!a.width||!a.height) continue;
+      for(let j=i+1;j<texts.length;j++) {
+        if(!texts[j].isConnected) continue;
+        const b=texts[j].getBoundingClientRect();
+        if(a.left<b.right+4&&b.left<a.right+4&&a.top<b.bottom+4&&b.top<a.bottom+4) {
+          const optional=texts[j].closest('.tick')||texts[i].closest('.tick');
+          if(optional) optional.remove();
+        }
+      }
+    }
+  }
+  function draw() {
+    controls.time.value=time;
+    controls.time.setAttribute("aria-valuetext",time.toFixed(2)+" time units");
+    root.querySelector('[data-value="time"]').textContent=time.toFixed(2);
+    root.querySelector('[data-value="position"]').textContent=fmt(position(time));
+    root.querySelector('[data-value="velocity"]').textContent=fmt(velocity(time));
+    root.querySelector('[data-value="acceleration"]').textContent=fmt(acceleration(time));
+    track(); ['x','v','a'].forEach(plot); announce();
+  }
+  function pause() { playing=false; last=null; cancelAnimationFrame(frame); controls.play.textContent=reduceMotion.matches?'Advance 0.5 units':'Play motion'; }
+  function tick(stamp) {
+    if(!playing) return;
+    if(last!==null) time=Math.min(6,time+Math.min((stamp-last)/1000,.08));
+    last=stamp; draw();
+    if(time>=6) {pause(); announce(); save();} else frame=requestAnimationFrame(tick);
+  }
+  controls.time.addEventListener('input',()=>{pause();time=Number(controls.time.value);draw();announce();});
+  controls.time.addEventListener('change',save);
+  controls.turn.addEventListener('click',()=>{pause();time=2.25;draw();announce();save();});
+  controls.play.addEventListener('click',()=>{
+    if(playing) {pause();announce();save();return;}
+    if(time>=6)time=0;
+    if(reduceMotion.matches){time=Math.min(6,time+.5);draw();announce();save();return;}
+    playing=true;last=null;controls.play.textContent='Pause';frame=requestAnimationFrame(tick);
+  });
+  reduceMotion.addEventListener('change',()=>{pause();announce();});
+  document.addEventListener('visibilitychange',()=>{if(document.hidden){pause();announce();save();}});
+  new ResizeObserver(()=>draw()).observe(root);
+  pause(); draw(); announce();
+})();
+</script>
+</main>
+<nav class="site-example-nav" aria-label="Example navigation"><a href="../direction-fields/"><small>Previous example</small>← Follow the slope</a><a class="site-all-examples" href="../">All chapter examples</a><a href="../planet-gzyx/"><small>Next example</small>Two drops on Planet Gzyx →</a></nav>
+    <footer class="site-footer"><span>University of Washington · Autumn 2026</span><div><a href="https://shzhang3.github.io/#teaching">Shiheng Zhang · Teaching</a><a href="https://github.com/shzhang3/amath351-lab" target="_blank" rel="noopener">Contribute on GitHub ↗</a></div></footer>
+  </div>
+
+</body>
+</html>
