@@ -4,7 +4,12 @@
   const regular=(x,b=1)=>x-1+(b+1)*Math.exp(-x);
   const branch=(x,c=0)=>Math.max(0,x-c)**3;
   const branchSlope=(_x,y)=>3*Math.cbrt(y)**2;
-  const fresh=()=>({mode:'existence',progress:0,h:.65,offset:0,delay:.4});
+  const fresh=()=>({mode:'existence',progress:0,h:.65,offset:.2,delay:.4});
+  function comparison(x,offset){
+    const yA=regular(x),yB=regular(x,1+offset),mA=x-yA,mB=x-yB;
+    const distance=Math.abs(yB-yA),slopeGap=Math.abs(mB-mA),L=1;
+    return {x,yA,yB,mA,mB,distance,slopeGap,L,bound:L*distance,ratio:distance>0?slopeGap/distance:null};
+  }
   function restore(raw){
     const s=fresh();
     if(raw?.version!==1)return s;
@@ -32,7 +37,7 @@
     return {phase,n,points,reach:phase===0?0:phase===1?h*(p-.15)/.3:h,
       error:Math.max(...points.map(p=>Math.abs(p.y-regular(p.x))))};
   }
-  const api=Object.freeze({regular,branch,branchSlope,fresh,restore,polygon,existence});
+  const api=Object.freeze({regular,branch,branchSlope,fresh,restore,polygon,existence,comparison});
   if(typeof module==='object'&&module.exports)module.exports=api;
   else root.Amath351Existence=api;
 })(globalThis);

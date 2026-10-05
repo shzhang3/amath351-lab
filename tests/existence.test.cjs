@@ -35,6 +35,23 @@ test('two-sided tangent steps stay in R and converge toward the exact curve',()=
   assert.equal(m.existence(1,.65).n,64);
 });
 
+test('the same-x slope comparison obeys the Lipschitz bound without evaluating 0/0',()=>{
+  for(const x of [-.75,-.4,0,.4,.75]){
+    for(const offset of [-.2,-.02,0,.02,.2]){
+      const c=m.comparison(x,offset);
+      close(c.distance,Math.abs(offset)*Math.exp(-x));
+      close(c.mA,x-c.yA);close(c.mB,x-c.yB);
+      close(c.slopeGap,Math.abs(c.mB-c.mA));
+      close(c.bound,c.L*c.distance);
+      assert(c.slopeGap<=c.bound+1e-12);
+      assert(c.distance<.45);
+      if(offset===0){
+        assert.equal(c.distance,0);assert.equal(c.slopeGap,0);assert.equal(c.ratio,null);
+      }else close(c.ratio,1);
+    }
+  }
+});
+
 test('branching curves are distinct classical solutions of the same initial-value problem',()=>{
   for(const c of [.15,.4,.75]){
     close(m.branch(0),0);close(m.branch(0,c),0);

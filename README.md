@@ -141,7 +141,11 @@ discrete advances.
 The same page now includes an [animated existence and uniqueness exploration](https://shzhang3.github.io/amath351-lab/chapters/first-order/slope-fields/#existence-uniqueness).
 A guided tour or manual progress slider displays the rectangle R, the local
 interval I, and tangent-step refinements in both directions. The uniqueness view
-overlays exact curves with equal or nearby initial values. A third view draws
+overlays exact curves with equal or nearby initial values. A movable x compares
+their vertical gap d and tangent-slope gap |Δm| against the bound Ld, with L = 1.
+Students can animate the initial gap shrinking to zero. The accompanying local
+argument connects continuous fᵧ to a finite L, then E ≤ LhE to E = 0 when Lh < 1;
+it explicitly requires the same initial value. A third view draws
 the two exact solutions max(0,x)^3 and max(0,x-c)^3, with c > 0, of
 y′ = 3|y|^(2/3), making local nonuniqueness visible without relying on a solver
 that could stay at zero. The animation illustrates the theorem; the text
