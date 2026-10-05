@@ -36,7 +36,10 @@ test('restored controls reject invalid state and stay within each example domain
   assert.deepEqual(m.restore({version:3,stage:4}),m.fresh());
   assert.equal(m.restore({version:1,equation:'constructor'}).equation,'minus');
   const state=m.restore({version:1,equation:'plus',stage:99,time:-99,probeX:99,probeY:NaN,y0:99,count:30,h:.05,steps:999,exact:true});
-  assert.deepEqual(state,{stage:4,equation:'plus',time:-4,probeX:1,probeY:0,y0:1,count:31,h:.05,steps:80,exact:true});
+  assert.deepEqual(state,{stage:4,equation:'plus',time:-4,probeX:1,probeY:0,y0:1,count:31,gridCount:9,h:.05,steps:80,exact:true});
+  assert.equal(m.restore({version:1,stage:0,gridCount:999}).gridCount,25);
+  assert.equal(m.restore({version:1,gridCount:NaN}).gridCount,9);
+  assert.equal(m.restore({version:1,gridCount:6}).gridCount,7);
   const invalid=m.restore({version:1,h:0,steps:-1,time:Infinity,exact:'yes'});
   assert.equal(invalid.h,.5);assert.equal(invalid.steps,0);assert.equal(invalid.time,0);assert.equal(invalid.exact,false);
 });

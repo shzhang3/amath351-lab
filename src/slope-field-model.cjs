@@ -6,7 +6,7 @@
     plus: Object.freeze({xmin:-4, xmax:1, y0max:1, target:-4, initial:0,
       slope:(x,y)=>x+y, solution:(x,y0)=>(y0+1)*Math.exp(x)-x-1})
   });
-  const fresh = () => ({stage:1,equation:'minus',probeX:0,probeY:1,y0:1,time:0,count:9,h:.5,steps:0,exact:false});
+  const fresh = () => ({stage:0,equation:'minus',probeX:0,probeY:1,y0:1,time:0,count:9,gridCount:9,h:.5,steps:0,exact:false});
   const clamp = (value,min,max) => Math.max(min,Math.min(max,value));
   function restore(raw) {
     const state=fresh();
@@ -14,11 +14,12 @@
     if(Object.hasOwn(configurations,raw.equation))state.equation=raw.equation;
     const c=configurations[state.equation];
     state.y0=state.probeY=c.initial;
-    if(Number.isFinite(raw.stage))state.stage=clamp(Math.round(raw.stage),1,4);
+    if(Number.isFinite(raw.stage))state.stage=clamp(Math.round(raw.stage),0,4);
     for(const [key,min,max] of [['probeX',c.xmin,c.xmax],['probeY',-2,4],['y0',-1,c.y0max],['time',c.xmin,c.xmax],['count',3,31]]){
       if(Number.isFinite(raw[key]))state[key]=clamp(raw[key],min,max);
     }
     state.count=2*Math.round((state.count-3)/2)+3;
+    if(Number.isFinite(raw.gridCount))state.gridCount=2*Math.round((clamp(raw.gridCount,5,25)-5)/2)+5;
     if([.5,.25,.1,.05].includes(raw.h))state.h=raw.h;
     if(Number.isFinite(raw.steps))state.steps=clamp(Math.round(raw.steps),0,Math.round(Math.abs(c.target)/state.h));
     state.exact=raw.exact===true;

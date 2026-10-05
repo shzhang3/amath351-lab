@@ -118,11 +118,14 @@ their state in browser-local storage, and use discrete advances for reduced
 motion. Each page includes its assumptions, a prediction prompt, and an expandable
 derivation. No copy of the lecture PDF is published.
 
-## From tangents to solution curves (Section 1.3)
+## From a grid to solution curves (Section 1.3)
 
 [Open the experiment](https://shzhang3.github.io/amath351-lab/chapters/first-order/slope-fields/).
-Four stages connect one tangent, the full slope field, a moving point on an exact
-solution, and a finite tangent-step approximation. Switch between `y' = x-y`
+Five stages connect a regular grid of sample points, one tangent, the sampled
+slope field, a moving point on an exact solution, and a finite tangent-step
+approximation. Grid density controls the displayed samples independently of the
+step size used for the approximation; refining the grid leaves computed curves
+and errors unchanged. Switch between `y' = x-y`
 and Problem 21's `y' = x+y`. Change the initial value in the solution stage and
 the number of sampled tangents, then carry that initial value into the short-step
 stage. For Problem 21, the approximation steps backward from zero to `x = -4`.

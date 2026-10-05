@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Build a slope field one tangent at a time, follow a solution, and compare short tangent steps with the exact curve.">
+  <meta name="description" content="Sample a grid, add local slopes, and follow a solution. Compare grid density with the step size of a tangent-step approximation.">
   <meta name="theme-color" content="#624298">
-  <title>From tangents to solution curves · AMATH 351 Lab</title>
+  <title>From a grid to solution curves · AMATH 351 Lab</title>
   <link rel="canonical" href="https://shzhang3.github.io/amath351-lab/chapters/first-order/slope-fields/">
   <link rel="stylesheet" href="../../../assets/lab.css">
 </head>
@@ -16,18 +16,20 @@
       <a class="site-brand" href="../../../"><span class="site-brand-mark" aria-hidden="true">y′</span>AMATH 351 / Lab</a>
       <nav aria-label="Main navigation"><a href="../../../">Chapters</a><a href="https://shzhang3.github.io/#teaching">Teaching</a><a href="https://github.com/shzhang3/amath351-lab" target="_blank" rel="noopener">GitHub ↗</a></nav>
     </header>
-<nav class="site-breadcrumbs" aria-label="Breadcrumb"><a href="../../../">All chapters</a><span aria-hidden="true">/</span><a href="../">Chapter 01: First-order equations</a><span aria-hidden="true">/</span><span aria-current="page">From tangents to solution curves</span></nav>
+<nav class="site-breadcrumbs" aria-label="Breadcrumb"><a href="../../../">All chapters</a><span aria-hidden="true">/</span><a href="../">Chapter 01: First-order equations</a><span aria-hidden="true">/</span><span aria-current="page">From a grid to solution curves</span></nav>
     <main id="main-content" tabindex="-1"><noscript>Enable JavaScript to use the interactive plots. Explanations and navigation remain available.</noscript><section class="lab-intro">
   <div class="site-kicker">Section 1.3 · Slope fields and solution curves</div>
-  <h1>From tangents to solution curves</h1>
-  <p>A differential equation assigns a slope to each point. Start with one point and its tangent, reveal the slope field, then watch a point move along a solution while its tangent direction changes.</p>
+  <h1>From a grid to solution curves</h1>
+  <p>Start with a grid of sample points in the x–y plane. A differential equation assigns a slope to each point: inspect one tangent, reveal the sampled slope field, then follow a solution whose tangent direction changes along the curve.</p>
+  <p>Change <strong>Grid density</strong> to display more local directions. Change <strong>Step size</strong> in Short steps to change the numerical approximation. These controls act independently; the equation defines slopes between the grid points too.</p>
   <p>In <strong>Follow a solution</strong>, change the initial value, move along the curve, and increase the number of sampled tangents. In <strong>Short steps</strong>, compare finite straight steps with the exact solution and reduce the step size.</p>
   <p>Choose <strong>y′ = x + y</strong> for Problem 21. Its short steps run backward from x = 0 to x = −4, so you can estimate y(−4). Each restart begins at the displayed initial value.</p>
 </section>
 <div id="slope13-explorer" class="lab-interactive">
-  <h2>From a point to a slope field</h2>
+  <h2>Grid → slopes → solution</h2>
   <div class="lab-controls" aria-label="Exploration stage">
-    <button type="button" class="lab-button lab-stage-button" data-stage="1" aria-pressed="true">One tangent</button>
+    <button type="button" class="lab-button lab-stage-button" data-stage="0" aria-pressed="true">Grid</button>
+    <button type="button" class="lab-button lab-stage-button" data-stage="1" aria-pressed="false">One tangent</button>
     <button type="button" class="lab-button lab-stage-button" data-stage="2" aria-pressed="false">Slope field</button>
     <button type="button" class="lab-button lab-stage-button" data-stage="3" aria-pressed="false">Follow a solution</button>
     <button type="button" class="lab-button lab-stage-button" data-stage="4" aria-pressed="false">Short steps</button>
@@ -37,7 +39,12 @@
       <select class="lab-select" id="s13-equation"><option value="minus">y′ = x − y</option><option value="plus">y′ = x + y · Problem 21</option></select>
     </label>
   </div>
-  <div class="lab-controls" id="s13-probe-controls">
+  <div class="lab-controls" id="s13-grid-controls">
+    <label class="lab-label" for="s13-grid-count">Grid density: <span data-value="gridCount" class="lab-numbers"></span>
+      <input class="lab-slider" type="range" id="s13-grid-count" min="5" max="25" step="2" value="9">
+    </label>
+  </div>
+  <div class="lab-controls" id="s13-probe-controls" hidden>
     <label class="lab-label" for="s13-probe-x">Point x: <span data-value="probeX" class="lab-numbers"></span>
       <input class="lab-slider" type="range" id="s13-probe-x" min="0" max="4" step="0.05" value="0">
     </label>
@@ -69,15 +76,22 @@
     </div>
     <label class="lab-check"><input class="lab-check-input" type="checkbox" id="s13-exact"><span class="lab-check-label">Show exact solution</span></label>
   </div>
-  <div class="s13-plot-wrap"><svg id="s13-plot" role="img" aria-label="The tangent at a point in the x y plane"></svg></div>
+  <div class="s13-plot-wrap"><svg id="s13-plot" role="img" aria-label="A grid of sample points in the x y plane"></svg></div>
   <div class="lab-row lab-small s13-legend">
-    <span><i class="s13-dot"></i>Current point</span>
-    <span><i class="s13-tangent"></i>Tangent direction</span>
+    <span data-legend="grid"><i class="s13-grid-dot"></i>Sample point</span>
+    <span data-legend="current" hidden><i class="s13-dot"></i>Current point</span>
+    <span data-legend="tangent" hidden><i class="s13-tangent"></i>Tangent direction</span>
     <span data-legend="curve" hidden><i class="s13-curve"></i>Exact solution</span>
     <span data-legend="steps" hidden><i class="s13-steps"></i>Tangent-step approximation</span>
   </div>
   <div class="s13-detail lab-numbers" id="s13-detail" aria-live="polite"></div>
 </div>
+<details class="lab-explanation">
+  <summary>What the grid represents</summary>
+  <p>A regular grid is one kind of mesh. Each point (xᵢ, yⱼ) is a place to evaluate mᵢⱼ = f(xᵢ, yⱼ) and draw a short segment with that slope. When x is time and y is position, this is a time–state grid: it samples possible positions at different times.</p>
+  <p>The differential equation specifies a slope at every point where f is defined. The grid displays a finite sample of this field. Making the grid denser shows more directions; it does not change the equation or its exact solutions.</p>
+  <p>The short-step approximation evaluates f at its current approximate point, which can lie between grid points. Its step size controls the distance advanced in x. Keep the grid fixed and reduce the step size to compare approximation errors; then keep the step size fixed and change only the grid density.</p>
+</details>
 <details class="lab-explanation">
   <summary>Why the tangent determines the local direction</summary>
   <p>At a point (x₀, y₀), the equation supplies the slope m = f(x₀, y₀). The line through that point with that slope is:</p>
@@ -108,6 +122,7 @@
   #slope13-explorer .s13-legend span { display:inline-flex; align-items:center; gap:7px; }
   #slope13-explorer .s13-legend i { display:inline-block; width:20px; }
   #slope13-explorer .s13-dot { width:8px!important; height:8px; border-radius:50%; background:var(--site-purple); }
+  #slope13-explorer .s13-grid-dot { width:5px!important; height:5px; border-radius:50%; background:var(--site-ink); opacity:.55; }
   #slope13-explorer .s13-tangent { border-top:2px solid var(--site-orange); }
   #slope13-explorer .s13-curve { border-top:2px solid var(--site-purple); }
   #slope13-explorer .s13-steps { border-top:2px dashed var(--site-teal); }
@@ -122,7 +137,7 @@
     plus: Object.freeze({xmin:-4, xmax:1, y0max:1, target:-4, initial:0,
       slope:(x,y)=>x+y, solution:(x,y0)=>(y0+1)*Math.exp(x)-x-1})
   });
-  const fresh = () => ({stage:1,equation:'minus',probeX:0,probeY:1,y0:1,time:0,count:9,h:.5,steps:0,exact:false});
+  const fresh = () => ({stage:0,equation:'minus',probeX:0,probeY:1,y0:1,time:0,count:9,gridCount:9,h:.5,steps:0,exact:false});
   const clamp = (value,min,max) => Math.max(min,Math.min(max,value));
   function restore(raw) {
     const state=fresh();
@@ -130,11 +145,12 @@
     if(Object.hasOwn(configurations,raw.equation))state.equation=raw.equation;
     const c=configurations[state.equation];
     state.y0=state.probeY=c.initial;
-    if(Number.isFinite(raw.stage))state.stage=clamp(Math.round(raw.stage),1,4);
+    if(Number.isFinite(raw.stage))state.stage=clamp(Math.round(raw.stage),0,4);
     for(const [key,min,max] of [['probeX',c.xmin,c.xmax],['probeY',-2,4],['y0',-1,c.y0max],['time',c.xmin,c.xmax],['count',3,31]]){
       if(Number.isFinite(raw[key]))state[key]=clamp(raw[key],min,max);
     }
     state.count=2*Math.round((state.count-3)/2)+3;
+    if(Number.isFinite(raw.gridCount))state.gridCount=2*Math.round((clamp(raw.gridCount,5,25)-5)/2)+5;
     if([.5,.25,.1,.05].includes(raw.h))state.h=raw.h;
     if(Number.isFinite(raw.steps))state.steps=clamp(Math.round(raw.steps),0,Math.round(Math.abs(c.target)/state.h));
     state.exact=raw.exact===true;
@@ -177,23 +193,28 @@
     const c=config();
     root.querySelectorAll('[data-stage]').forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.stage)===state.stage)));
     byId('equation').value=state.equation;
-    byId('probe-controls').hidden=state.stage>2;
+    byId('probe-controls').hidden=state.stage!==1&&state.stage!==2;
+    byId('grid-controls').hidden=state.stage===1;
     byId('curve-controls').hidden=state.stage!==3;
     byId('step-controls').hidden=state.stage!==4;
     for(const id of ['probe-x','time']){byId(id).min=c.xmin;byId(id).max=c.xmax;}
     byId('initial').max=c.y0max;
-    for(const [id,key] of [['probe-x','probeX'],['probe-y','probeY'],['initial','y0'],['time','time'],['count','count'],['step-size','h']])byId(id).value=state[key];
+    for(const [id,key] of [['probe-x','probeX'],['probe-y','probeY'],['initial','y0'],['time','time'],['count','count'],['grid-count','gridCount'],['step-size','h']])byId(id).value=state[key];
     for(const key of ['probeX','probeY','y0','time','count'])root.querySelector(`[data-value="${key}"]`).textContent=key==='count'?state[key]:fmt(state[key]);
     root.querySelector('[data-value="stepInitial"]').textContent=fmt(state.y0);
+    root.querySelector('[data-value="gridCount"]').textContent=`${state.gridCount} × ${state.gridCount} points`;
     byId('exact').checked=state.exact;
     byId('step').textContent=state.steps===totalSteps()?'Start again':'Take one step';
     byId('all').disabled=state.steps===totalSteps();
     root.querySelector('[data-legend="curve"]').hidden=!(state.stage===3||(state.stage===4&&state.exact));
     root.querySelector('[data-legend="steps"]').hidden=state.stage!==4;
+    root.querySelector('[data-legend="grid"]').hidden=state.stage!==0&&state.stage!==2;
+    for(const key of ['current','tangent'])root.querySelector(`[data-legend="${key}"]`).hidden=state.stage===0;
   }
   function detail(announce=true){
     const p=current(),m=config().slope(p.x,p.y);
     let text=`Point (${fmt(p.x)}, ${fmt(p.y)}) · slope ${fmt(m)} · forward direction (1, ${fmt(m)})`;
+    if(state.stage===0)text=`${state.gridCount*state.gridCount} sample points · next: assign the slope f(x,y) at each point.`;
     if(state.stage===4){
       text=`${config().target<0?'Backward':'Forward'} steps: ${state.steps}/${totalSteps()} · x: ${fmt(p.x)} · y: ${fmt(p.y)} · slope: ${fmt(m)}`;
       if(state.exact)text+=` · error: ${Math.abs(p.y-config().solution(p.x,state.y0)).toFixed(4)}`;
@@ -218,8 +239,11 @@
     svg.append('text').attr('class','axis-title').attr('data-axis','x').attr('x',(bounds.left+bounds.right)/2).attr('y',h-8).attr('text-anchor','middle').text('x');
     svg.append('text').attr('class','axis-title').attr('data-axis','y').attr('x',bounds.left).attr('y',13).text('y');
     const marks=svg.append('g').attr('clip-path','url(#s13-clip)');
-    for(const x of xs.ticks(w<420?3:6))marks.append('line').attr('x1',xs(x)).attr('x2',xs(x)).attr('y1',bounds.top).attr('y2',bounds.bottom).attr('stroke','var(--site-line)').attr('stroke-opacity',.5);
-    for(const y of ys.ticks(5))marks.append('line').attr('x1',bounds.left).attr('x2',bounds.right).attr('y1',ys(y)).attr('y2',ys(y)).attr('stroke','var(--site-line)').attr('stroke-opacity',.5);
+    const gridX=d3.range(state.gridCount).map(i=>c.xmin+(c.xmax-c.xmin)*i/(state.gridCount-1));
+    const gridY=d3.range(state.gridCount).map(j=>-2+6*j/(state.gridCount-1));
+    const showMesh=state.stage===0||state.stage===2;
+    for(const x of showMesh?gridX:xs.ticks(w<420?3:6))marks.append('line').attr('x1',xs(x)).attr('x2',xs(x)).attr('y1',showMesh?ys(4):bounds.top).attr('y2',showMesh?ys(-2):bounds.bottom).attr('stroke','var(--site-line)').attr('stroke-opacity',.5);
+    for(const y of showMesh?gridY:ys.ticks(5))marks.append('line').attr('x1',showMesh?xs(c.xmin):bounds.left).attr('x2',showMesh?xs(c.xmax):bounds.right).attr('y1',ys(y)).attr('y2',ys(y)).attr('stroke','var(--site-line)').attr('stroke-opacity',.5);
     const sx=xs(1)-xs(0),sy=ys(0)-ys(1);
     function tangent(p,len,color,width,arrow=false,direction=1,opacity=1){
       const m=c.slope(p.x,p.y),norm=Math.hypot(sx,sy*m),vx=direction*sx/norm,vy=-direction*sy*m/norm;
@@ -231,12 +255,14 @@
       }
       const dx=vx*len,dy=vy*len;
       const d=arrow?`M ${cx-dx*.38} ${cy-dy*.38} L ${cx+dx} ${cy+dy}`:`M ${cx-dx/2} ${cy-dy/2} L ${cx+dx/2} ${cy+dy/2}`;
-      marks.append('path').attr('d',d).attr('fill','none').attr('stroke',color).attr('stroke-width',width).attr('stroke-opacity',opacity).attr('data-tangent-slope',m);
+      const segment=marks.append('path').attr('d',d).attr('fill','none').attr('stroke',color).attr('stroke-width',width).attr('stroke-opacity',opacity).attr('data-tangent-slope',m);
       if(arrow){const ux=dx/len,uy=dy/len,ex=cx+dx,ey=cy+dy;marks.append('path').attr('d',`M ${ex-7*ux+4*uy} ${ey-7*uy-4*ux} L ${ex} ${ey} L ${ex-7*ux-4*uy} ${ey-7*uy+4*ux}`).attr('fill','none').attr('stroke',color).attr('stroke-width',width);}
+      return segment;
     }
+    if(showMesh)for(const x of gridX)for(const y of gridY)marks.append('circle').attr('cx',xs(x)).attr('cy',ys(y)).attr('r',state.stage===0?2:1.5).attr('fill','var(--site-ink)').attr('fill-opacity',.45).attr('data-grid-point','');
     if(state.stage>=2){
-      const n=w<420?10:16;
-      for(let i=0;i<=n;i++)for(let j=0;j<=12;j++)tangent({x:c.xmin+(c.xmax-c.xmin)*i/n,y:-2+j*.5},Math.min(17,(bounds.right-bounds.left)/(n+1)*.72),'var(--site-ink)',1,false,1,.25);
+      const len=Math.min(20,(xs(c.xmax)-xs(c.xmin))/(state.gridCount-1)*.72,(ys(-2)-ys(4))/(state.gridCount-1)*.72);
+      for(const x of gridX)for(const y of gridY)tangent({x,y},len,'var(--site-ink)',1,false,1,state.stage===2?.5:.25).attr('data-grid-slope','');
     }
     const path=d3.line().x(p=>xs(p.x)).y(p=>ys(p.y));
     if(state.stage===3||(state.stage===4&&state.exact))marks.append('path').datum(ref).attr('d',path).attr('fill','none').attr('stroke','var(--site-purple)').attr('stroke-width',2.5).attr('data-exact-curve','');
@@ -249,13 +275,15 @@
       for(const p of points)marks.append('circle').attr('cx',xs(p.x)).attr('cy',ys(p.y)).attr('r',2.5).attr('fill','var(--site-teal)');
     }
     const p=current(),direction=state.stage===4?Math.sign(c.target):1;
-    tangent(p,w<420?31:43,'var(--site-orange)',2.5,true,direction);
-    marks.append('circle').attr('cx',xs(p.x)).attr('cy',ys(p.y)).attr('r',5).attr('fill','var(--site-purple)').attr('data-current-point','');
+    if(state.stage!==0){
+      tangent(p,w<420?31:43,'var(--site-orange)',2.5,true,direction);
+      marks.append('circle').attr('cx',xs(p.x)).attr('cy',ys(p.y)).attr('r',5).attr('fill','var(--site-purple)').attr('data-current-point','');
+    }
     if(state.stage===1){
       const m=c.slope(p.x,p.y),dx=.5,dy=m*dx;
       marks.append('path').attr('d',`M ${xs(p.x)} ${ys(p.y)} H ${xs(p.x+dx)} V ${ys(p.y+dy)}`).attr('fill','none').attr('stroke','var(--site-ink)').attr('stroke-dasharray','4 4').attr('stroke-opacity',.6);
     }
-    svg.attr('aria-label',`Stage ${state.stage}. Equation y prime equals x ${state.equation==='minus'?'minus':'plus'} y. Current point (${fmt(p.x)}, ${fmt(p.y)}); tangent slope ${fmt(c.slope(p.x,p.y))}. ${state.stage===4?'Dashed segments are an approximation.':'The arrow gives the direction for increasing x.'}`);
+    svg.attr('aria-label',state.stage===0?`A regular grid of ${state.gridCount} by ${state.gridCount} sample points in the x y plane. No slopes have been drawn yet.`:`Equation y prime equals x ${state.equation==='minus'?'minus':'plus'} y. Current point (${fmt(p.x)}, ${fmt(p.y)}); tangent slope ${fmt(c.slope(p.x,p.y))}. ${state.stage===4?'Dashed segments are an approximation.':'The arrow gives the direction for increasing x.'}`);
     const labels=svg.selectAll('text').nodes();
     for(let i=0;i<labels.length;i++)for(let j=i+1;j<labels.length;j++){
       if(!labels[i].isConnected||!labels[j].isConnected)continue;
@@ -268,7 +296,7 @@
   byId('equation').addEventListener('change',()=>{
     pause();state.equation=byId('equation').value;const c=config();state.y0=c.initial;state.probeX=0;state.probeY=c.initial;state.time=0;state.steps=0;render();save();
   });
-  for(const [id,key] of [['probe-x','probeX'],['probe-y','probeY'],['initial','y0'],['time','time'],['count','count']]){
+  for(const [id,key] of [['probe-x','probeX'],['probe-y','probeY'],['initial','y0'],['time','time'],['count','count'],['grid-count','gridCount']]){
     byId(id).addEventListener('input',()=>{pause();state[key]=Number(byId(id).value);if(key==='y0')state.steps=0;render();});byId(id).addEventListener('change',save);
   }
   byId('step-size').addEventListener('change',()=>{state.h=Number(byId('step-size').value);state.steps=0;render();save();});
