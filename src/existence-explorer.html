@@ -1,0 +1,235 @@
+<section id="existence-uniqueness" class="lab-interactive eu-explorer" aria-labelledby="eu-heading">
+  <div class="site-kicker">Section 1.3 · A solution on an interval</div>
+  <h2 id="eu-heading">Existence &amp; uniqueness, in motion</h2>
+  <p>Play the three views to see how an initial value extends to a solution on an interval. Pause or drag the progress slider at any point.</p>
+  <div class="lab-controls" aria-label="Theorem views">
+    <button type="button" class="lab-button lab-stage-button" data-eu-mode="existence" aria-pressed="true">Existence</button>
+    <button type="button" class="lab-button lab-stage-button" data-eu-mode="uniqueness" aria-pressed="false">Uniqueness</button>
+    <button type="button" class="lab-button lab-stage-button" data-eu-mode="branching" aria-pressed="false">Same tangent, two solutions</button>
+  </div>
+  <p id="eu-equation" class="lab-math"></p>
+  <p id="eu-condition"></p>
+  <div class="eu-workspace">
+  <div class="eu-controls">
+  <div class="lab-controls" id="eu-interval-control">
+    <label class="lab-label" for="eu-h">Interval radius h: <span id="eu-h-value" class="lab-numbers"></span>
+      <input class="lab-slider" type="range" id="eu-h" min="0.15" max="0.75" step="0.05" value="0.65">
+    </label>
+  </div>
+  <div class="lab-controls" id="eu-offset-control" hidden>
+    <label class="lab-label" for="eu-offset">Second initial value minus first, δ: <span id="eu-offset-value" class="lab-numbers"></span>
+      <input class="lab-slider" type="range" id="eu-offset" min="-0.2" max="0.2" step="0.02" value="0">
+    </label>
+    <button type="button" class="lab-button" id="eu-same">Use the same initial value</button>
+  </div>
+  <div class="lab-controls" id="eu-delay-control" hidden>
+    <label class="lab-label" for="eu-delay">Solution B waits until x = c: <span id="eu-delay-value" class="lab-numbers"></span>
+      <input class="lab-slider" type="range" id="eu-delay" min="0.15" max="0.75" step="0.05" value="0.4">
+    </label>
+  </div>
+  <div class="lab-controls">
+    <button type="button" class="lab-button lab-primary" id="eu-play">Play this view</button>
+    <button type="button" class="lab-button" id="eu-tour">Play all three</button>
+    <button type="button" class="lab-button" id="eu-restart">Restart view</button>
+  </div>
+  <label class="lab-label" for="eu-progress">Demonstration progress: <span id="eu-progress-value" class="lab-numbers"></span></label>
+  <input class="lab-slider" type="range" id="eu-progress" min="0" max="100" step="1" value="0">
+  </div>
+  <div class="eu-visual">
+  <h3 id="eu-phase"></h3>
+  <div class="eu-plot-wrap"><svg id="eu-plot" role="img" aria-label="A slope field, a rectangle, and an interval around the initial point"></svg></div>
+  <div class="lab-row lab-small eu-legend">
+    <span><i class="eu-region"></i>Rectangle R</span>
+    <span><i class="eu-interval"></i>Interval I on the x axis</span>
+    <span><i class="eu-a"></i><span id="eu-legend-a">Exact solution</span></span>
+    <span><i class="eu-b"></i><span id="eu-legend-b">Tangent-step approximation</span></span>
+  </div>
+  <p id="eu-caption"></p>
+  <p id="eu-readout" class="lab-small lab-numbers" aria-live="polite"></p>
+  </div>
+  </div>
+  <details class="lab-explanation">
+    <summary>What the animations show mathematically</summary>
+    <p><strong>Existence:</strong> on R = [−1, 1] × [−1, 3], f(x,y) = x − y is continuous. The theorem guarantees a solution on some interval around x = 0. This example uses the known solution y = x − 1 + 2e<sup>−x</sup> to display intervals I = (−h,h) and compare finite tangent steps on both sides. Every allowed interval and its drawn curves stay inside R. The available slider range is chosen for this example; a general existence theorem does not promise an arbitrarily chosen interval or the full width of R.</p>
+    <p><strong>Why continuity helps:</strong> locally bounded slopes keep short approximations inside R. Continuity lets their slope errors tend to zero as the steps shrink. The mathematical proof extracts a convergent subsequence and shows its limit satisfies the integral equation. A finite animation illustrates this reasoning; it is not a proof of the theorem for every continuous field.</p>
+    <p><strong>Uniqueness:</strong> fᵧ = −1. The solid and dashed curves are exact solutions with starting values 1 and 1 + δ. Their difference is δe<sup>−x</sup>. With δ = 0 they coincide throughout I; with δ ≠ 0 they start at different points. The bound |f(x,y₁) − f(x,y₂)| = |y₁ − y₂| controls how a separation can evolve.</p>
+    <p><strong>Same tangent, two solutions:</strong> f(x,y) = 3|y|<sup>2/3</sup> is continuous, while fᵧ is undefined at y = 0. The solid solution is y<sub>A</sub> = max(0,x)<sup>3</sup>; the dashed solution is y<sub>B</sub> = max(0,x−c)<sup>3</sup>, with c &gt; 0. Both have y(0) = 0 and y′(0) = 0. Both are differentiable and satisfy the equation, including at their joining points. They differ arbitrarily close to the right of 0, so this is actual local nonuniqueness. Their curves are drawn from exact formulas, not from a numerical solver that might remain at zero.</p>
+    <p>Continuity of f and fᵧ is a sufficient condition for local uniqueness. Failure of that condition alone does not prove nonuniqueness; here the two explicit solutions demonstrate it.</p>
+  </details>
+</section>
+<style>
+  #existence-uniqueness { margin-top:36px; scroll-margin-top:20px; }
+  #existence-uniqueness .eu-workspace { display:grid; grid-template-columns:250px minmax(0,1fr); gap:24px; align-items:start; }
+  #existence-uniqueness .eu-workspace > div { min-width:0; }
+  #existence-uniqueness .eu-visual h3 { margin-top:0; }
+  #existence-uniqueness #eu-equation { margin:12px 0 6px; }
+  #existence-uniqueness #eu-condition { margin:0 0 16px; }
+  #existence-uniqueness .eu-plot-wrap { margin-top:12px; }
+  #existence-uniqueness #eu-plot { width:100%; display:block; }
+  #existence-uniqueness #eu-plot text { fill:var(--site-ink); font-size:12px; }
+  #existence-uniqueness .eu-legend { gap:8px 18px; margin-top:10px; }
+  #existence-uniqueness .eu-legend span { display:inline-flex; align-items:center; gap:7px; }
+  #existence-uniqueness .eu-legend i { display:inline-block; width:22px; }
+  #existence-uniqueness .eu-region { height:12px; background:var(--site-soft); border:1px dashed var(--site-muted); }
+  #existence-uniqueness .eu-interval { border-top:3px solid var(--site-orange); }
+  #existence-uniqueness .eu-a { border-top:3px solid var(--site-purple); }
+  #existence-uniqueness .eu-b { border-top:2px dashed var(--site-teal); }
+  @media(max-width:760px) { #existence-uniqueness .eu-workspace { grid-template-columns:minmax(0,1fr); gap:12px; } }
+</style>
+<script>{{EXISTENCE_MODEL}}</script>
+<script>
+(() => {
+  const root=document.getElementById('existence-uniqueness'),el=id=>root.querySelector('#eu-'+id);
+  const model=Amath351Existence,key='amath351:existence-uniqueness:v1';
+  let state=model.fresh();
+  try{state=model.restore(JSON.parse(window.localStorage.getItem(key)));}catch(_){}
+  const reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
+  let playing=false,tour=false,last=null,frame=0,hold=0;
+  const f2=n=>(Math.abs(n)<1e-8?0:n).toFixed(2);
+  function save(){try{window.localStorage.setItem(key,JSON.stringify({version:1,...state}));}catch(_){}}
+  function pause(){playing=false;tour=false;last=null;hold=0;cancelAnimationFrame(frame);buttons();}
+  function buttons(){
+    el('play').textContent=playing?'Pause':reduced.matches?'Advance this view':'Play this view';
+    el('tour').textContent=playing&&tour?'Tour playing…':reduced.matches?'Next view':'Play all three';
+  }
+  function scene(){
+    const branching=state.mode==='branching',exist=state.mode==='existence';
+    const ex=model.existence(state.progress,state.h);
+    const radius=branching?1.25:state.h;
+    const reach=exist?ex.reach:radius*state.progress;
+    return {branching,exist,ex,radius,reach,b:branching?0:1,
+      r:branching?{xmin:-1.5,xmax:1.5,ymin:-.5,ymax:2.5}:{xmin:-1,xmax:1,ymin:-1,ymax:3},
+      slope:branching?model.branchSlope:(x,y)=>x-y,
+      a:x=>branching?model.branch(x):model.regular(x),
+      second:x=>branching?model.branch(x,state.delay):model.regular(x,1+state.offset)};
+  }
+  function sync(announce=true){
+    const s=scene();
+    root.querySelectorAll('[data-eu-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.euMode===state.mode)));
+    el('interval-control').hidden=s.branching;el('offset-control').hidden=state.mode!=='uniqueness';el('delay-control').hidden=!s.branching;
+    for(const k of ['h','offset','delay']){el(k).value=state[k];el(k+'-value').textContent=f2(state[k]);}
+    el('progress').value=100*state.progress;el('progress-value').textContent=Math.round(100*state.progress)+'%';
+    el('equation').textContent=s.branching?'y′ = 3|y|²ᐟ³ · yA(0) = yB(0) = 0':s.exist?'y′ = x − y · y(0) = 1':`y′ = x − y · yA(0) = 1 · yB(0) = ${f2(1+state.offset)}`;
+    el('condition').textContent=s.branching?'f is continuous. At y = 0, fᵧ is undefined; the uniqueness condition is not satisfied.':s.exist?'f is continuous on R. Existence concerns a differentiable solution at every x in a small interval I.':'f and fᵧ = −1 are continuous on R. The same initial value determines one local solution.';
+    el('legend-a').textContent=s.exist?'Exact solution (revealed at the end)':'Solution A · solid';
+    el('legend-b').textContent=s.exist?'Tangent-step approximation':'Solution B · dashed';
+    if(s.exist){
+      el('phase').textContent=['1 · Choose a region and a local interval','2 · Extend in both directions from the initial point','3 · Refine the tangent steps','4 · A solution on the whole interval'][s.ex.phase];
+      el('caption').textContent=[
+        'R is a two-dimensional neighborhood where we inspect f. I is a one-dimensional interval where we seek a function y(x).',
+        'At each new point, read the local slope again. The two ends extend left and right; an initial tangent alone does not determine this entire path.',
+        'Smaller steps reduce the discrepancy in this example. Each finite polygon is still an approximation; existence concerns a differentiable solution.',
+        'The exact curve satisfies y′(x) = f(x,y(x)) at every x in I, including x = 0. A whole local solution has extended from one initial value.'
+      ][s.ex.phase];
+      el('readout').textContent=s.ex.phase===0?`R = [−1, 1] × [−1, 3] · I = (${f2(-state.h)}, ${f2(state.h)})`:`${s.ex.n} step${s.ex.n===1?'':'s'} per side · |Δx| = ${(state.h/s.ex.n).toFixed(4)} · max error at full-grid nodes = ${s.ex.error.toFixed(4)}`;
+    }else{
+      el('phase').textContent=s.branching?'One initial point, two distinct solution curves':state.offset===0?'Two solutions with the same initial value coincide':'Different initial values give different curves';
+      el('caption').textContent=s.branching?`Both start with a horizontal tangent at (0,0). A leaves zero immediately; B stays at zero until x = ${f2(state.delay)}. Both follow the same continuous field, and they differ on every interval around 0.`:state.offset===0?'The dashed curve lies exactly on the solid curve throughout the revealed interval. Uniqueness means agreement on an interval, not just a shared initial tangent.':'These curves begin at different points. Return δ to zero to compare the same initial-value problem; the two curves then coincide.';
+      el('readout').textContent=`At x = ${f2(s.reach)}: yA = ${s.a(s.reach).toFixed(3)} · yB = ${s.second(s.reach).toFixed(3)} · separation = ${Math.abs(s.a(s.reach)-s.second(s.reach)).toFixed(3)}`;
+    }
+    el('readout').setAttribute('aria-live',announce?'polite':'off');buttons();
+  }
+  function draw(){
+    const s=scene(),node=el('plot'),w=Math.max(240,node.parentElement.getBoundingClientRect().width),height=w<420?380:410;
+    const svg=d3.select(node).attr('viewBox',`0 0 ${w} ${height}`).attr('height',height);svg.selectAll('*').remove();
+    const b={left:64,right:w-20,top:30,bottom:height-98};
+    const xs=d3.scaleLinear().domain([s.r.xmin-.18,s.r.xmax+.18]).range([b.left,b.right]);
+    const ys=d3.scaleLinear().domain([s.r.ymin-.2,s.r.ymax+.3]).range([b.bottom,b.top]);
+    const text=(x,y,str,anchor='start')=>svg.append('text').attr('x',x).attr('y',y).attr('text-anchor',anchor).text(str);
+    svg.append('rect').attr('data-chart-frame','').attr('x',b.left).attr('y',b.top).attr('width',b.right-b.left).attr('height',b.bottom-b.top).attr('fill','none').attr('stroke','var(--site-line)');
+    svg.append('defs').append('clipPath').attr('id','eu-clip').append('rect').attr('x',b.left).attr('y',b.top).attr('width',b.right-b.left).attr('height',b.bottom-b.top);
+    const marks=svg.append('g').attr('clip-path','url(#eu-clip)');
+    marks.append('rect').attr('data-region','').attr('x',xs(s.r.xmin)).attr('y',ys(s.r.ymax)).attr('width',xs(s.r.xmax)-xs(s.r.xmin)).attr('height',ys(s.r.ymin)-ys(s.r.ymax)).attr('fill','var(--site-soft)').attr('fill-opacity',.45).attr('stroke','var(--site-muted)').attr('stroke-dasharray','5 4');
+    text(xs(s.r.xmin)+5,ys(s.r.ymax)+16,'R');
+    const xaxis=svg.append('g').attr('transform',`translate(0,${b.bottom})`).call(d3.axisBottom(xs).ticks(w<420?3:5).tickSize(0).tickPadding(9));
+    const yaxis=svg.append('g').attr('transform',`translate(${b.left},0)`).call(d3.axisLeft(ys).ticks(5).tickSize(0).tickPadding(9));
+    xaxis.select('.domain').remove();yaxis.select('.domain').remove();
+    text(b.right,b.bottom+33,'x','end').attr('class','axis-title').attr('data-axis','x');
+    text(b.left,17,'y').attr('class','axis-title').attr('data-axis','y');
+    const sx=xs(1)-xs(0),sy=ys(0)-ys(1);
+    function tangent(x,y,color,len=18,width=1,opacity=.3){
+      const m=s.slope(x,y),norm=Math.hypot(sx,m*sy),dx=len*sx/norm/2,dy=-len*m*sy/norm/2;
+      return marks.append('path').attr('d',`M${xs(x)-dx},${ys(y)-dy}L${xs(x)+dx},${ys(y)+dy}`).attr('stroke',color).attr('stroke-width',width).attr('stroke-opacity',opacity).attr('fill','none');
+    }
+    for(let i=0;i<=12;i++)for(let j=0;j<=12;j++)tangent(s.r.xmin+(s.r.xmax-s.r.xmin)*i/12,s.r.ymin+(s.r.ymax-s.r.ymin)*j/12,'var(--site-ink)',w<420?9:17);
+    // A separate axis strip distinguishes the interval from the rectangle.
+    const iy=height-35;
+    svg.append('path').attr('d',`M${xs(-s.radius)},${iy}H${xs(s.radius)}`).attr('stroke','var(--site-orange)').attr('stroke-width',3).attr('data-interval','');
+    for(const x of [-s.radius,s.radius]){
+      svg.append('circle').attr('cx',xs(x)).attr('cy',iy).attr('r',3).attr('fill','var(--site-paper)').attr('stroke','var(--site-orange)');
+      marks.append('path').attr('d',`M${xs(x)},${b.bottom}V${b.top}`).attr('stroke','var(--site-orange)').attr('stroke-opacity',.25).attr('stroke-dasharray','3 4');
+    }
+    text(xs(0),iy-10,`I = (${f2(-s.radius)}, ${f2(s.radius)})`,'middle');
+    text(xs(0),iy+20,'a = 0','middle');
+    const line=d3.line().x(p=>xs(p.x)).y(p=>ys(p.y));
+    function curve(points,color,dashed=false,tag=''){
+      const path=marks.append('path').datum(points).attr('d',line).attr('fill','none').attr('stroke',color).attr('stroke-width',dashed?2.2:3.5).attr('stroke-linejoin','round');
+      if(dashed)path.attr('stroke-dasharray','7 4');if(tag)path.attr(tag,'');return path;
+    }
+    const sample=fn=>d3.range(181).map(i=>{const x=-s.reach+2*s.reach*i/180;return{x,y:fn(x)};});
+    if(s.exist&&s.ex.phase>0){
+      const interpolate=x=>{
+        const pts=s.ex.points,index=Math.min(pts.length-2,Math.max(0,d3.bisector(p=>p.x).right(pts,x)-1)),a=pts[index],c=pts[index+1];
+        return {x,y:a.y+(c.y-a.y)*(x-a.x)/(c.x-a.x)};
+      };
+      const points=[interpolate(-s.reach),...s.ex.points.filter(p=>p.x>-s.reach&&p.x<s.reach),interpolate(s.reach)];
+      if(s.ex.phase===3)curve(sample(s.a),'var(--site-purple)',false,'data-eu-exact');
+      curve(points,'var(--site-teal)',true,'data-eu-polygon');
+      for(const p of points)marks.append('circle').attr('cx',xs(p.x)).attr('cy',ys(p.y)).attr('r',s.ex.n>16?1.3:2.5).attr('fill','var(--site-teal)');
+      for(const p of [points[0],points.at(-1)])tangent(p.x,p.y,'var(--site-orange)',w<420?22:34,2.2,1);
+    }else if(!s.exist){
+      curve(sample(s.a),'var(--site-purple)',false,'data-eu-a');
+      curve(sample(s.second),'var(--site-teal)',true,'data-eu-b');
+      const x=s.reach,ya=s.a(x),yb=s.second(x);
+      marks.append('path').attr('d',`M${xs(x)},${ys(ya)}V${ys(yb)}`).attr('stroke','var(--site-orange)').attr('stroke-width',1.5).attr('data-separation','');
+      tangent(x,ya,'var(--site-purple)',28,2,1);tangent(x,yb,'var(--site-teal)',28,1.8,1);
+      marks.append('circle').attr('cx',xs(x)).attr('cy',ys(ya)).attr('r',5).attr('fill','var(--site-purple)');
+      marks.append('rect').attr('x',xs(x)-3.5).attr('y',ys(yb)-3.5).attr('width',7).attr('height',7).attr('fill','var(--site-paper)').attr('stroke','var(--site-teal)').attr('stroke-width',2);
+    }
+    marks.append('circle').attr('cx',xs(0)).attr('cy',ys(s.b)).attr('r',4).attr('fill','var(--site-orange)').attr('data-initial-point','');
+    if(state.mode==='uniqueness'&&state.offset!==0)marks.append('rect').attr('x',xs(0)-3).attr('y',ys(1+state.offset)-3).attr('width',6).attr('height',6).attr('fill','var(--site-teal)');
+    text(xs(0)+8,ys(s.b)-11,`(0, ${s.b})`);
+    svg.attr('aria-label',`${el('phase').textContent}. ${el('readout').textContent}. The shaded rectangle is R; the orange axis strip is the interval I.`);
+    const labels=svg.selectAll('text').nodes();
+    for(let i=0;i<labels.length;i++)for(let j=i+1;j<labels.length;j++){
+      if(!labels[i].isConnected||!labels[j].isConnected)continue;
+      const a=labels[i].getBoundingClientRect(),b=labels[j].getBoundingClientRect();
+      if(a.width&&b.width&&a.left<b.right+4&&b.left<a.right+4&&a.top<b.bottom+4&&b.top<a.bottom+4){const tick=labels[j].closest('.tick')||labels[i].closest('.tick');if(tick)tick.remove();}
+    }
+  }
+  function render(announce=true){sync(announce);draw();}
+  function select(mode){pause();state.mode=mode;state.progress=0;render();save();}
+  root.querySelectorAll('[data-eu-mode]').forEach(b=>b.addEventListener('click',()=>select(b.dataset.euMode)));
+  for(const k of ['h','offset','delay','progress']){
+    el(k).addEventListener('input',()=>{pause();state[k]=Number(el(k).value)/(k==='progress'?100:1);render();});
+    el(k).addEventListener('change',save);
+  }
+  el('same').addEventListener('click',()=>{pause();state.offset=0;render();save();});
+  el('restart').addEventListener('click',()=>{pause();state.progress=0;render();save();});
+  function tick(stamp){
+    if(!playing)return;
+    const dt=last===null?0:Math.min((stamp-last)/1000,.1);last=stamp;
+    if(state.progress<1)state.progress=Math.min(1,state.progress+dt/10);
+    else if(tour&&state.mode!=='branching'){
+      hold+=dt;
+      if(hold>=1.6){state.mode=state.mode==='existence'?'uniqueness':'branching';state.progress=0;hold=0;}
+    }else{pause();render();save();return;}
+    render(false);frame=requestAnimationFrame(tick);
+  }
+  function start(all=false){
+    if(playing){pause();render();save();return;}
+    if(reduced.matches){
+      if(all)state.mode=state.mode==='existence'?'uniqueness':state.mode==='uniqueness'?'branching':'existence';
+      state.progress=all?0:state.progress>=1?0:Math.min(1,state.progress+.15);render();save();return;
+    }
+    if(all){state.mode='existence';state.progress=0;state.offset=0;}
+    else if(state.progress>=1)state.progress=0;
+    playing=true;tour=all;last=null;hold=0;render();frame=requestAnimationFrame(tick);
+  }
+  el('play').addEventListener('click',()=>start());el('tour').addEventListener('click',()=>start(true));
+  document.addEventListener('visibilitychange',()=>{if(document.hidden){pause();render();save();}});
+  reduced.addEventListener('change',()=>{pause();render();});
+  new ResizeObserver(()=>draw()).observe(root);
+  render();
+})();
+</script>

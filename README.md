@@ -138,6 +138,18 @@ local uniqueness in preventing crossing solutions. State is stored locally;
 playback pauses when changing stages or hiding the page, and reduced motion uses
 discrete advances.
 
+The same page now includes an [animated existence and uniqueness exploration](https://shzhang3.github.io/amath351-lab/chapters/first-order/slope-fields/#existence-uniqueness).
+A guided tour or manual progress slider displays the rectangle R, the local
+interval I, and tangent-step refinements in both directions. The uniqueness view
+overlays exact curves with equal or nearby initial values. A third view draws
+the two exact solutions max(0,x)^3 and max(0,x-c)^3, with c > 0, of
+y′ = 3|y|^(2/3), making local nonuniqueness visible without relying on a solver
+that could stay at zero. The animation illustrates the theorem; the text
+distinguishes sufficient conditions, numerical approximations, and exact curves.
+Source and mathematical helpers are in **src/existence-explorer.html** and
+**src/existence-model.cjs**. Playback pauses on edits and page hiding; reduced
+motion uses discrete advances.
+
 ## Edit and build
 
 **src/catalog.json** defines the three chapters and their example lists. An

@@ -143,7 +143,8 @@ def main():
             elif example["slug"] in ("velocity", "planet-gzyx"):
                 replacements = {"MOTION_MODEL":(SOURCE / "motion-model.cjs").read_text(), "D3_URL":href(path,"assets/vendor/d3.v7.9.0.min.js")}
             elif example["slug"] == "slope-fields":
-                replacements = {"SLOPE_FIELD_MODEL":(SOURCE / "slope-field-model.cjs").read_text(), "D3_URL":href(path,"assets/vendor/d3.v7.9.0.min.js")}
+                theorem = replace((SOURCE / "existence-explorer.html").read_text(), EXISTENCE_MODEL=(SOURCE / "existence-model.cjs").read_text())
+                replacements = {"SLOPE_FIELD_MODEL":(SOURCE / "slope-field-model.cjs").read_text(), "D3_URL":href(path,"assets/vendor/d3.v7.9.0.min.js"), "THEOREM_EXPLORER":theorem}
             fragment = replace(fragment, **replacements)
             page(path, example["title"], example["description"], fragment, chapter=chapter, example=example, index=i)
 
