@@ -142,6 +142,8 @@ def main():
                 replacements = {"SEPARABLE_MODEL":(SOURCE / "separable-model.cjs").read_text(), "BLOWUP_URL":href(path,"chapters/first-order/fluids/index.html")+"#ai-blowup"}
             elif example["slug"] in ("velocity", "planet-gzyx"):
                 replacements = {"MOTION_MODEL":(SOURCE / "motion-model.cjs").read_text(), "D3_URL":href(path,"assets/vendor/d3.v7.9.0.min.js")}
+            elif example["slug"] == "slope-fields":
+                replacements = {"SLOPE_FIELD_MODEL":(SOURCE / "slope-field-model.cjs").read_text(), "D3_URL":href(path,"assets/vendor/d3.v7.9.0.min.js")}
             fragment = replace(fragment, **replacements)
             page(path, example["title"], example["description"], fragment, chapter=chapter, example=example, index=i)
 

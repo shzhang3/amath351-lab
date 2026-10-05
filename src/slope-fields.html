@@ -1,0 +1,238 @@
+<section class="lab-intro">
+  <div class="site-kicker">Section 1.3 · Slope fields and solution curves</div>
+  <h1>From tangents to solution curves</h1>
+  <p>A differential equation assigns a slope to each point. Start with one point and its tangent, reveal the slope field, then watch a point move along a solution while its tangent direction changes.</p>
+  <p>In <strong>Follow a solution</strong>, change the initial value, move along the curve, and increase the number of sampled tangents. In <strong>Short steps</strong>, compare finite straight steps with the exact solution and reduce the step size.</p>
+  <p>Choose <strong>y′ = x + y</strong> for Problem 21. Its short steps run backward from x = 0 to x = −4, so you can estimate y(−4). Each restart begins at the displayed initial value.</p>
+</section>
+<div id="slope13-explorer" class="lab-interactive">
+  <h2>From a point to a slope field</h2>
+  <div class="lab-controls" aria-label="Exploration stage">
+    <button type="button" class="lab-button lab-stage-button" data-stage="1" aria-pressed="true">One tangent</button>
+    <button type="button" class="lab-button lab-stage-button" data-stage="2" aria-pressed="false">Slope field</button>
+    <button type="button" class="lab-button lab-stage-button" data-stage="3" aria-pressed="false">Follow a solution</button>
+    <button type="button" class="lab-button lab-stage-button" data-stage="4" aria-pressed="false">Short steps</button>
+  </div>
+  <div class="lab-controls">
+    <label class="lab-label" for="s13-equation">Equation
+      <select class="lab-select" id="s13-equation"><option value="minus">y′ = x − y</option><option value="plus">y′ = x + y · Problem 21</option></select>
+    </label>
+  </div>
+  <div class="lab-controls" id="s13-probe-controls">
+    <label class="lab-label" for="s13-probe-x">Point x: <span data-value="probeX" class="lab-numbers"></span>
+      <input class="lab-slider" type="range" id="s13-probe-x" min="0" max="4" step="0.05" value="0">
+    </label>
+    <label class="lab-label" for="s13-probe-y">Point y: <span data-value="probeY" class="lab-numbers"></span>
+      <input class="lab-slider" type="range" id="s13-probe-y" min="-2" max="4" step="0.05" value="1">
+    </label>
+  </div>
+  <div id="s13-curve-controls" hidden>
+    <div class="lab-controls">
+      <label class="lab-label" for="s13-initial">Initial value y(0): <span data-value="y0" class="lab-numbers"></span>
+        <input class="lab-slider" type="range" id="s13-initial" min="-1" max="3" step="0.1" value="1">
+      </label>
+      <label class="lab-label" for="s13-count">Sampled tangents: <span data-value="count" class="lab-numbers"></span>
+        <input class="lab-slider" type="range" id="s13-count" min="3" max="31" step="2" value="9">
+      </label>
+    </div>
+    <label class="lab-label" for="s13-time">Current x: <span data-value="time" class="lab-numbers"></span></label>
+    <input class="lab-slider" type="range" id="s13-time" min="0" max="4" step="0.01" value="0">
+    <div class="lab-controls"><button class="lab-button lab-primary" type="button" id="s13-play">Move along the curve</button></div>
+  </div>
+  <div id="s13-step-controls" hidden>
+    <div>Initial value y(0): <span data-value="stepInitial" class="lab-numbers"></span></div>
+    <div class="lab-controls">
+      <label class="lab-label" for="s13-step-size">Step size |h|
+        <select class="lab-select" id="s13-step-size"><option value="0.5">0.5</option><option value="0.25">0.25</option><option value="0.1">0.1</option><option value="0.05">0.05</option></select>
+      </label>
+      <button class="lab-button lab-primary" type="button" id="s13-step">Take one step</button>
+      <button class="lab-button" type="button" id="s13-all">Draw all steps</button>
+    </div>
+    <label class="lab-check"><input class="lab-check-input" type="checkbox" id="s13-exact"><span class="lab-check-label">Show exact solution</span></label>
+  </div>
+  <div class="s13-plot-wrap"><svg id="s13-plot" role="img" aria-label="The tangent at a point in the x y plane"></svg></div>
+  <div class="lab-row lab-small s13-legend">
+    <span><i class="s13-dot"></i>Current point</span>
+    <span><i class="s13-tangent"></i>Tangent direction</span>
+    <span data-legend="curve" hidden><i class="s13-curve"></i>Exact solution</span>
+    <span data-legend="steps" hidden><i class="s13-steps"></i>Tangent-step approximation</span>
+  </div>
+  <div class="s13-detail lab-numbers" id="s13-detail" aria-live="polite"></div>
+</div>
+<details class="lab-explanation">
+  <summary>Why the tangent determines the local direction</summary>
+  <p>At a point (x₀, y₀), the equation supplies the slope m = f(x₀, y₀). The line through that point with that slope is:</p>
+  <p class="lab-math">y = y₀ + f(x₀, y₀)(x − x₀).</p>
+  <p>A solution has this tangent direction at every point along its graph. Its local behavior is y(x₀ + h) ≈ y(x₀) + hf(x₀, y(x₀)). The smooth curve is not a finite chain of straight segments.</p>
+  <p>For a point moving on the graph as x increases, the direction vector is (1, f(x,y)). A negative slope means motion down and to the right. Zero slope gives a horizontal tangent; the graph point still moves right. If x is physical time and y is a position on a line, the scalar f is that particle's velocity, while (1,f) describes motion on the time-position graph.</p>
+  <p class="lab-small">Slope-field segments are normalized for readability. Their displayed lengths do not represent speed.</p>
+</details>
+<details class="lab-explanation">
+  <summary>Exact curves and tangent-step approximations</summary>
+  <p>The reference curves use analytic solutions with y(0) = y₀:</p>
+  <p class="lab-math">y′ = x − y: &nbsp; y(x) = x − 1 + (y₀ + 1)e<sup>−x</sup><br>y′ = x + y: &nbsp; y(x) = (y₀ + 1)e<sup>x</sup> − x − 1.</p>
+  <p>Short steps instead use xₙ₊₁ = xₙ + h and yₙ₊₁ = yₙ + hf(xₙ,yₙ). Each slope is evaluated at the new approximate point. This is a preview of Euler's method from Section 2.4. For the backward estimate in Problem 21, h is negative.</p>
+  <p>With y′ = x + y and y(0) = 0, the exact value is y(−4) = 3 + e<sup>−4</sup> ≈ 3.0183. Reveal the exact solution after making your estimate. The displayed error is the absolute difference at the current endpoint.</p>
+</details>
+<details class="lab-explanation">
+  <summary>Two questions to discuss</summary>
+  <p><strong>Is the zero-slope line a solution?</strong> For y′ = x − y, the field is horizontal on y = x, but that line has slope 1. For y′ = x + y, the field is horizontal on y = −x, but the line has slope −1. Neither line is a solution of its corresponding equation.</p>
+  <p><strong>Can distinct solutions cross?</strong> For each equation here, f and its partial derivative fᵧ are continuous everywhere. The local uniqueness theorem rules out crossing solutions of the same equation. That conclusion requires a uniqueness condition; a common tangent alone is not enough.</p>
+</details>
+<style>
+  #slope13-explorer { color:var(--site-ink); }
+  #slope13-explorer [hidden] { display:none!important; }
+  #slope13-explorer .s13-plot-wrap { margin-top:12px; }
+  #slope13-explorer #s13-plot { width:100%; display:block; }
+  #slope13-explorer #s13-plot text { fill:var(--site-ink); font-size:12px; }
+  #slope13-explorer .s13-legend { gap:8px 18px; margin-top:10px; }
+  #slope13-explorer .s13-legend span { display:inline-flex; align-items:center; gap:7px; }
+  #slope13-explorer .s13-legend i { display:inline-block; width:20px; }
+  #slope13-explorer .s13-dot { width:8px!important; height:8px; border-radius:50%; background:var(--site-purple); }
+  #slope13-explorer .s13-tangent { border-top:2px solid var(--site-orange); }
+  #slope13-explorer .s13-curve { border-top:2px solid var(--site-purple); }
+  #slope13-explorer .s13-steps { border-top:2px dashed var(--site-teal); }
+  #slope13-explorer .s13-detail { margin-top:12px; }
+</style>
+<script src="{{D3_URL}}"></script>
+<script>{{SLOPE_FIELD_MODEL}}</script>
+<script>
+(() => {
+  const root=document.getElementById('slope13-explorer'), byId=id=>root.querySelector('#s13-'+id);
+  const {configurations} = Amath351SlopeFields;
+  const storageKey = 'amath351:slope-fields:v1';
+  let state=Amath351SlopeFields.fresh();
+  try { state=Amath351SlopeFields.restore(JSON.parse(window.localStorage.getItem(storageKey))); } catch (_) {}
+  let playing=false,frame=0,last=null;
+  const reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
+  const config=()=>configurations[state.equation];
+  const fmt=n=>(Math.abs(n)<.000005?0:n).toFixed(2);
+  const totalSteps=()=>Math.round(Math.abs(config().target)/state.h);
+  function save(){try{window.localStorage.setItem(storageKey,JSON.stringify({version:1,...state}));}catch(_){}}
+  function approximation(){return Amath351SlopeFields.approximation(state.equation,state.y0,state.h,state.steps);}
+  function current(){
+    if(state.stage<=2)return{x:state.probeX,y:state.probeY};
+    if(state.stage===3)return{x:state.time,y:config().solution(state.time,state.y0)};
+    return approximation().at(-1);
+  }
+  function pause(){playing=false;last=null;cancelAnimationFrame(frame);byId('play').textContent=reduced.matches?'Advance x by 0.25':'Move along the curve';}
+  function sync(){
+    const c=config();
+    root.querySelectorAll('[data-stage]').forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.stage)===state.stage)));
+    byId('equation').value=state.equation;
+    byId('probe-controls').hidden=state.stage>2;
+    byId('curve-controls').hidden=state.stage!==3;
+    byId('step-controls').hidden=state.stage!==4;
+    for(const id of ['probe-x','time']){byId(id).min=c.xmin;byId(id).max=c.xmax;}
+    byId('initial').max=c.y0max;
+    for(const [id,key] of [['probe-x','probeX'],['probe-y','probeY'],['initial','y0'],['time','time'],['count','count'],['step-size','h']])byId(id).value=state[key];
+    for(const key of ['probeX','probeY','y0','time','count'])root.querySelector(`[data-value="${key}"]`).textContent=key==='count'?state[key]:fmt(state[key]);
+    root.querySelector('[data-value="stepInitial"]').textContent=fmt(state.y0);
+    byId('exact').checked=state.exact;
+    byId('step').textContent=state.steps===totalSteps()?'Start again':'Take one step';
+    byId('all').disabled=state.steps===totalSteps();
+    root.querySelector('[data-legend="curve"]').hidden=!(state.stage===3||(state.stage===4&&state.exact));
+    root.querySelector('[data-legend="steps"]').hidden=state.stage!==4;
+  }
+  function detail(announce=true){
+    const p=current(),m=config().slope(p.x,p.y);
+    let text=`Point (${fmt(p.x)}, ${fmt(p.y)}) · slope ${fmt(m)} · forward direction (1, ${fmt(m)})`;
+    if(state.stage===4){
+      text=`${config().target<0?'Backward':'Forward'} steps: ${state.steps}/${totalSteps()} · x: ${fmt(p.x)} · y: ${fmt(p.y)} · slope: ${fmt(m)}`;
+      if(state.exact)text+=` · error: ${Math.abs(p.y-config().solution(p.x,state.y0)).toFixed(4)}`;
+    }
+    const el=byId('detail');el.setAttribute('aria-live',announce?'polite':'off');if(el.textContent!==text)el.textContent=text;
+  }
+  function draw(){
+    const c=config(),node=byId('plot'),w=Math.max(240,node.parentElement.getBoundingClientRect().width),h=w<420?350:405;
+    const svg=d3.select(node).attr('viewBox',`0 0 ${w} ${h}`).attr('height',h);svg.selectAll('*').remove();
+    const bounds={left:64,right:w-18,top:22,bottom:h-48};
+    const ref=d3.range(201).map(i=>{const x=c.xmin+i*(c.xmax-c.xmin)/200;return{x,y:c.solution(x,state.y0)};});
+    const points=approximation();
+    const xext=d3.extent([0,c.xmin,c.xmax]),yext=d3.extent([-2,4,...ref.map(p=>p.y),...points.map(p=>p.y)]);
+    const xpad=(xext[1]-xext[0])*.05,ypad=(yext[1]-yext[0])*.05;
+    const xs=d3.scaleLinear().domain([xext[0]-xpad,xext[1]+xpad]).range([bounds.left,bounds.right]);
+    const ys=d3.scaleLinear().domain([yext[0]-ypad,yext[1]+ypad]).range([bounds.bottom,bounds.top]);
+    svg.append('rect').attr('data-chart-frame','').attr('x',bounds.left).attr('y',bounds.top).attr('width',bounds.right-bounds.left).attr('height',bounds.bottom-bounds.top).attr('fill','none').attr('stroke','var(--site-line)');
+    svg.append('defs').append('clipPath').attr('id','s13-clip').append('rect').attr('x',bounds.left).attr('y',bounds.top).attr('width',bounds.right-bounds.left).attr('height',bounds.bottom-bounds.top);
+    const xa=svg.append('g').attr('transform',`translate(0,${bounds.bottom})`).call(d3.axisBottom(xs).ticks(w<420?3:6).tickSize(0).tickPadding(9));
+    const ya=svg.append('g').attr('transform',`translate(${bounds.left},0)`).call(d3.axisLeft(ys).ticks(5).tickSize(0).tickPadding(9));
+    xa.select('.domain').remove();ya.select('.domain').remove();
+    svg.append('text').attr('class','axis-title').attr('data-axis','x').attr('x',(bounds.left+bounds.right)/2).attr('y',h-8).attr('text-anchor','middle').text('x');
+    svg.append('text').attr('class','axis-title').attr('data-axis','y').attr('x',bounds.left).attr('y',13).text('y');
+    const marks=svg.append('g').attr('clip-path','url(#s13-clip)');
+    for(const x of xs.ticks(w<420?3:6))marks.append('line').attr('x1',xs(x)).attr('x2',xs(x)).attr('y1',bounds.top).attr('y2',bounds.bottom).attr('stroke','var(--site-line)').attr('stroke-opacity',.5);
+    for(const y of ys.ticks(5))marks.append('line').attr('x1',bounds.left).attr('x2',bounds.right).attr('y1',ys(y)).attr('y2',ys(y)).attr('stroke','var(--site-line)').attr('stroke-opacity',.5);
+    const sx=xs(1)-xs(0),sy=ys(0)-ys(1);
+    function tangent(p,len,color,width,arrow=false,direction=1,opacity=1){
+      const m=c.slope(p.x,p.y),norm=Math.hypot(sx,sy*m),vx=direction*sx/norm,vy=-direction*sy*m/norm;
+      const cx=xs(p.x),cy=ys(p.y);
+      if(arrow){
+        const horizontal=vx>0?(bounds.right-cx-3)/vx:(bounds.left-cx+3)/vx;
+        const vertical=Math.abs(vy)<1e-12?Infinity:vy>0?(bounds.bottom-cy-3)/vy:(bounds.top-cy+3)/vy;
+        len=Math.min(len,Math.max(5,horizontal),Math.max(5,vertical));
+      }
+      const dx=vx*len,dy=vy*len;
+      const d=arrow?`M ${cx-dx*.38} ${cy-dy*.38} L ${cx+dx} ${cy+dy}`:`M ${cx-dx/2} ${cy-dy/2} L ${cx+dx/2} ${cy+dy/2}`;
+      marks.append('path').attr('d',d).attr('fill','none').attr('stroke',color).attr('stroke-width',width).attr('stroke-opacity',opacity).attr('data-tangent-slope',m);
+      if(arrow){const ux=dx/len,uy=dy/len,ex=cx+dx,ey=cy+dy;marks.append('path').attr('d',`M ${ex-7*ux+4*uy} ${ey-7*uy-4*ux} L ${ex} ${ey} L ${ex-7*ux-4*uy} ${ey-7*uy+4*ux}`).attr('fill','none').attr('stroke',color).attr('stroke-width',width);}
+    }
+    if(state.stage>=2){
+      const n=w<420?10:16;
+      for(let i=0;i<=n;i++)for(let j=0;j<=12;j++)tangent({x:c.xmin+(c.xmax-c.xmin)*i/n,y:-2+j*.5},Math.min(17,(bounds.right-bounds.left)/(n+1)*.72),'var(--site-ink)',1,false,1,.25);
+    }
+    const path=d3.line().x(p=>xs(p.x)).y(p=>ys(p.y));
+    if(state.stage===3||(state.stage===4&&state.exact))marks.append('path').datum(ref).attr('d',path).attr('fill','none').attr('stroke','var(--site-purple)').attr('stroke-width',2.5).attr('data-exact-curve','');
+    if(state.stage===3){
+      for(let i=0;i<state.count;i++){const x=c.xmin+(c.xmax-c.xmin)*i/(state.count-1);tangent({x,y:c.solution(x,state.y0)},20,'var(--site-orange)',1.4,false,1,.7);}
+      marks.append('circle').attr('cx',xs(0)).attr('cy',ys(state.y0)).attr('r',5).attr('fill','var(--site-paper)').attr('stroke','var(--site-purple)').attr('stroke-width',2);
+    }
+    if(state.stage===4){
+      marks.append('path').datum(points).attr('d',path).attr('fill','none').attr('stroke','var(--site-teal)').attr('stroke-width',2.5).attr('stroke-dasharray','6 3').attr('data-approximation','');
+      for(const p of points)marks.append('circle').attr('cx',xs(p.x)).attr('cy',ys(p.y)).attr('r',2.5).attr('fill','var(--site-teal)');
+    }
+    const p=current(),direction=state.stage===4?Math.sign(c.target):1;
+    tangent(p,w<420?31:43,'var(--site-orange)',2.5,true,direction);
+    marks.append('circle').attr('cx',xs(p.x)).attr('cy',ys(p.y)).attr('r',5).attr('fill','var(--site-purple)').attr('data-current-point','');
+    if(state.stage===1){
+      const m=c.slope(p.x,p.y),dx=.5,dy=m*dx;
+      marks.append('path').attr('d',`M ${xs(p.x)} ${ys(p.y)} H ${xs(p.x+dx)} V ${ys(p.y+dy)}`).attr('fill','none').attr('stroke','var(--site-ink)').attr('stroke-dasharray','4 4').attr('stroke-opacity',.6);
+    }
+    svg.attr('aria-label',`Stage ${state.stage}. Equation y prime equals x ${state.equation==='minus'?'minus':'plus'} y. Current point (${fmt(p.x)}, ${fmt(p.y)}); tangent slope ${fmt(c.slope(p.x,p.y))}. ${state.stage===4?'Dashed segments are an approximation.':'The arrow gives the direction for increasing x.'}`);
+    const labels=svg.selectAll('text').nodes();
+    for(let i=0;i<labels.length;i++)for(let j=i+1;j<labels.length;j++){
+      if(!labels[i].isConnected||!labels[j].isConnected)continue;
+      const a=labels[i].getBoundingClientRect(),b=labels[j].getBoundingClientRect();
+      if(a.width&&b.width&&a.left<b.right+4&&b.left<a.right+4&&a.top<b.bottom+4&&b.top<a.bottom+4){const tick=labels[j].closest('.tick')||labels[i].closest('.tick');if(tick)tick.remove();}
+    }
+  }
+  function render(announce=true){sync();draw();detail(announce);}
+  root.querySelectorAll('[data-stage]').forEach(b=>b.addEventListener('click',()=>{pause();state.stage=Number(b.dataset.stage);state.steps=0;render();save();}));
+  byId('equation').addEventListener('change',()=>{
+    pause();state.equation=byId('equation').value;const c=config();state.y0=c.initial;state.probeX=0;state.probeY=c.initial;state.time=0;state.steps=0;render();save();
+  });
+  for(const [id,key] of [['probe-x','probeX'],['probe-y','probeY'],['initial','y0'],['time','time'],['count','count']]){
+    byId(id).addEventListener('input',()=>{pause();state[key]=Number(byId(id).value);if(key==='y0')state.steps=0;render();});byId(id).addEventListener('change',save);
+  }
+  byId('step-size').addEventListener('change',()=>{state.h=Number(byId('step-size').value);state.steps=0;render();save();});
+  byId('step').addEventListener('click',()=>{state.steps=state.steps===totalSteps()?0:state.steps+1;render();save();});
+  byId('all').addEventListener('click',()=>{state.steps=totalSteps();render();save();});
+  byId('exact').addEventListener('change',()=>{state.exact=byId('exact').checked;render();save();});
+  function tick(stamp){
+    if(!playing)return;
+    if(last!==null)state.time=Math.min(config().xmax,state.time+Math.min((stamp-last)/1000,.08)*.6);
+    last=stamp;render(false);
+    if(state.time>=config().xmax){pause();detail();save();}else frame=requestAnimationFrame(tick);
+  }
+  byId('play').addEventListener('click',()=>{
+    if(playing){pause();detail();save();return;}
+    if(state.time>=config().xmax)state.time=config().xmin;
+    if(reduced.matches){state.time=Math.min(config().xmax,state.time+.25);render();save();return;}
+    playing=true;last=null;byId('play').textContent='Pause';frame=requestAnimationFrame(tick);
+  });
+  reduced.addEventListener('change',()=>{pause();detail();});
+  document.addEventListener('visibilitychange',()=>{if(document.hidden){pause();detail();save();}});
+  new ResizeObserver(()=>draw()).observe(root);
+  pause();render();
+})();
+</script>

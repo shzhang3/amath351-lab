@@ -16,7 +16,8 @@ The site follows **chapter index → chapter's examples → individual experimen
 3. [Linear systems](https://shzhang3.github.io/amath351-lab/chapters/linear-systems/)
 
 Chapter 1 currently includes the fluid-motion opening, direction fields,
-position/velocity/acceleration, Planet Gzyx, and separable equations.
+position/velocity/acceleration, Planet Gzyx, the tangent-to-slope-field exploration,
+and separable equations.
 The other examples are explicitly labeled as planned and
 have no inactive or broken experiment links. Chapter groupings follow the
 Autumn 2026 syllabus, rather than the textbook's chapter numbering.
@@ -117,6 +118,23 @@ their state in browser-local storage, and use discrete advances for reduced
 motion. Each page includes its assumptions, a prediction prompt, and an expandable
 derivation. No copy of the lecture PDF is published.
 
+## From tangents to solution curves (Section 1.3)
+
+[Open the experiment](https://shzhang3.github.io/amath351-lab/chapters/first-order/slope-fields/).
+Four stages connect one tangent, the full slope field, a moving point on an exact
+solution, and a finite tangent-step approximation. Switch between `y' = x-y`
+and Problem 21's `y' = x+y`. Change the initial value in the solution stage and
+the number of sampled tangents, then carry that initial value into the short-step
+stage. For Problem 21, the approximation steps backward from zero to `x = -4`.
+
+The graph direction for increasing x is `(1, f(x,y))`; segment lengths do not
+encode speed. Exact curves are analytic, while tangent steps use Euler's method.
+The reference solution can be hidden, and the displayed error is the absolute
+endpoint error. The page includes the zero-slope-line discussion and the role of
+local uniqueness in preventing crossing solutions. State is stored locally;
+playback pauses when changing stages or hiding the page, and reduced motion uses
+discrete advances.
+
 ## Edit and build
 
 **src/catalog.json** defines the three chapters and their example lists. An
@@ -124,15 +142,16 @@ example with a `source` is published; an example without one is shown as planned
 Add an example's source fragment and its catalog entry to extend the lab.
 
 The experiment sources are **src/experiment.html**, **src/prologue.html**,
-**src/velocity.html**, **src/planet-gzyx.html**, and **src/separable.html**.
+**src/velocity.html**, **src/planet-gzyx.html**, **src/slope-fields.html**, and **src/separable.html**.
 Exact mathematical helpers live in the **-model.cjs** files, embedded during the
-build; the two Section 1.2 experiments share **src/motion-model.cjs**. **src/page.html** and
+build; the two Section 1.2 experiments share **src/motion-model.cjs**, and Section
+1.3 uses **src/slope-field-model.cjs**. **src/page.html** and
 **src/site.css** supply shared navigation and styles.
 
 **build.py** generates **index.html**, chapter indexes and individual example
 pages under **chapters/**, and **assets/lab.css**. Do not edit generated output
 directly. All runtime assets are served locally, with no third-party CDN or
-background network requests. The Section 1.2 plots use the vendored D3 7.9.0
+background network requests. The Section 1.2 and 1.3 plots use the vendored D3 7.9.0
 bundle in **src/vendor/**; the build copies it and its license to **assets/vendor/**.
 
 After editing the source:

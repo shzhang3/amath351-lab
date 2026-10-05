@@ -10,6 +10,7 @@
   --site-purple: light-dark(#624298, #bba0ed);
   --site-on-purple: light-dark(#fff, #241634);
   --site-teal: light-dark(#48766e, #8fbbb0);
+  --site-orange: light-dark(#a54d25, #eda97e);
   background: var(--site-bg); color: var(--site-ink);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   font-size: 14px; line-height: 1.6;
@@ -88,6 +89,10 @@ noscript { display: block; background: var(--site-paper); padding: 16px; margin-
 .lab-button { padding: 9px 15px; border: 1px solid var(--site-line); border-radius: 7px; color: var(--site-ink); background: var(--site-surface); }
 .lab-primary { color: var(--site-on-purple); background: var(--site-purple); border-color: var(--site-purple); }
 .lab-button[aria-pressed="true"] { border-color: var(--site-purple); }
+.lab-stage-button[aria-pressed="true"] { background: var(--site-purple); color: var(--site-on-purple); }
+.lab-select { display: block; width: 100%; max-width: 440px; padding: 9px 12px; margin-top: 6px; border: 1px solid var(--site-line); border-radius: 7px; background: var(--site-surface); color: var(--site-ink); font: inherit; }
+.lab-check { display: inline-flex; align-items: center; gap: 9px; min-height: 36px; }
+.lab-check input { width: 18px; height: 18px; accent-color: var(--site-purple); }
 .lab-small { font-size: 12px; color: var(--site-muted); }
 .lab-numbers { font-variant-numeric: tabular-nums; }
 .lab-explanation { margin: 20px 4px; max-width: 860px; }
