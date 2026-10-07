@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Explore the three Lecture 04 equations. Choose an initial point, reveal its curve, and check equilibria, domains, and implicit branches.">
+  <meta name="theme-color" content="#624298">
+  <title>From a field to a particular solution · AMATH 351 Lab</title>
+  <link rel="canonical" href="https://shzhang3.github.io/amath351-lab/chapters/first-order/separable-examples/">
+  <link rel="stylesheet" href="../../../assets/lab.css">
+</head>
+<body>
+  <a class="site-skip" href="#main-content">Skip to content</a>
+  <div class="site-wrap">
+    <header class="site-header">
+      <a class="site-brand" href="../../../"><span class="site-brand-mark" aria-hidden="true">y′</span>AMATH 351 / Lab</a>
+      <nav aria-label="Main navigation"><a href="../../../">Chapters</a><a href="https://shzhang3.github.io/#teaching">Teaching</a><a href="https://github.com/shzhang3/amath351-lab" target="_blank" rel="noopener">GitHub ↗</a></nav>
+    </header>
+<nav class="site-breadcrumbs" aria-label="Breadcrumb"><a href="../../../">All chapters</a><span aria-hidden="true">/</span><a href="../">Chapter 01: First-order equations</a><span aria-hidden="true">/</span><span aria-current="page">From a field to a particular solution</span></nav>
+    <main id="main-content" tabindex="-1"><noscript>Enable JavaScript to use the interactive plots. Explanations and navigation remain available.</noscript><section class="lab-intro">
+  <div class="site-kicker">Lecture 04 · Section 1.4 · Separable equations</div>
+  <h1>From a slope field to a particular solution</h1>
+  <p>Choose an equation from the lecture. Read its slope field, set an initial point, and predict the curve before revealing it. Change the initial value to see which features stay the same.</p>
+</section>
+<section id="s14-explorer" class="lab-interactive" aria-labelledby="s14-heading">
+  <div class="lab-controls" aria-label="Lecture examples">
+    <button class="lab-button lab-stage-button" type="button" data-example="gaussian" aria-pressed="true">1 · y′ + 2xy = 0</button>
+    <button class="lab-button lab-stage-button" type="button" data-example="radical" aria-pressed="false">2 · 2√x y′ = √(1 − y²)</button>
+    <button class="lab-button lab-stage-button" type="button" data-example="implicit" aria-pressed="false">3 · Implicit solution &amp; initial value</button>
+  </div>
+  <p id="s14-source" class="lab-small"></p>
+  <h2 id="s14-heading"></h2>
+  <p id="s14-equation" class="lab-math"></p>
+  <p id="s14-domain" class="lab-small"></p>
+  <div class="s14-workspace">
+    <div class="s14-controls">
+      <h3>Choose an initial point</h3>
+      <label class="lab-label" for="s14-x0">x₀: <span id="s14-x0-value" class="lab-numbers"></span>
+        <input class="lab-slider" id="s14-x0" type="range" min="-3" max="3" step="0.05" value="0">
+      </label>
+      <label class="lab-label" for="s14-y0">y₀: <span id="s14-y0-value" class="lab-numbers"></span>
+        <input class="lab-slider" id="s14-y0" type="range" min="-3" max="3" step="0.05" value="2">
+      </label>
+      <p id="s14-ivp" class="lab-math"></p>
+      <div class="lab-controls"><button class="lab-button" type="button" id="s14-reset">Reset initial value</button></div>
+      <p id="s14-initial-note" class="lab-small"></p>
+      <div id="s14-boundaries" class="lab-controls" hidden>
+        <button class="lab-button" type="button" data-boundary="-1">Try y₀ = −1</button>
+        <button class="lab-button" type="button" data-boundary="1">Try y₀ = 1</button>
+      </div>
+      <button class="lab-button lab-primary" type="button" id="s14-reveal" aria-pressed="false">Show solution curve</button>
+      <label class="lab-check" for="s14-extras"><input type="checkbox" id="s14-extras"><span id="s14-extras-label">Show equilibrium y = 0</span></label>
+      <label class="lab-label" for="s14-density">Grid density: <span id="s14-density-value" class="lab-numbers"></span>
+        <input class="lab-slider" id="s14-density" type="range" min="9" max="25" step="2" value="17">
+      </label>
+    </div>
+    <div class="s14-visual">
+      <p id="s14-prompt"></p>
+      <svg id="s14-plot" role="img" aria-label="Slope field and selected initial point"></svg>
+      <div class="lab-row lab-small s14-legend">
+        <span><i class="s14-field"></i>Slope field</span>
+        <span><i class="s14-initial"></i>Initial point &amp; tangent</span>
+        <span id="s14-solution-legend" hidden><i class="s14-solution"></i>Selected solution</span>
+        <span id="s14-other-legend" hidden><i class="s14-other"></i><span id="s14-other-label"></span></span>
+      </div>
+      <p class="lab-small">Click the plot to choose a point, or use the sliders. Curves are drawn from exact formulas.</p>
+      <p id="s14-status" class="s14-status" role="status"></p>
+    </div>
+  </div>
+  <details class="lab-explanation" id="s14-details">
+    <summary>Solution formula and interval</summary>
+    <div id="s14-formula"></div>
+  </details>
+</section>
+<section class="lab-explanation">
+  <h2>Read the field before separating variables</h2>
+  <p>The differential equation gives the slope at each valid point. An initial condition selects a curve through one point. When separating variables, check any values excluded by division, and keep the original equation’s domain in view.</p>
+  <p>For the square-root equation, y = ±1 are constant solutions lost when dividing by √(1 − y²). For the implicit example, y = 1 is excluded from the differential equation itself. These are different situations.</p>
+  <p>Continue with <a href="../separable/">the equal-area exploration</a> or revisit <a href="../slope-fields/">slope fields and local existence and uniqueness</a>.</p>
+</section>
+<style>
+  #s14-explorer .s14-workspace { display:grid;grid-template-columns:250px minmax(0,1fr);gap:26px;align-items:start; }
+  #s14-explorer .s14-workspace > div { min-width:0; }
+  #s14-explorer h3 { font-size:15px;margin:0 0 16px; }
+  #s14-explorer #s14-source { margin:18px 0 6px; }
+  #s14-explorer #s14-heading { margin-bottom:8px; }
+  #s14-explorer #s14-equation { margin:0 0 6px; }
+  #s14-explorer #s14-domain { margin:0 0 22px; }
+  #s14-explorer #s14-ivp { margin:6px 0; }
+  #s14-explorer #s14-prompt { margin:0 0 10px;min-height:44px; }
+  #s14-explorer #s14-plot { display:block;width:100%;touch-action:pan-y; }
+  #s14-explorer #s14-plot text { fill:var(--site-ink);font-size:12px; }
+  #s14-explorer .lab-check { margin:14px 0; }
+  #s14-explorer .s14-legend { margin:12px 0 0;gap:6px 16px; }
+  #s14-explorer .s14-legend span { display:inline-flex;align-items:center;gap:7px; }
+  #s14-explorer .s14-legend i { display:inline-block;width:21px;border-top:2px solid var(--site-muted); }
+  #s14-explorer .s14-legend .s14-initial { border-color:var(--site-orange); }
+  #s14-explorer .s14-legend .s14-solution { border-color:var(--site-purple);border-top-width:3px; }
+  #s14-explorer .s14-legend .s14-other { border-color:var(--site-teal);border-top-style:dashed; }
+  #s14-explorer .s14-status { border-left:3px solid var(--site-teal);padding:10px 14px;background:var(--site-soft);margin-top:14px; }
+  #s14-explorer .s14-status[data-invalid="true"] { border-left-color:var(--site-orange); }
+  #s14-explorer #s14-formula .lab-math { font-size:18px; }
+  @media(max-width:760px){#s14-explorer .s14-workspace{grid-template-columns:minmax(0,1fr);gap:20px;}}
+</style>
+<script src="../../../assets/vendor/d3.v7.9.0.min.js"></script>
+<script>// Exact, domain-aware curves for the three equations in Lecture 04.
+(function(root){
+  const pi=Math.PI,clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+  const polynomial=x=>x*x*x+2*x*x+2*x;
+  const configs=Object.freeze({
+    gaussian:Object.freeze({name:'Problem 1 · A family of bell-shaped curves',xmin:-3,xmax:3,ymin:-3,ymax:3,x0:0,y0:2,
+      equation:'y′ + 2xy = 0',field:'y′ = −2xy',source:'Lecture 04 · page 3 · Section 1.4, Problem 1',
+      domain:'The slope is defined for every real x and y.',
+      prompt:'Where are the tangents horizontal? Predict how a solution changes on either side of x = 0.',
+      slope:(x,y)=>-2*x*y,valid:()=>true}),
+    radical:Object.freeze({name:'Problem 5 · Remember the constant solutions',xmin:-.5,xmax:9,ymin:-1.4,ymax:1.4,x0:1,y0:0,
+      equation:'2√x · y′ = √(1 − y²)',field:'y′ = √(1 − y²) / (2√x)',source:'Lecture 04 · pages 7, 11–12 · Section 1.4, Problem 5',
+      domain:'For the explicit slope field: x > 0 and −1 ≤ y ≤ 1. The shaded region has no real, defined slope.',
+      prompt:'Every slope is nonnegative. Can a valid solution ever turn downward? What happens at y = ±1?',
+      slope:(x,y)=>x>0&&Math.abs(y)<=1?Math.sqrt(Math.max(0,1-y*y))/(2*Math.sqrt(x)):null,
+      valid:(x,y)=>x>0&&Math.abs(y)<=1}),
+    implicit:Object.freeze({name:'Implicit example · Let the initial value choose a branch',xmin:-3,xmax:2.5,ymin:-6,ymax:8,x0:0,y0:-1,
+      equation:'y′ = (3x² + 4x + 2) / (2(y − 1))',field:'y′ = (3x² + 4x + 2) / (2(y − 1))',source:'Lecture 04 · pages 13, 18 · Implicit solution and y(0) = −1',
+      domain:'The slope is undefined on y = 1. Neither a solution nor its initial point can lie on that line.',
+      prompt:'The implicit relation has two branches. Which one passes through the initial point, and where must it stop?',
+      slope:(x,y)=>y!==1?(3*x*x+4*x+2)/(2*(y-1)):null,valid:(_x,y)=>y!==1})
+  });
+  const ids=Object.keys(configs);
+  const fresh=(id='gaussian')=>({example:ids.includes(id)?id:'gaussian',x0:configs[ids.includes(id)?id:'gaussian'].x0,y0:configs[ids.includes(id)?id:'gaussian'].y0,revealed:false,extras:false,density:17});
+  function restore(raw){
+    if(raw?.version!==1||!ids.includes(raw.example))return fresh();
+    const s=fresh(raw.example),c=configs[s.example];
+    for(const k of ['x0','y0'])if(Number.isFinite(raw[k]))s[k]=clamp(raw[k],c[k[0]+'min'],c[k[0]+'max']);
+    s.revealed=raw.revealed===true;s.extras=raw.extras===true;
+    if(Number.isFinite(raw.density))s.density=2*Math.round((clamp(raw.density,9,25)-1)/2)+1;
+    return s;
+  }
+  // P is strictly increasing because P'(x) = 3(x + 2/3)^2 + 2/3 > 0.
+  function leftEndpoint(C){
+    let lo=-1,hi=1;
+    while(polynomial(lo)+C>0)lo*=2;
+    while(polynomial(hi)+C<0)hi*=2;
+    for(let i=0;i<90;i++){const mid=(lo+hi)/2;if(polynomial(mid)+C>0)hi=mid;else lo=mid;}
+    return (lo+hi)/2;
+  }
+  function solution(id,x0,y0){
+    const c=configs[id];
+    if(!c||!Number.isFinite(x0)||!Number.isFinite(y0)||!c.valid(x0,y0))return null;
+    if(id==='gaussian')return {value:x=>y0*Math.exp(x0*x0-x*x),alternate:null,left:-Infinity,right:Infinity,C:y0*Math.exp(x0*x0)};
+    if(id==='radical'){
+      const C=Math.asin(y0)-Math.sqrt(x0);
+      const passage=x=>x>0?Math.sin(clamp(Math.sqrt(x)+C,-pi/2,pi/2)):null;
+      const boundary=Math.abs(y0)===1;
+      return {value:boundary?(x=>x>0?y0:null):passage,alternate:boundary?passage:null,left:0,right:Infinity,C,
+        lowerJoin:-pi/2-C>0?(-pi/2-C)**2:null,upperJoin:(pi/2-C)**2};
+    }
+    const C=(y0-1)**2-polynomial(x0),left=leftEndpoint(C),sign=Math.sign(y0-1);
+    const value=(x,s)=>x>left&&polynomial(x)+C>0?1+s*Math.sqrt(polynomial(x)+C):null;
+    return {value:x=>value(x,sign),alternate:x=>value(x,-sign),left,right:Infinity,C,sign};
+  }
+  function sample(fn,left,right,count=700){
+    return Array.from({length:count+1},(_,i)=>{const x=left+(right-left)*i/count;return{x,y:fn(x)};});
+  }
+  const api=Object.freeze({configs,ids,fresh,restore,polynomial,leftEndpoint,solution,sample});
+  if(typeof module==='object'&&module.exports)module.exports=api;else root.Amath351SeparableExamples=api;
+})(globalThis);
+</script>
+<script>
+(()=>{
+  const root=document.getElementById('s14-explorer'),el=id=>root.querySelector('#s14-'+id),m=Amath351SeparableExamples,key='amath351:separable-examples:v1';
+  let state=m.fresh();try{state=m.restore(JSON.parse(localStorage.getItem(key)));}catch(_){}
+  const fmt=(x,n=2)=>(Math.abs(x)<1e-10?0:x).toFixed(n);
+  const save=()=>{try{localStorage.setItem(key,JSON.stringify({version:1,...state}));}catch(_){}};
+  function sync(){
+    const c=m.configs[state.example],s=m.solution(state.example,state.x0,state.y0),radical=state.example==='radical',implicit=state.example==='implicit';
+    root.querySelectorAll('[data-example]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.example===state.example)));
+    el('heading').textContent=c.name;el('source').textContent=c.source;el('equation').textContent=c.equation;
+    el('domain').textContent=c.domain;el('prompt').textContent=c.prompt;
+    for(const k of ['x0','y0']){el(k).min=c[k[0]+'min'];el(k).max=c[k[0]+'max'];el(k).value=state[k];el(k+'-value').textContent=fmt(state[k]);}
+    el('ivp').textContent=`y(${fmt(state.x0)}) = ${fmt(state.y0)}`;
+    el('initial-note').textContent=implicit?'The lecture uses y(0) = −1. Reset restores that initial value.':`Suggested classroom initial value: y(${c.x0}) = ${c.y0}. You can change it.`;
+    el('boundaries').hidden=!radical;
+    el('reveal').disabled=!s;el('reveal').textContent=state.revealed&&s?'Hide solution curve':'Show solution curve';
+    el('reveal').setAttribute('aria-pressed',String(Boolean(state.revealed&&s)));
+    el('extras').checked=state.extras;
+    el('extras-label').textContent=implicit?'Show the other implicit branch':radical?'Show equilibria y = ±1':'Show equilibrium y = 0';
+    el('density').value=state.density;el('density-value').textContent=`${state.density} × ${state.density}`;
+    const boundary=radical&&Math.abs(state.y0)===1;
+    el('solution-legend').hidden=!(s&&state.revealed);
+    el('other-legend').hidden=!(state.extras&&(!implicit||s)||boundary&&state.revealed&&s);
+    el('other-label').textContent=s&&boundary&&state.revealed?(state.extras?'Equilibria & a second IVP solution':'Another solution with the same initial value'):implicit?'Other branch · different initial value':'Equilibrium solution(s)';
+    el('status').dataset.invalid=String(!s);
+    if(!s){
+      el('status').textContent=implicit?'No solution can satisfy this initial condition: f(x,y) is undefined at y = 1. Move the initial point off that line.':'This point is outside the explicit slope field’s domain. Choose x₀ > 0 and −1 ≤ y₀ ≤ 1.';
+      el('formula').innerHTML='<p>Choose an initial point in the domain to see its solution formula.</p>';return;
+    }
+    const slope=c.slope(state.x0,state.y0);
+    const point=`At the initial point, y′ = ${fmt(slope,3)}. `;
+    el('status').textContent=point+(!state.revealed?'Predict the solution, then select “Show solution curve.”':implicit?`The initial value selects the ${s.sign<0?'lower':'upper'} branch. Its maximal interval is (${fmt(s.left,3)}, ∞); the point on y = 1 is excluded.`:radical?boundary?'The solid curve is a constant solution. The nonconstant dashed curve is another solution through the same point, so this boundary initial value does not select a unique local solution.':'The curve follows the increasing part of a sine, then stays at y = 1 after reaching it. A descending sine would not follow this field.':'The solution follows the tangents for every real x. Changing the initial value changes the curve, not the field.');
+    if(!implicit&&!radical)el('formula').innerHTML=`<p class="lab-math">y(x) = y₀ e<sup>x₀² − x²</sup> = ${fmt(s.C,3)} e<sup>−x²</sup></p><p>Maximal interval: all real x. The equilibrium y = 0 is included when y₀ = 0. Dividing by y while separating variables requires checking this case separately.</p>`;
+    else if(implicit)el('formula').innerHTML=`<p class="lab-math">(y − 1)² = x³ + 2x² + 2x + C, &nbsp; C = ${fmt(s.C,3)}.</p><p class="lab-math">y(x) = 1 ${s.sign<0?'−':'+'} √(x³ + 2x² + 2x + C).</p><p>Let α be the unique real root of x³ + 2x² + 2x + C = 0. Here α ≈ ${fmt(s.left,4)}, and the maximal solution interval is (α, ∞). The radicand must be strictly positive: at α the curve approaches y = 1, where the ODE is undefined. The other square-root branch does not satisfy the selected initial value.</p><p>For the lecture’s y(0) = −1, C = 4 and α = −2, so y = 1 − √((x + 2)(x² + 2)) on (−2, ∞).</p>`;
+    else{
+      el('formula').innerHTML=`<p class="lab-math">θ(x) = √x + C, &nbsp; C = arcsin(y₀) − √x₀ = ${fmt(s.C,3)}.</p><p>On the interior part of the curve, y = sin θ with −π/2 &lt; θ &lt; π/2. This restriction makes cos θ ≥ 0, as the original square root requires.</p><p>The displayed continuation uses y = −1 when θ ≤ −π/2, y = sin θ in between, and y = 1 when θ ≥ π/2. It is differentiable at each join and satisfies the equation for x &gt; 0. Both equilibria y = ±1 also solve the equation.</p>`+(boundary?'<p>For this boundary initial value, the solid curve is the equilibrium and the dashed curve is the displayed continuation. They differ arbitrarily close to the initial x on one side. Other boundary solutions may wait before leaving −1 or reach 1 earlier. These curves illustrate nonuniqueness directly.</p>':'<p>The displayed continuation is defined on (0, ∞). The interior initial value selects a unique local solution; we never continue the sine into a decreasing arc.</p>');
+    }
+  }
+  function draw(){
+    const c=m.configs[state.example],s=m.solution(state.example,state.x0,state.y0),radical=state.example==='radical',implicit=state.example==='implicit';
+    const node=el('plot'),w=Math.max(250,node.parentElement.getBoundingClientRect().width),h=w<420?360:450;
+    const b={left:45,right:w-16,top:26,bottom:h-42};
+    const xs=d3.scaleLinear().domain([c.xmin,c.xmax]).range([b.left,b.right]);
+    const ys=d3.scaleLinear().domain([c.ymin,c.ymax]).range([b.bottom,b.top]);
+    const svg=d3.select(node).attr('viewBox',`0 0 ${w} ${h}`).attr('height',h);svg.selectAll('*').remove();
+    svg.append('defs').append('clipPath').attr('id','s14-clip').append('rect').attr('x',b.left).attr('y',b.top).attr('width',b.right-b.left).attr('height',b.bottom-b.top);
+    const marks=svg.append('g').attr('clip-path','url(#s14-clip)');
+    const line=(x1,y1,x2,y2,color,width=1,dash=null)=>{const p=marks.append('path').attr('d',`M${xs(x1)},${ys(y1)}L${xs(x2)},${ys(y2)}`).attr('fill','none').attr('stroke',color).attr('stroke-width',width);if(dash)p.attr('stroke-dasharray',dash);return p;};
+    const text=(x,y,t,anchor='start')=>svg.append('text').attr('x',x).attr('y',y).attr('text-anchor',anchor).text(t);
+    if(radical){
+      marks.append('rect').attr('x',b.left).attr('y',b.top).attr('width',b.right-b.left).attr('height',b.bottom-b.top).attr('fill','var(--site-soft)').attr('data-excluded-region','');
+      marks.append('rect').attr('x',xs(0)).attr('y',ys(1)).attr('width',xs(c.xmax)-xs(0)).attr('height',ys(-1)-ys(1)).attr('fill','var(--site-paper)');
+      line(0,c.ymin,0,c.ymax,'var(--site-orange)',1.5,'4 4');
+      text(b.right,15,'Field: x > 0, |y| ≤ 1','end');
+    }else if(implicit){
+      line(c.xmin,1,c.xmax,1,'var(--site-orange)',1.5,'5 5').attr('data-excluded-line','');
+      text(b.right,15,'y = 1 excluded','end');
+    }
+    for(const x of xs.ticks(w<420?4:7))line(x,c.ymin,x,c.ymax,'var(--site-line)').attr('stroke-opacity',.55);
+    for(const y of ys.ticks(7))line(c.xmin,y,c.xmax,y,'var(--site-line)').attr('stroke-opacity',.55);
+    const sx=xs(1)-xs(0),sy=ys(0)-ys(1);
+    function tangent(x,y,len,color,width,tag){
+      const slope=c.slope(x,y);if(slope===null||!Number.isFinite(slope))return;
+      const norm=Math.hypot(sx,sy*slope),dx=len*sx/norm/2,dy=-len*sy*slope/norm/2;
+      return marks.append('path').attr('d',`M${xs(x)-dx},${ys(y)-dy}L${xs(x)+dx},${ys(y)+dy}`).attr('fill','none').attr('stroke',color).attr('stroke-width',width).attr('data-slope',slope).attr(tag,'');
+    }
+    const n=state.density,fieldXmin=radical?0:c.xmin,fieldYmin=radical?-1:c.ymin,fieldYmax=radical?1:c.ymax;
+    const len=Math.min(23,(b.right-b.left)/(n-1)*.7,(b.bottom-b.top)/(n-1)*.7);
+    for(let i=0;i<n;i++)for(let j=0;j<n;j++){
+      const x=fieldXmin+(c.xmax-fieldXmin)*i/(n-1),y=fieldYmin+(fieldYmax-fieldYmin)*j/(n-1);
+      const t=tangent(x,y,len,'var(--site-muted)',1,'data-field-slope');if(t)t.attr('stroke-opacity',.65);
+    }
+    const path=d3.line().defined(p=>p.y!==null&&Number.isFinite(p.y)).x(p=>xs(p.x)).y(p=>ys(p.y));
+    function curve(fn,other=false,tag='data-selected-curve'){
+      const start=Math.max(c.xmin,s&&implicit?s.left+1e-8:radical?1e-7:c.xmin);
+      if(start>=c.xmax)return;
+      marks.append('path').datum(m.sample(fn,start,c.xmax)).attr('d',path).attr('fill','none').attr('stroke',other?'var(--site-teal)':'var(--site-purple)').attr('stroke-width',other?2:3).attr('stroke-dasharray',other?'6 4':null).attr(tag,'');
+    }
+    if(state.extras){
+      if(implicit&&s)curve(s.alternate,true,'data-other-branch');
+      else if(radical)for(const y of [-1,1])curve(x=>x>0?y:null,true,'data-equilibrium');
+      else if(!implicit)curve(()=>0,true,'data-equilibrium');
+    }
+    if(state.revealed&&s){
+      if(radical&&s.alternate)curve(s.alternate,true,'data-boundary-alternative');
+      curve(s.value);
+      if(implicit&&s.left>=c.xmin&&s.left<=c.xmax){
+        line(s.left,c.ymin,s.left,c.ymax,'var(--site-orange)',1,'3 4');
+        marks.append('circle').attr('cx',xs(s.left)).attr('cy',ys(1)).attr('r',4.5).attr('fill','var(--site-paper)').attr('stroke','var(--site-orange)').attr('stroke-width',2).attr('data-open-endpoint','');
+      }
+    }
+    if(s)tangent(state.x0,state.y0,w<420?30:44,'var(--site-orange)',3,'data-initial-tangent');
+    marks.append('circle').attr('cx',xs(state.x0)).attr('cy',ys(state.y0)).attr('r',5).attr('fill','var(--site-paper)').attr('stroke','var(--site-orange)').attr('stroke-width',2.5).attr('data-initial-point','');
+    const xa=svg.append('g').attr('transform',`translate(0,${b.bottom})`).call(d3.axisBottom(xs).ticks(w<420?4:7).tickSize(0).tickPadding(9));
+    const ya=svg.append('g').attr('transform',`translate(${b.left},0)`).call(d3.axisLeft(ys).ticks(7).tickSize(0).tickPadding(9));
+    xa.select('.domain').remove();ya.select('.domain').remove();
+    svg.append('rect').attr('x',b.left).attr('y',b.top).attr('width',b.right-b.left).attr('height',b.bottom-b.top).attr('fill','none').attr('stroke','var(--site-line)');
+    text(b.right,h-4,'x','end');text(b.left,15,'y');
+    svg.append('rect').attr('x',b.left).attr('y',b.top).attr('width',b.right-b.left).attr('height',b.bottom-b.top).attr('fill','transparent').style('cursor','crosshair').on('click',event=>{
+      const p=d3.pointer(event,node);state.x0=Math.round(xs.invert(p[0])*20)/20;state.y0=Math.round(ys.invert(p[1])*20)/20;render();save();
+    });
+    svg.attr('aria-label',`${c.field}. Initial point (${fmt(state.x0)}, ${fmt(state.y0)}). ${state.revealed&&s?'Exact solution shown.':'Solution hidden.'} ${c.domain}`);
+  }
+  function render(){sync();draw();}
+  root.querySelectorAll('[data-example]').forEach(b=>b.addEventListener('click',()=>{state=m.fresh(b.dataset.example);el('details').open=false;render();save();}));
+  for(const k of ['x0','y0','density']){el(k).addEventListener('input',()=>{state[k]=Number(el(k).value);render();});el(k).addEventListener('change',save);}
+  el('reset').addEventListener('click',()=>{const c=m.configs[state.example];state.x0=c.x0;state.y0=c.y0;render();save();});
+  el('reveal').addEventListener('click',()=>{state.revealed=!state.revealed;render();save();});
+  el('extras').addEventListener('change',()=>{state.extras=el('extras').checked;render();save();});
+  root.querySelectorAll('[data-boundary]').forEach(b=>b.addEventListener('click',()=>{state.y0=Number(b.dataset.boundary);if(state.x0<=0)state.x0=1;render();save();}));
+  new ResizeObserver(draw).observe(root);render();
+})();
+</script>
+</main>
+<nav class="site-example-nav" aria-label="Example navigation"><a href="../separable/"><small>Previous example</small>← Match two areas</a><a class="site-all-examples" href="../">All chapter examples</a><span></span></nav>
+    <footer class="site-footer"><span>University of Washington · Autumn 2026</span><div><a href="https://shzhang3.github.io/#teaching">Shiheng Zhang · Teaching</a><a href="https://github.com/shzhang3/amath351-lab" target="_blank" rel="noopener">Contribute on GitHub ↗</a></div></footer>
+  </div>
+
+</body>
+</html>

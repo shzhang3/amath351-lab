@@ -145,6 +145,8 @@ def main():
             elif example["slug"] == "slope-fields":
                 theorem = replace((SOURCE / "existence-explorer.html").read_text(), EXISTENCE_MODEL=(SOURCE / "existence-model.cjs").read_text())
                 replacements = {"SLOPE_FIELD_MODEL":(SOURCE / "slope-field-model.cjs").read_text(), "D3_URL":href(path,"assets/vendor/d3.v7.9.0.min.js"), "THEOREM_EXPLORER":theorem}
+            elif example["slug"] == "separable-examples":
+                replacements = {"SEPARABLE_EXAMPLES_MODEL":(SOURCE / "separable-examples-model.cjs").read_text(), "D3_URL":href(path,"assets/vendor/d3.v7.9.0.min.js"), "AREA_URL":href(path,"chapters/first-order/separable/index.html"), "SLOPE_URL":href(path,"chapters/first-order/slope-fields/index.html")}
             fragment = replace(fragment, **replacements)
             page(path, example["title"], example["description"], fragment, chapter=chapter, example=example, index=i)
 

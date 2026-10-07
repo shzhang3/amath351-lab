@@ -154,6 +154,25 @@ Source and mathematical helpers are in **src/existence-explorer.html** and
 **src/existence-model.cjs**. Playback pauses on edits and page hiding; reduced
 motion uses discrete advances.
 
+## Lecture 04: separable equations in the slope field
+
+[From a field to a particular solution](https://shzhang3.github.io/amath351-lab/chapters/first-order/separable-examples/)
+contains the three equations in the Section 1.4 lecture: y′ = −2xy,
+2√x y′ = √(1 − y²), and y′ = (3x² + 4x + 2)/(2(y − 1)).
+Students first see the field, choose an initial point using sliders or the plot,
+and reveal its exact solution. The first two suggested initial values are
+y(0) = 2 and y(1) = 0; the third preserves the lecture's y(0) = −1.
+
+The square-root equation shows only its real explicit-slope domain, increasing
+sine arcs with differentiable constant continuations, and the equilibria lost
+by division. At boundary initial values, a constant solution and a distinct
+solution through the same point are shown together. The implicit example
+selects the branch from the initial value and excludes its finite left endpoint
+on y = 1. An optional overlay shows the other implicit branch. Invalid initial
+points are explained instead of being silently moved or integrated.
+Source and analytic helpers: **src/separable-examples.html** and
+**src/separable-examples-model.cjs**. No numerical solver is used.
+
 ## Edit and build
 
 **src/catalog.json** defines the three chapters and their example lists. An
@@ -161,7 +180,8 @@ example with a `source` is published; an example without one is shown as planned
 Add an example's source fragment and its catalog entry to extend the lab.
 
 The experiment sources are **src/experiment.html**, **src/prologue.html**,
-**src/velocity.html**, **src/planet-gzyx.html**, **src/slope-fields.html**, and **src/separable.html**.
+**src/velocity.html**, **src/planet-gzyx.html**, **src/slope-fields.html**,
+**src/separable.html**, and **src/separable-examples.html**.
 Exact mathematical helpers live in the **-model.cjs** files, embedded during the
 build; the two Section 1.2 experiments share **src/motion-model.cjs**, and Section
 1.3 uses **src/slope-field-model.cjs**. **src/page.html** and
