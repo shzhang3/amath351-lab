@@ -21,7 +21,7 @@
   <div class="site-kicker">Lecture 05 · Section 1.5 · Problem 14</div>
   <h1>What does an integrating factor change?</h1>
   <p class="lab-math">xy′ − 3y = x³, &nbsp; y(1) = 10.</p>
-  <p>Read the slope field, reveal the solution through the initial point, then multiply by the integrating factor. Move along the curve to connect each tangent to the differential equation.</p>
+  <p>Read the slope field on both sides of zero, reveal the solution through the initial point, then multiply by the integrating factor. Explore why the initial value at x = 1 determines only the right branch.</p>
 </section>
 <section id="if-explorer" class="lab-interactive" aria-labelledby="if-heading">
   <h2 id="if-heading">A solution before and after multiplying by x⁻³</h2>
@@ -33,19 +33,27 @@
   <p id="if-stage-note"></p>
   <div class="if-workspace">
     <div class="if-controls">
-      <label class="lab-label" for="if-initial">Initial value y(1): <span id="if-initial-value" class="lab-numbers">10.0</span>
+      <label class="lab-label" for="if-initial">Right: y(1) = C₊ = <span id="if-initial-value" class="lab-numbers">10.0</span>
         <input type="range" class="lab-slider" id="if-initial" min="-4" max="12" step="0.5" value="10">
       </label>
-      <button type="button" class="lab-button" id="if-reset">Restore lecture IVP</button>
-      <p class="lab-small">The lecture uses y(1) = 10. Changing this value selects another solution of the same equation.</p>
+      <label class="lab-label" for="if-left">Left: C₋ = <span id="if-left-value" class="lab-numbers">10.0</span>
+        <input type="range" class="lab-slider" id="if-left" min="-4" max="12" step="0.5" value="10">
+      </label>
+      <button type="button" class="lab-button" id="if-reset">Restore lecture setup</button>
+      <p class="lab-small">The lecture fixes C₊ = 10. C₋ is independent; its starting value of 10 is just a display choice. Reveal the curves to see the effect of each slider.</p>
       <div id="if-motion" hidden>
-        <label class="lab-label" for="if-x">Inspect x: <span id="if-x-value" class="lab-numbers">1.00</span>
+        <div class="lab-controls" role="group" aria-label="Choose a branch to inspect">
+          <button type="button" class="lab-button lab-stage-button" data-if-side="-1" aria-pressed="false">Left · x &lt; 0</button>
+          <button type="button" class="lab-button lab-stage-button" data-if-side="1" aria-pressed="true">Right · x &gt; 0</button>
+        </div>
+        <label class="lab-label" for="if-x">Distance from zero |x|: <span id="if-x-value" class="lab-numbers">1.00</span>
           <input type="range" class="lab-slider" id="if-x" min="0.05" max="2" step="0.01" value="1">
         </label>
         <div class="lab-controls">
           <button type="button" class="lab-button lab-primary" id="if-play">Follow the solution</button>
           <button type="button" class="lab-button" id="if-at-initial">Back to x = 1</button>
         </div>
+        <p class="lab-small">Animation follows increasing x within the selected side. It stops before zero.</p>
       </div>
       <div class="if-values">
         <p id="if-point" class="lab-numbers"></p>
@@ -55,14 +63,14 @@
           <p id="if-z" class="lab-numbers"></p>
         </div>
       </div>
-      <p class="lab-small">We work on I = (0, ∞), the interval containing x = 1 on which the standard-form coefficients are continuous.</p>
+      <p class="lab-small">Two intervals: (−∞, 0) and (0, ∞). The standard-form slope is undefined at x = 0.</p>
     </div>
     <div class="if-visual">
       <div class="if-charts">
         <div>
           <h3>Original equation</h3>
           <p class="lab-math if-chart-equation">y′ = 3y/x + x²</p>
-          <svg id="if-original" role="img" aria-label="Original slope field for positive x"></svg>
+          <svg id="if-original" role="img" aria-label="Original slope field on both sides of zero"></svg>
         </div>
         <div id="if-transformed-panel" hidden>
           <h3>After the integrating factor</h3>
@@ -73,7 +81,8 @@
       <div class="lab-row lab-small if-legend">
         <span><i class="if-field-key"></i>Slope field</span>
         <span><i class="if-point-key"></i>Initial point</span>
-        <span id="if-curve-key" hidden><i class="if-curve-key"></i>Exact solution</span>
+        <span id="if-curve-key" hidden><i class="if-curve-key"></i>Right branch · C₊</span>
+        <span id="if-left-key" hidden><i class="if-left-key"></i>Left branch · C₋</span>
         <span><i class="if-tangent-key"></i>Current tangent</span>
       </div>
       <p id="if-caption" class="lab-small"></p>
@@ -82,23 +91,24 @@
   </div>
   <div id="if-derivation" hidden>
     <div class="if-steps">
-      <div><h3>1 · Standard form</h3><p class="lab-math">y′ − (3/x)y = x²</p><p>Divide by x on x &gt; 0.</p></div>
-      <div><h3>2 · Multiply</h3><p class="lab-math">q(x) = e<sup>−3 ln x</sup> = x⁻³</p><p class="lab-math">(x⁻³y)′ = 1/x</p></div>
-      <div><h3>3 · Integrate and use the initial value</h3><p class="lab-math">y/x³ = ln x + C</p><p id="if-constant" class="lab-math"></p></div>
+      <div><h3>1 · Standard form</h3><p class="lab-math">y′ − (3/x)y = x²</p><p>Divide by x on either interval, excluding zero.</p></div>
+      <div><h3>2 · Multiply</h3><p class="lab-math">Choose q(x) = x⁻³</p><p class="lab-math">(x⁻³y)′ = 1/x</p><p class="lab-small">On x &lt; 0, this is −1 times e<sup>−3 ln|x|</sup>. A nonzero constant multiple is also a valid integrating factor.</p></div>
+      <div><h3>3 · Integrate on each interval</h3><p class="lab-math">y/x³ = ln|x| + C</p><p id="if-constant" class="lab-math"></p></div>
     </div>
     <p id="if-answer" class="lab-math"></p>
   </div>
 </section>
 <details class="lab-explanation">
-  <summary>Why do we use x &gt; 0 even though the curve approaches the origin?</summary>
+  <summary>Why are the two constants independent, even though both curves approach the origin?</summary>
   <p>In standard form, P(x) = −3/x and Q(x) = x². Both are continuous on (0, ∞), which contains the initial x = 1. The linear existence and uniqueness theorem gives one solution on that entire interval, not just near x = 1.</p>
-  <p>For every finite C, x³(ln x + C) → 0 as x → 0⁺. A finite limit does not make the standard-form equation defined at zero. The open circle marks a limit, not an included point of the displayed solution.</p>
-  <p>The original equation xy′ − 3y = x³ degenerates at x = 0. It can admit differentiable continuations through the origin, but this theorem does not determine them uniquely. For example, y = x³(ln|x| + C₋) on x &lt; 0, y(0) = 0, and the chosen positive-side solution fit together for any C₋. The plots here stay on x &gt; 0.</p>
+  <p>On the separate interval (−∞, 0), the same calculation gives y = x³(ln|x| + C₋). The initial value y(1) says nothing about C₋. Try changing C₋ while keeping C₊ = 10: the right branch stays fixed.</p>
+  <p>For any finite C₋ and C₊, y → 0 and y′ → 0 as x approaches zero from either side. The open circle marks their common limit. No standard-form slope is assigned at x = 0.</p>
+  <p>The original equation xy′ − 3y = x³ degenerates at x = 0. Setting y(0) = 0 joins these branches into a differentiable solution of that original equation, with y′(0) = 0. Every choice of C₋ works, so continuation through zero is not unique. There is no contradiction: the standard-form uniqueness theorem does not apply across zero.</p>
 </details>
 <details class="lab-explanation">
   <summary>What changed in the second field?</summary>
   <p>Multiplying by x⁻³ packages the two terms y′ − 3y/x into the derivative of one quantity, z = x⁻³y. The new slope z′ = 1/x depends only on x: every point in the same vertical column has the same slope. Different initial values translate the z curves vertically.</p>
-  <p>The transformed graph is z = ln x + C plotted against x, so it is a logarithmic curve. The two graphs use different vertical scales. Both use exact formulas, and the moving points have the same x coordinate.</p>
+  <p>The transformed graph is z = ln|x| + C on each interval, with independent constants. Unlike y, z tends to −∞ on both sides of zero. The two graphs use different vertical scales. Both use exact formulas, and the moving points have the same x coordinate.</p>
 </details>
 <style>
   #if-explorer .if-workspace {display:grid;grid-template-columns:230px minmax(0,1fr);gap:26px;align-items:start;}
@@ -116,6 +126,7 @@
   #if-explorer .if-legend i {display:inline-block;width:21px;border-top:2px solid var(--site-muted);}
   #if-explorer .if-legend .if-point-key {width:10px;height:10px;border:2px solid var(--site-purple);border-radius:50%;}
   #if-explorer .if-legend .if-curve-key {border-color:var(--site-purple);border-top-width:3px;}
+  #if-explorer .if-legend .if-left-key {border-color:var(--site-teal);border-top-width:3px;border-top-style:dashed;}
   #if-explorer .if-legend .if-tangent-key {border-color:var(--site-orange);}
   #if-explorer .if-message {padding:12px 15px;background:var(--site-soft);border-left:3px solid var(--site-purple);}
   #if-explorer .if-steps {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;border-top:1px solid var(--site-line);padding-top:24px;margin-top:24px;}
@@ -127,22 +138,25 @@
 <script src="../../../assets/vendor/d3.v7.9.0.min.js"></script>
 <script>// Lecture 05, Section 1.5 Problem 14: x*y' - 3*y = x^3, y(1) = b.
 (function(root){
-  const positive=x=>Number.isFinite(x)&&x>0;
-  const slope=(x,y)=>positive(x)?3*y/x+x*x:null;
-  const solution=(x,b=10)=>positive(x)?x*x*x*(Math.log(x)+b):null;
-  const factor=x=>positive(x)?1/(x*x*x):null;
-  const transformed=(x,b=10)=>positive(x)?Math.log(x)+b:null;
-  const transformedSlope=x=>positive(x)?1/x:null;
-  const fresh=()=>({stage:0,initial:10,x:1});
+  const nonzero=x=>Number.isFinite(x)&&x!==0;
+  const slope=(x,y)=>nonzero(x)?3*y/x+x*x:null;
+  const solution=(x,b=10)=>nonzero(x)?x*x*x*(Math.log(Math.abs(x))+b):null;
+  // x^-3 is a valid integrating factor on either interval. On x < 0 it
+  // differs from exp(-3 ln|x|) by the nonzero constant -1.
+  const factor=x=>nonzero(x)?1/(x*x*x):null;
+  const transformed=(x,b=10)=>nonzero(x)?Math.log(Math.abs(x))+b:null;
+  const transformedSlope=x=>nonzero(x)?1/x:null;
+  const fresh=()=>({stage:0,initial:10,left:10,x:1});
   function restore(raw){
     const s=fresh();if(raw?.version!==1)return s;
     if(Number.isInteger(raw.stage))s.stage=Math.max(0,Math.min(2,raw.stage));
     if(Number.isFinite(raw.initial))s.initial=Math.round(Math.max(-4,Math.min(12,raw.initial))*2)/2;
-    if(Number.isFinite(raw.x))s.x=Math.max(.05,Math.min(2,raw.x));
+    if(Number.isFinite(raw.left))s.left=Math.round(Math.max(-4,Math.min(12,raw.left))*2)/2;
+    if(Number.isFinite(raw.x))s.x=(raw.x<0?-1:1)*Math.max(.05,Math.min(2,Math.abs(raw.x)));
     return s;
   }
   // Dense geometric samples near zero, without ever evaluating at zero.
-  const samples=()=>Array.from({length:601},(_,i)=>Math.exp(Math.log(1e-7)+(Math.log(2)-Math.log(1e-7))*i/600));
+  const samples=(side=1)=>Array.from({length:601},(_,i)=>(side<0?-1:1)*Math.exp(Math.log(1e-7)+(Math.log(2)-Math.log(1e-7))*(side<0?600-i:i)/600));
   const api=Object.freeze({slope,solution,factor,transformed,transformedSlope,fresh,restore,samples});
   if(typeof module==='object'&&module.exports)module.exports=api;else root.Amath351IntegratingFactor=api;
 })(globalThis);
@@ -154,45 +168,48 @@
   const reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
   let playing=false,frame=0,last=null;
   const fmt=(n,k=3)=>(Math.abs(n)<1e-10?0:n).toFixed(k);
+  const constant=x=>x<0?state.left:state.initial;
+  const term=c=>`${c<0?'−':'+'} ${fmt(Math.abs(c),1)}`;
   const save=()=>{try{window.localStorage.setItem(key,JSON.stringify({version:1,...state}));}catch(_){}};
   function pause(){playing=false;last=null;cancelAnimationFrame(frame);el('play').textContent=reduced.matches?'Advance along solution':'Follow the solution';}
   function sync(announce=true){
-    const x=state.stage===0?1:state.x,y=m.solution(x,state.initial);
+    const x=state.stage===0?1:state.x,y=m.solution(x,constant(x));
     root.dataset.stage=state.stage;
     root.querySelectorAll('[data-if-stage]').forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.ifStage)===state.stage)));
     el('stage-note').textContent=[
-      'At (1, y₀), the field gives the initial slope 3y₀ + 1. Predict how a curve through this point will bend.',
-      'The purple curve follows the field on x > 0. Move the orange point to compare its tangent with the surrounding slopes.',
+      'The field is defined on both sides of zero. At (1, y₀), the initial slope is 3y₀ + 1. Predict a curve through this point.',
+      'Purple is the right branch; dashed teal is the left branch. Change one constant and watch only that branch move. Inspect either side with the orange tangent.',
       'Compare the same x in both panels. Multiplying by x⁻³ turns the dependent variable into z = y/x³; the new slope no longer depends on z.'
     ][state.stage];
     el('initial').value=state.initial;el('initial-value').textContent=fmt(state.initial,1);
-    el('x').value=state.x;el('x-value').textContent=fmt(state.x,2);
-    el('motion').hidden=state.stage===0;el('curve-key').hidden=state.stage===0;
+    el('left').value=state.left;el('left-value').textContent=fmt(state.left,1);
+    el('x').value=Math.abs(state.x);el('x-value').textContent=fmt(Math.abs(state.x),2);
+    root.querySelectorAll('[data-if-side]').forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.ifSide)===Math.sign(state.x))));
+    for(const id of ['motion','curve-key','left-key'])el(id).hidden=state.stage===0;
     for(const id of ['transformed-panel','weighted-values','derivation'])el(id).hidden=state.stage!==2;
     el('play').textContent=playing?'Pause':reduced.matches?'Advance along solution':'Follow the solution';
     el('point').textContent=`x = ${fmt(x,2)} · y = ${fmt(y)}`;
     el('slope').textContent=`y′ = 3y/x + x² = ${fmt(m.slope(x,y))}`;
     el('q').textContent=`q(x) = x⁻³ = ${fmt(m.factor(x))}`;
-    el('z').textContent=`z = ${fmt(m.transformed(x,state.initial))} · z′ = ${fmt(m.transformedSlope(x))}`;
-    el('caption').textContent=state.stage===2?'Both moving points have the same x. Vertical scales differ; compare values, not apparent angles. The open circle at the origin marks an excluded limit.':state.stage===1?'The open circle at the origin is a limit, not an included point. The dashed boundary is x = 0, where the standard-form slope is undefined.':'The dashed boundary is x = 0, where the standard-form slope is undefined. The visible window shows only part of the interval (0, ∞).';
-    const formula=`y(x) = x³(ln x ${state.initial<0?'−':'+'} ${fmt(Math.abs(state.initial),1)}), x > 0.`;
+    el('z').textContent=`z = ${fmt(m.transformed(x,constant(x)))} · z′ = ${fmt(m.transformedSlope(x))}`;
+    el('caption').textContent=state.stage===2?'Both moving points share x; vertical scales differ. The y curves approach (0, 0), while both z curves descend without bound near zero.':state.stage===1?'The open circle marks the common limit (0, 0). The dashed line at x = 0 separates the two standard-form intervals.':'No field segment is drawn at x = 0. The visible window samples both intervals (−∞, 0) and (0, ∞).';
+    const formula=`x < 0: y = x³(ln|x| ${term(state.left)}).   x > 0: y = x³(ln x ${term(state.initial)}).`;
     el('message').setAttribute('aria-live',announce?'polite':'off');
-    el('message').textContent=state.stage===0?'The initial point is fixed at x = 1. Change its height to explore a different initial condition.':state.stage===1?formula:`After weighting: z(x) = ln x ${state.initial<0?'−':'+'} ${fmt(Math.abs(state.initial),1)}. At every point in a vertical column, z′ = 1/x.`;
-    el('constant').textContent=`At x = 1: C = y(1) = ${fmt(state.initial,1)}.`;
+    el('message').textContent=state.stage===0?'The initial point is on the right. Its height determines C₊; it gives no condition on C₋.':state.stage===1?formula:`Inspecting ${x<0?'left':'right'}: z(x) = ln|x| ${term(constant(x))}. The slope is 1/x: negative on the left, positive on the right.`;
+    el('constant').textContent=`C₊ = y(1) = ${fmt(state.initial,1)}. Independently choose C₋ = ${fmt(state.left,1)}.`;
     el('answer').textContent=formula;
   }
   function plot(transformed=false){
     const node=el(transformed?'transformed':'original'),w=Math.max(250,node.parentElement.getBoundingClientRect().width),h=w<420?350:430;
     const b={left:48,right:w-14,top:27,bottom:h-44};
-    const xs=d3.scaleLinear().domain([-.07,2.06]).range([b.left,b.right]);
-    const domain=transformed?[-8,14]:[-40,115],ys=d3.scaleLinear().domain(domain).range([b.bottom,b.top]);
-    const fn=x=>transformed?m.transformed(x,state.initial):m.solution(x,state.initial),slope=transformed?(x,_y)=>m.transformedSlope(x):m.slope;
+    const xs=d3.scaleLinear().domain([-2.06,2.06]).range([b.left,b.right]);
+    const domain=transformed?[-8,14]:[-115,115],ys=d3.scaleLinear().domain(domain).range([b.bottom,b.top]);
+    const fn=x=>transformed?m.transformed(x,constant(x)):m.solution(x,constant(x)),slope=transformed?(x,_y)=>m.transformedSlope(x):m.slope;
     const svg=d3.select(node).attr('viewBox',`0 0 ${w} ${h}`).attr('height',h);svg.selectAll('*').remove();
     const clip=transformed?'if-z-clip':'if-y-clip';
     svg.append('defs').append('clipPath').attr('id',clip).append('rect').attr('x',b.left).attr('y',b.top).attr('width',b.right-b.left).attr('height',b.bottom-b.top);
     const marks=svg.append('g').attr('clip-path',`url(#${clip})`);
-    marks.append('rect').attr('x',b.left).attr('y',b.top).attr('width',xs(0)-b.left).attr('height',b.bottom-b.top).attr('fill','var(--site-soft)');
-    for(const x of [.5,1,1.5,2])marks.append('path').attr('d',`M${xs(x)},${b.top}V${b.bottom}`).attr('stroke','var(--site-line)').attr('fill','none');
+    for(const x of [-2,-1.5,-1,-.5,.5,1,1.5,2])marks.append('path').attr('d',`M${xs(x)},${b.top}V${b.bottom}`).attr('stroke','var(--site-line)').attr('fill','none');
     for(const y of ys.ticks(6))marks.append('path').attr('d',`M${b.left},${ys(y)}H${b.right}`).attr('stroke','var(--site-line)').attr('fill','none');
     marks.append('path').attr('d',`M${xs(0)},${b.top}V${b.bottom}`).attr('stroke','var(--site-orange)').attr('stroke-dasharray','4 4').attr('data-zero-boundary','');
     const sx=xs(1)-xs(0),sy=ys(0)-ys(1);
@@ -201,11 +218,11 @@
       const norm=Math.hypot(sx,sy*v),dx=len*sx/norm/2,dy=-len*sy*v/norm/2;
       marks.append('path').attr('d',`M${xs(x)-dx},${ys(y)-dy}L${xs(x)+dx},${ys(y)+dy}`).attr('fill','none').attr('stroke',color).attr('stroke-width',width).attr('data-slope',v).attr('data-x',x).attr(tag,'');
     }
-    const nx=w<420?11:17,ny=13,len=Math.min(20,(b.right-b.left)/nx*.7,(b.bottom-b.top)/ny*.7);
-    for(let i=0;i<nx;i++)for(let j=0;j<ny;j++)tangent(.06+1.94*i/(nx-1),domain[0]+(domain[1]-domain[0])*j/(ny-1),len,'var(--site-muted)',1,'data-field-slope');
+    const nx=w<420?9:15,ny=13,len=Math.min(20,(b.right-b.left)/(2*nx)*.7,(b.bottom-b.top)/ny*.7);
+    for(const side of [-1,1])for(let i=0;i<nx;i++)for(let j=0;j<ny;j++)tangent(side*(.1+1.9*i/(nx-1)),domain[0]+(domain[1]-domain[0])*j/(ny-1),len,'var(--site-muted)',1,'data-field-slope');
     const line=d3.line().x(p=>xs(p.x)).y(p=>ys(p.y));
     if(state.stage>0){
-      marks.append('path').datum(m.samples().map(x=>({x,y:fn(x)}))).attr('d',line).attr('fill','none').attr('stroke','var(--site-purple)').attr('stroke-width',3).attr('data-exact-curve','');
+      for(const side of [-1,1])marks.append('path').datum(m.samples(side).map(x=>({x,y:fn(x)}))).attr('d',line).attr('fill','none').attr('stroke',side<0?'var(--site-teal)':'var(--site-purple)').attr('stroke-dasharray',side<0?'7 4':null).attr('stroke-width',3).attr('data-exact-curve','').attr('data-side',side);
       if(!transformed)marks.append('circle').attr('cx',xs(0)).attr('cy',ys(0)).attr('r',4).attr('fill','var(--site-paper)').attr('stroke','var(--site-muted)').attr('stroke-width',1.5).attr('data-excluded-limit','');
     }
     marks.append('circle').attr('cx',xs(1)).attr('cy',ys(state.initial)).attr('r',6).attr('fill','var(--site-paper)').attr('stroke','var(--site-purple)').attr('stroke-width',2).attr('data-initial-point','');
@@ -213,30 +230,33 @@
     if(state.stage>0)marks.append('path').attr('d',`M${xs(x)},${b.top}V${b.bottom}`).attr('stroke','var(--site-orange)').attr('stroke-opacity',.35).attr('stroke-dasharray','3 4');
     tangent(x,y,w<420?34:46,'var(--site-orange)',2.5,'data-current-tangent');
     marks.append('circle').attr('cx',xs(x)).attr('cy',ys(y)).attr('r',3.5).attr('fill','var(--site-orange)').attr('data-current-point','').attr('data-x',x).attr('data-y',y);
-    const xa=svg.append('g').attr('transform',`translate(0,${b.bottom})`).call(d3.axisBottom(xs).tickValues(w<420?[0,1,2]:[0,.5,1,1.5,2]).tickSize(0).tickPadding(9));
+    const xa=svg.append('g').attr('transform',`translate(0,${b.bottom})`).call(d3.axisBottom(xs).tickValues([-2,-1,0,1,2]).tickSize(0).tickPadding(9));
     const ya=svg.append('g').attr('transform',`translate(${b.left},0)`).call(d3.axisLeft(ys).ticks(6).tickSize(0).tickPadding(9));
     xa.select('.domain').remove();ya.select('.domain').remove();
     svg.append('rect').attr('x',b.left).attr('y',b.top).attr('width',b.right-b.left).attr('height',b.bottom-b.top).attr('fill','none').attr('stroke','var(--site-line)');
     svg.append('text').attr('x',b.left).attr('y',15).text(transformed?'z = y/x³':'y');
-    svg.append('text').attr('x',b.right).attr('y',15).attr('text-anchor','end').text('x > 0');
+    svg.append('text').attr('x',b.right).attr('y',15).attr('text-anchor','end').text('x ≠ 0');
     svg.append('text').attr('x',b.right).attr('y',h-7).attr('text-anchor','end').text('x');
-    svg.attr('aria-label',`${transformed?'Transformed field z prime equals 1/x':'Original field y prime equals 3y/x plus x squared'}. Initial value at x=1 is ${state.initial}. Current x=${fmt(x,2)}, ${transformed?'z':'y'}=${fmt(y)}, slope=${fmt(slope(x,y))}. ${state.stage===0?'Solution hidden.':'Exact solution shown for positive x.'}`);
+    svg.attr('aria-label',`${transformed?'Transformed field z prime equals 1/x':'Original field y prime equals 3y/x plus x squared'} on both sides of zero. Right constant C plus is ${state.initial}; independent left constant C minus is ${state.left}. Current x=${fmt(x,2)}, ${transformed?'z':'y'}=${fmt(y)}, slope=${fmt(slope(x,y))}. ${state.stage===0?'Solutions hidden.':'Two separate exact branches shown. Zero is excluded.'}`);
   }
   function render(announce=true){sync(announce);plot();if(state.stage===2)plot(true);}
   root.querySelectorAll('[data-if-stage]').forEach(b=>b.addEventListener('click',()=>{pause();state.stage=Number(b.dataset.ifStage);render();save();}));
-  for(const k of ['initial','x']){el(k).addEventListener('input',()=>{pause();state[k]=Number(el(k).value);render();});el(k).addEventListener('change',save);}
-  el('reset').addEventListener('click',()=>{pause();state.initial=10;state.x=1;render();save();});
+  for(const k of ['initial','left','x']){el(k).addEventListener('input',()=>{pause();state[k]=Number(el(k).value)*(k==='x'?Math.sign(state.x):1);render();});el(k).addEventListener('change',save);}
+  root.querySelectorAll('[data-if-side]').forEach(b=>b.addEventListener('click',()=>{pause();state.x=Number(b.dataset.ifSide)*Math.abs(state.x);render();save();}));
+  el('reset').addEventListener('click',()=>{pause();state.initial=10;state.left=10;state.x=1;render();save();});
   el('at-initial').addEventListener('click',()=>{pause();state.x=1;render();save();});
   function tick(stamp){
     if(!playing)return;
-    if(last!==null)state.x=Math.min(2,state.x+Math.min((stamp-last)/1000,.1)*.22);
+    const end=state.x<0?-.05:2;
+    if(last!==null)state.x=Math.min(end,state.x+Math.min((stamp-last)/1000,.1)*.22);
     last=stamp;render(false);
-    if(state.x>=2){pause();render();save();}else frame=requestAnimationFrame(tick);
+    if(state.x>=end){pause();render();save();}else frame=requestAnimationFrame(tick);
   }
   el('play').addEventListener('click',()=>{
     if(playing){pause();render();save();return;}
     if(state.x>=2)state.x=.05;
-    if(reduced.matches){state.x=Math.min(2,state.x+.15);render();save();return;}
+    else if(state.x>=-.05&&state.x<0)state.x=-2;
+    if(reduced.matches){state.x=Math.min(state.x<0?-.05:2,state.x+.15);render();save();return;}
     playing=true;last=null;render(false);frame=requestAnimationFrame(tick);
   });
   document.addEventListener('visibilitychange',()=>{if(document.hidden){pause();render();save();}});

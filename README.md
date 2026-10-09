@@ -177,18 +177,22 @@ Source and analytic helpers: **src/separable-examples.html** and
 
 [What does an integrating factor change?](https://shzhang3.github.io/amath351-lab/chapters/first-order/integrating-factors/)
 visualizes the final lecture example, xy′ − 3y = x³ with y(1) = 10.
-Three stages reveal the slope field, the exact solution x³(ln x + C), and a
-comparison with z = y/x³ = ln x + C. Moving points share the same x, with
+Three stages reveal the slope field on both sides of zero, the exact branches
+x³(ln|x| + C), and a comparison with z = y/x³ = ln|x| + C. Moving points share the same x, with
 tangents and numerical readouts for both equations. The transformed field has
-slope 1/x independent of z. The initial-value slider changes C; reset restores
-the lecture IVP. Playback pauses on edits, stage changes, and page hiding, and
-reduced motion uses discrete advances.
+slope 1/x independent of z. Separate sliders control C₊ = y(1) and C₋; the
+initial value at x = 1 does not fix C₋. Reset restores C₊ = 10 and the display
+choice C₋ = 10. Choose a branch to inspect; playback follows increasing x,
+never crosses zero, and pauses on edits, stage changes, and page hiding.
+Reduced motion uses discrete advances.
 
-The displayed interval is (0, ∞), where the standard-form coefficients are
-continuous. An open circle marks the original curve's limit at zero, without
-claiming that the standard form is defined there. An optional explanation
-distinguishes this from the original equation's nonunique continuations across
-zero. Source and exact helpers are **src/integrating-factors.html** and
+The displayed intervals are (−∞, 0) and (0, ∞), where the standard-form
+coefficients are continuous. Curves are sampled separately, with no slope at
+zero. An open circle marks their common limit for y; both transformed branches
+instead tend to −∞. An optional explanation shows why the original equation
+allows differentiable continuations with arbitrary C₋. The signed factor x⁻³
+is valid on either interval (a constant multiple of |x|⁻³ on the left).
+Source and exact helpers are **src/integrating-factors.html** and
 **src/integrating-factor-model.cjs**.
 
 ## Edit and build
