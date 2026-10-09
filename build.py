@@ -147,6 +147,8 @@ def main():
                 replacements = {"SLOPE_FIELD_MODEL":(SOURCE / "slope-field-model.cjs").read_text(), "D3_URL":href(path,"assets/vendor/d3.v7.9.0.min.js"), "THEOREM_EXPLORER":theorem}
             elif example["slug"] == "separable-examples":
                 replacements = {"SEPARABLE_EXAMPLES_MODEL":(SOURCE / "separable-examples-model.cjs").read_text(), "D3_URL":href(path,"assets/vendor/d3.v7.9.0.min.js"), "AREA_URL":href(path,"chapters/first-order/separable/index.html"), "SLOPE_URL":href(path,"chapters/first-order/slope-fields/index.html")}
+            elif example["slug"] == "integrating-factors":
+                replacements = {"INTEGRATING_FACTOR_MODEL":(SOURCE / "integrating-factor-model.cjs").read_text(), "D3_URL":href(path,"assets/vendor/d3.v7.9.0.min.js")}
             fragment = replace(fragment, **replacements)
             page(path, example["title"], example["description"], fragment, chapter=chapter, example=example, index=i)
 

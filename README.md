@@ -173,6 +173,24 @@ points are explained instead of being silently moved or integrated.
 Source and analytic helpers: **src/separable-examples.html** and
 **src/separable-examples-model.cjs**. No numerical solver is used.
 
+## Lecture 05: see what an integrating factor changes
+
+[What does an integrating factor change?](https://shzhang3.github.io/amath351-lab/chapters/first-order/integrating-factors/)
+visualizes the final lecture example, xy′ − 3y = x³ with y(1) = 10.
+Three stages reveal the slope field, the exact solution x³(ln x + C), and a
+comparison with z = y/x³ = ln x + C. Moving points share the same x, with
+tangents and numerical readouts for both equations. The transformed field has
+slope 1/x independent of z. The initial-value slider changes C; reset restores
+the lecture IVP. Playback pauses on edits, stage changes, and page hiding, and
+reduced motion uses discrete advances.
+
+The displayed interval is (0, ∞), where the standard-form coefficients are
+continuous. An open circle marks the original curve's limit at zero, without
+claiming that the standard form is defined there. An optional explanation
+distinguishes this from the original equation's nonunique continuations across
+zero. Source and exact helpers are **src/integrating-factors.html** and
+**src/integrating-factor-model.cjs**.
+
 ## Edit and build
 
 **src/catalog.json** defines the three chapters and their example lists. An
@@ -181,7 +199,7 @@ Add an example's source fragment and its catalog entry to extend the lab.
 
 The experiment sources are **src/experiment.html**, **src/prologue.html**,
 **src/velocity.html**, **src/planet-gzyx.html**, **src/slope-fields.html**,
-**src/separable.html**, and **src/separable-examples.html**.
+**src/separable.html**, **src/separable-examples.html**, and **src/integrating-factors.html**.
 Exact mathematical helpers live in the **-model.cjs** files, embedded during the
 build; the two Section 1.2 experiments share **src/motion-model.cjs**, and Section
 1.3 uses **src/slope-field-model.cjs**. **src/page.html** and
