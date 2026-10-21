@@ -33,8 +33,9 @@
     return {F,t:timeTo(F0,F,p,q),rate:rate(F,p,q)};
   }
 
-  // Equilibria of F' = 0: F = 1 (stable) and F = -p/q (unstable, outside the market when p > 0).
-  const equilibria=(p,q)=>q>0?[-p/q,1]:[1];
+  // For positive persuasion: F = 1 (stable) and, when q > 0, F = -p/q (unstable).
+  // null denotes the whole line of equilibria when p = q = 0.
+  const equilibria=(p,q)=>p===0&&q===0?null:q>0?[-p/q,1]:[1];
 
   // Fraction of the eventual new adopters (1 - F0) who joined through innovation.
   // Integral of p(1-F) dt = integral of p/(p+qF) dF from F0 to 1 = (p/q) ln((p+q)/(p+qF0)).

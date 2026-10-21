@@ -41,7 +41,7 @@
   <section>
     <h2>Reading the phase line (Section 2.2)</h2>
     <ul>
-      <li><strong>Equilibria:</strong> F = 1 (everyone has bought, stable) and F = −p/q (unstable, and outside the market whenever p &gt; 0).</li>
+      <li><strong>Equilibria:</strong> when p + q &gt; 0, F = 1 is stable. If q &gt; 0, F = −p/q is unstable and outside the market whenever p &gt; 0. If p = q = 0, every F is an equilibrium.</li>
       <li><strong>Peak sales:</strong> F′ is a downward parabola in F, highest at <strong>F* = (q − p)/(2q)</strong>. Since F″ = (dF′/dF)·F′, the sales peak is also the inflection point of the S-curve. From F₀ = 0 it happens at t* = ln(q/p)/(p + q).</li>
       <li><strong>Special cases:</strong> q = 0 is the linear equation F′ = p(1 − F) of Section 1.5, with no S-shape. p = 0 is the logistic equation of Section 2.1. Then F = 0 is also an equilibrium, so word of mouth alone cannot start a market.</li>
       <li><strong>Left out:</strong> price, competing products, repeat purchases, and a market size that changes over time.</li>
@@ -311,7 +311,7 @@
          `<text class="note" x="${bx - 5}" y="17" text-anchor="end">0</text>` +
          `<rect x="${bx}" y="9" width="${bw}" height="9" rx="2" fill="url(#bd-g1)"/>` +
          `<text class="note" x="${bx + bw + 5}" y="17">${pct(slopeMax, 0)}</text>`;
-    if(stalled()) s += `<text class="note" x="${p.m.l + 12}" y="${p.m.t + 22}">No one adopts: with p = 0, word of mouth needs a first adopter. Raise p or F₀.</text>`;
+    if(stalled()) s += `<text class="note" x="${p.m.l + 12}" y="${p.m.t + 22}">${P + Q === 0 ? 'With p = q = 0, every F is an equilibrium: F(t) = F₀.' : 'No one adopts: with p = 0, word of mouth needs a first adopter. Raise p or F₀.'}</text>`;
     $('p1').setAttribute('aria-label', `Slope field of F prime for p ${num(P, 3)} and q ${num(Q)}, with the adoption curve from F zero ${pct(F0)}. At year ${num(t, 1)} the share adopted is ${pct(F)}.`);
     $('p1').innerHTML = s;
   }
@@ -369,10 +369,14 @@
       const x = p.x(F);
       s += `<path class="arrow" d="M${x + 7} ${y0}L${x - 5} ${y0 - 6}L${x - 5} ${y0 + 6}Z"/>`;
     }
-    s += `<circle class="eq-stable" cx="${p.x(1)}" cy="${y0}" r="6"/>`;
-    if(P === 0 && Q > 0) s += `<circle class="eq-unstable" cx="${p.x(0)}" cy="${y0}" r="6"/>`;
-    s += `<text class="note" x="${p.x(1) - 8}" y="${y0 - 12}" text-anchor="end">F = 1 stable</text>`;
-    if(P === 0 && Q > 0) s += `<text class="note" x="${p.x(0) + 10}" y="${y0 - 12}">F = 0 unstable</text>`;
+    if(P + Q === 0){
+      s += `<text class="note" x="${p.x(.5)}" y="${y0 - 12}" text-anchor="middle">Every F is an equilibrium</text>`;
+    }else{
+      s += `<circle class="eq-stable" cx="${p.x(1)}" cy="${y0}" r="6"/>`;
+      if(P === 0) s += `<circle class="eq-unstable" cx="${p.x(0)}" cy="${y0}" r="6"/>`;
+      s += `<text class="note" x="${p.x(1) - 8}" y="${y0 - 12}" text-anchor="end">F = 1 stable</text>`;
+      if(P === 0) s += `<text class="note" x="${p.x(0) + 10}" y="${y0 - 12}">F = 0 unstable</text>`;
+    }
 
     const vertex = M.peakShare(P, Q);
     if(vertex > 0){
@@ -387,13 +391,13 @@
     s += `<line class="curve" x1="${lx}" x2="${lx + 18}" y1="${ly - 4}" y2="${ly - 4}"/><text class="note" x="${lx + 26}" y="${ly}">total F′</text>` +
          `<line class="imit" x1="${lx}" x2="${lx + 18}" y1="${ly + 12}" y2="${ly + 12}"/><text class="note" x="${lx + 26}" y="${ly + 16}">imitation qF(1 − F)</text>` +
          `<line class="innov" x1="${lx}" x2="${lx + 18}" y1="${ly + 28}" y2="${ly + 28}"/><text class="note" x="${lx + 26}" y="${ly + 32}">innovation p(1 − F)</text>`;
-    $('p3').setAttribute('aria-label', `F prime against F: a downward parabola${vertex > 0 ? ` with its maximum at F star ${pct(vertex)}` : ' that decreases from F equals 0'}. The phase line points right toward the stable equilibrium F equals 1.`);
+    $('p3').setAttribute('aria-label', P + Q === 0 ? 'F prime is zero for every F. Every market share is an equilibrium; the share stays at its initial value.' : `F prime against F: a downward parabola${vertex > 0 ? ` with its maximum at F star ${pct(vertex)}` : ' that decreases from F equals 0'}. The phase line points right toward the stable equilibrium F equals 1.`);
     $('p3').innerHTML = s;
   }
 
   // ---- wiring ---------------------------------------------------------------
-  function update(){
-    st.p = +$('in-p').value; st.q = +$('in-q').value; st.F0 = +$('in-f').value; st.t = +$('in-t').value;
+  function update(time = +$('in-t').value){
+    st.p = +$('in-p').value; st.q = +$('in-q').value; st.F0 = +$('in-f').value; st.t = time;
     $('out-p').textContent = num(st.p, 3); $('out-q').textContent = num(st.q); $('out-f').textContent = pct(st.F0, 0); $('out-t').textContent = num(st.t, 1);
     const {p: P, q: Q, F0, t} = st, pk = M.peak(F0, P, Q), F = M.solution(F0, t, P, Q);
     $('r-f').textContent = pct(F); $('r-df').textContent = pct(M.rate(F, P, Q));
@@ -410,13 +414,14 @@
   const schedule = () => { if(queued) return; queued = true; requestAnimationFrame(() => { queued = false; update(); }); };
 
   // ---- playback: advance t; reduced motion jumps in discrete steps instead ----
-  let playing = false, last = 0;
+  let playing = false, last = 0, playbackTime = 0;
   const setPlaying = on => { playing = on; $('play').setAttribute('aria-pressed', String(on)); $('play').textContent = on ? 'Pause' : 'Play'; };
   function frame(now){
     if(!playing) return;
     const dt = last ? Math.min(.1, (now - last) / 1000) : 0; last = now;
-    const tin = $('in-t'), next = Math.min(T_MAX, +tin.value + 4 * dt);
-    tin.value = next; update();
+    // Keep fractional frame advances out of the range input's step rounding.
+    const tin = $('in-t'), next = Math.min(T_MAX, playbackTime + 4 * dt);
+    playbackTime = next; tin.value = next; update(next);
     if(next >= T_MAX) setPlaying(false); else requestAnimationFrame(frame);
   }
   $('play').addEventListener('click', () => {
@@ -424,7 +429,7 @@
     if(reduceMotion.matches){ tin.value = +tin.value >= T_MAX ? 0 : Math.min(T_MAX, +tin.value + 3); update(); return; }
     if(playing){ setPlaying(false); return; }
     if(+tin.value >= T_MAX) tin.value = 0;
-    setPlaying(true); last = 0; requestAnimationFrame(frame);
+    playbackTime = +tin.value; setPlaying(true); last = 0; requestAnimationFrame(frame);
   });
   for(const id of ['in-p', 'in-q', 'in-f']) $(id).addEventListener('input', () => { setPlaying(false); schedule(); });
   $('in-t').addEventListener('input', () => { setPlaying(false); schedule(); });

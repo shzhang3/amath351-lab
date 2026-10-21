@@ -1,5 +1,7 @@
 const test=require('node:test');const assert=require('node:assert/strict');
 const m=require('../src/bass-diffusion-model.cjs');
+const studentLab=require('./student-lab-harness.cjs');
+const harness=options=>studentLab('bass-diffusion','bd','Amath351BassDiffusion',m,options);
 const close=(a,b,tol=1e-9)=>assert(Math.abs(a-b)<=tol,`${a} != ${b}`);
 // [p, q, F0]: typical durable, pure innovation, pure imitation, fast viral, q < p, a seeded market.
 const cases=[[.03,.38,0],[.05,0,0],[0,.5,.01],[.01,.9,0],[.2,.1,0],[.03,.38,.3]];
@@ -68,4 +70,46 @@ test('the innovator share matches the integral of p(1 - F) over the whole diffus
     close(m.innovatorShare(F0,p,q),sum/(1-F0),1e-6);
     const s=m.innovatorShare(F0,p,q);assert(s>=0&&s<=1);
   }
+});
+
+for(const hz of [60,120])test(`playback advances four years per second at ${hz} Hz with a stepped range input`,()=>{
+  const app=harness();app.click('play');app.tick(0);app.advance(2,hz);
+  close(+app.element('in-t').value,8,1e-9);
+  assert.equal(app.element('out-t').textContent,'8');
+});
+
+test('playback renders continuous time between range steps',()=>{
+  const app=harness();app.click('play');app.tick(0);app.tick(1000/120);
+  assert.equal(app.element('in-t').value,'0');
+  assert.equal(app.element('r-f').textContent,'0.1%');
+});
+
+test('scrubbing, parameter edits, presets, end replay and page hiding preserve playback controls',()=>{
+  const app=harness(),e=app.element;
+  app.click('play');app.tick(0);app.advance(.5,60);
+  app.click('play');app.tick(100);assert.equal(e('out-t').textContent,'2');
+  app.input('in-t',10);app.tick(0);app.click('play');app.tick(0);app.advance(.5,120);
+  assert.equal(e('out-t').textContent,'12');
+  app.input('in-p',.1);app.tick(0);app.advance(.5,60);
+  assert.equal(e('out-t').textContent,'12');assert.equal(e('play').getAttribute('aria-pressed'),'false');
+  app.preset();assert.equal(e('out-t').textContent,'0');assert.equal(e('in-p').value,'0.03');
+  app.input('in-t',30);app.tick(0);app.click('play');app.tick(0);app.advance(.5,60);
+  assert.equal(e('out-t').textContent,'2');
+  app.document.hidden=true;app.document.emit('visibilitychange');app.advance(.5,60);
+  assert.equal(e('out-t').textContent,'2');assert.equal(e('play').getAttribute('aria-pressed'),'false');
+});
+
+test('reduced motion still advances discretely and resets at the end',()=>{
+  const app=harness({reduced:true});app.click('play');assert.equal(app.element('out-t').textContent,'3');
+  assert.equal(app.frames(),0);app.input('in-t',30);app.tick(0);app.click('play');
+  assert.equal(app.element('out-t').textContent,'0');assert.equal(app.frames(),0);
+});
+
+test('zero persuasion labels every market share as an equilibrium without attraction',()=>{
+  const app=harness();app.input('in-p',0);app.input('in-q',0);app.input('in-f',.2);app.tick(0);
+  assert.equal(m.equilibria(0,0),null);
+  assert.match(app.element('p3').innerHTML,/Every F is an equilibrium/);
+  assert(!app.element('p3').innerHTML.includes('eq-stable'));
+  assert(!app.element('p3').getAttribute('aria-label').includes('points right'));
+  app.input('in-t',30);app.tick(0);assert.equal(app.element('r-f').textContent,'20%');
 });
