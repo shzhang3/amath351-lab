@@ -1,5 +1,7 @@
 const test=require('node:test');const assert=require('node:assert/strict');
 const m=require('../src/solow-growth-model.cjs');
+const studentLab=require('./student-lab-harness.cjs');
+const harness=options=>studentLab('solow-growth','so','Amath351Solow',m,options);
 const close=(a,b,tol=1e-9)=>assert(Math.abs(a-b)<=tol,`${a} != ${b}`);
 // [s, a, lam, k0]: baseline from below and above, high saving, high capital share, low depreciation.
 const cases=[[.2,1/3,.06,2],[.2,1/3,.06,15],[.6,.3,.08,1],[.25,.6,.05,3],[.1,.4,.02,.5]];
@@ -110,4 +112,37 @@ test('large Euler steps oscillate around k* and can diverge',()=>{
   const div=m.euler(ks*1.05,55,1100,s,a,lam);
   assert(div.length<21||Math.abs(div.at(-1)[1]-ks)>Math.abs(div[0][1]-ks));
   for(const [,k] of div)assert(k>0);
+});
+
+for(const hz of [60,120])test(`playback advances twelve years per second at ${hz} Hz with a stepped range input`,()=>{
+  const app=harness();app.click('play');app.tick(0);app.advance(2,hz);
+  close(+app.element('in-t').value,24,1e-9);
+  assert.equal(app.element('out-t').textContent,'24');
+});
+
+test('playback renders continuous time between half-year range steps',()=>{
+  const app=harness();app.click('play');app.tick(0);app.tick(1000/120);
+  assert.equal(app.element('in-t').value,'0');
+  assert.equal(app.element('out-t').textContent,'0.1');
+});
+
+test('scrubbing, parameter edits, presets, end replay and page hiding preserve playback controls',()=>{
+  const app=harness(),e=app.element;
+  app.click('play');app.tick(0);app.advance(.5,60);
+  app.click('play');app.tick(100);assert.equal(e('out-t').textContent,'6');
+  app.input('in-t',10);app.tick(0);app.click('play');app.tick(0);app.advance(.5,120);
+  assert.equal(e('out-t').textContent,'16');
+  app.input('in-s',.3);app.tick(0);app.advance(.5,60);
+  assert.equal(e('out-t').textContent,'16');assert.equal(e('play').getAttribute('aria-pressed'),'false');
+  app.preset();assert.equal(e('out-t').textContent,'0');assert.equal(e('in-s').value,'0.2');
+  app.input('in-t',100);app.tick(0);app.click('play');app.tick(0);app.advance(.5,60);
+  assert.equal(e('out-t').textContent,'6');
+  app.document.hidden=true;app.document.emit('visibilitychange');app.advance(.5,60);
+  assert.equal(e('out-t').textContent,'6');assert.equal(e('play').getAttribute('aria-pressed'),'false');
+});
+
+test('reduced motion still advances discretely and resets at the end',()=>{
+  const app=harness({reduced:true});app.click('play');assert.equal(app.element('out-t').textContent,'10');
+  assert.equal(app.frames(),0);app.input('in-t',100);app.tick(0);app.click('play');
+  assert.equal(app.element('out-t').textContent,'0');assert.equal(app.frames(),0);
 });

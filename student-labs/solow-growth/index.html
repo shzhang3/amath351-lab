@@ -60,7 +60,7 @@
     <h2>Reading the phase line (Section 2.2)</h2>
     <ul>
       <li><strong>Steady state:</strong> investment equals break-even investment at <strong>k* = (s/λ)<sup>1/(1−α)</sup></strong>. Below k*, k′ &gt; 0. Above it, k′ &lt; 0. So k* is stable, and k = 0 is unstable.</li>
-      <li><strong>Speed:</strong> the slope of k′ at k* is −(1 − α)λ. The gap closes by half every ln 2/((1 − α)λ) years, about 17 years for the defaults.</li>
+      <li><strong>Speed:</strong> the slope of k′ at k* is −(1 − α)λ. Near k*, the capital gap approximately halves every ln 2/((1 − α)λ) years, about 17 years for the defaults. This half-life is exact for the transformed gap k<sup>1−α</sup> − s/λ.</li>
       <li><strong>No long-run growth:</strong> output per worker y* = (k*)<sup>α</sup> is constant. Saving more raises the level of y* but not its long-run growth rate. Sustained growth needs technological progress, which this version leaves out.</li>
       <li><strong>Golden rule:</strong> steady-state consumption c*(s) = (1 − s)(s/λ)<sup>α/(1−α)</sup> is largest at s = α. Saving beyond that lowers consumption in every period.</li>
     </ul>
@@ -118,7 +118,7 @@
         <div><dt>y*, steady output</dt><dd id="so-r-ys"></dd></div>
         <div><dt>c*, steady consumption</dt><dd id="so-r-cs"></dd></div>
         <div><dt>Golden-rule s</dt><dd id="so-r-gr"></dd></div>
-        <div><dt>Half-life of the gap</dt><dd id="so-r-hl"></dd></div>
+        <div><dt>Half-life near k*</dt><dd id="so-r-hl"></dd></div>
         <div><dt>k(t)</dt><dd id="so-r-k"></dd></div>
         <div><dt>c(t), consumption</dt><dd id="so-r-c"></dd></div>
         <div><dt>Growth of y at t</dt><dd id="so-r-g"></dd></div>
@@ -590,9 +590,9 @@
   }
 
   // ---- wiring ---------------------------------------------------------------
-  function update(){
+  function update(time = +$('in-t').value){
     st.s = +$('in-s').value; st.a = +$('in-a').value; st.n = +$('in-n').value; st.d = +$('in-d').value;
-    st.k0 = +$('in-k').value; st.t = +$('in-t').value;
+    st.k0 = +$('in-k').value; st.t = time;
     st.shock = $('in-shock').checked; st.s2 = +$('in-s2').value;
     st.euler = $('in-euler').checked; st.h = +$('in-h').value;
     $('out-s').textContent = num(st.s); $('out-a').textContent = num(st.a); $('out-n').textContent = num(st.n, 3);
@@ -618,13 +618,14 @@
   const schedule = () => { if(queued) return; queued = true; requestAnimationFrame(() => { queued = false; update(); }); };
 
   // ---- playback: advance t; reduced motion jumps in discrete steps instead ----
-  let playing = false, last = 0;
+  let playing = false, last = 0, playbackTime = 0;
   const setPlaying = on => { playing = on; $('play').setAttribute('aria-pressed', String(on)); $('play').textContent = on ? 'Pause' : 'Play'; };
   function frame(now){
     if(!playing) return;
     const dt = last ? Math.min(.1, (now - last) / 1000) : 0; last = now;
-    const tin = $('in-t'), next = Math.min(T_MAX, +tin.value + 12 * dt);
-    tin.value = next; update();
+    // Keep fractional frame advances out of the range input's step rounding.
+    const tin = $('in-t'), next = Math.min(T_MAX, playbackTime + 12 * dt);
+    playbackTime = next; tin.value = next; update(next);
     if(next >= T_MAX) setPlaying(false); else requestAnimationFrame(frame);
   }
   $('play').addEventListener('click', () => {
@@ -632,7 +633,7 @@
     if(reduceMotion.matches){ tin.value = +tin.value >= T_MAX ? 0 : Math.min(T_MAX, +tin.value + 10); update(); return; }
     if(playing){ setPlaying(false); return; }
     if(+tin.value >= T_MAX) tin.value = 0;
-    setPlaying(true); last = 0; requestAnimationFrame(frame);
+    playbackTime = +tin.value; setPlaying(true); last = 0; requestAnimationFrame(frame);
   });
   for(const id of ['in-s', 'in-a', 'in-n', 'in-d', 'in-k', 'in-s2', 'in-t']) $(id).addEventListener('input', () => { setPlaying(false); schedule(); });
   for(const id of ['in-shock', 'in-euler', 'in-h']) $(id).addEventListener('change', () => { setPlaying(false); schedule(); });
