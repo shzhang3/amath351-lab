@@ -19,7 +19,8 @@ Chapter 1 currently includes the fluid-motion opening, direction fields,
 position/velocity/acceleration, Planet Gzyx, the tangent-to-slope-field exploration,
 separable and exact equations, the AI self-improvement growth models, phase lines,
 and Euler’s method.
-The other examples are explicitly labeled as planned and
+Chapter 2 now opens with two Section 3.1 experiments on initial conditions and
+characteristic equations. The remaining examples are explicitly labeled as planned and
 have no inactive or broken experiment links. Chapter groupings follow the
 Autumn 2026 syllabus, rather than the textbook's chapter numbering.
 
@@ -246,6 +247,25 @@ model consequences from forecasts. Counterexamples show that increasing relative
 growth alone does not imply finite-time blow-up, and diminishing returns alone
 do not imply saturation. Source and helpers: **src/ai-self-improvement.html** and
 **src/ai-growth-model.cjs**.
+
+## Section 3.1: initial conditions and characteristic equations
+
+- [Two initial conditions, one solution](https://shzhang3.github.io/amath351-lab/chapters/higher-order/initial-conditions/)
+  starts with a family sharing y(0). Adding y′(0) selects one curve and displays
+  its initial tangent. Switch between y″ = 0 and y″ = y. Exact curves are
+  evaluated analytically, with fixed axes for each equation; the solution
+  formulas are left for the lecture.
+- [Which exponential solves the ODE?](https://shzhang3.github.io/amath351-lab/chapters/higher-order/characteristic-equation/)
+  lets students vary r in y = exp(rx), compare both sides of y″ = y or
+  y″ = 3y′ − 2y, and track the corresponding point on p(r). The curves coincide
+  exactly at characteristic roots. The all-x match is determined algebraically,
+  not inferred from sampled display points. A collapsed explanation connects
+  the residual p(r)exp(rx) to the characteristic equation.
+
+Both pages support keyboard controls, responsive plots, reduced motion, and
+browser-local state. They use the existing local D3 bundle and shared chapter
+navigation. Sources: **src/second-order-initial-conditions.html** and
+**src/characteristic-equation.html**.
 
 ## Student Showcase
 

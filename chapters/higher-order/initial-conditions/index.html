@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Fix a starting value, explore a family of curves, and add the initial slope to select one solution.">
+  <meta name="theme-color" content="#624298">
+  <title>Two initial conditions, one solution · AMATH 351 Lab</title>
+  <link rel="canonical" href="https://shzhang3.github.io/amath351-lab/chapters/higher-order/initial-conditions/">
+  <link rel="stylesheet" href="../../../assets/lab.css">
+</head>
+<body>
+  <a class="site-skip" href="#main-content">Skip to content</a>
+  <div class="site-wrap">
+    <header class="site-header">
+      <a class="site-brand" href="../../../"><span class="site-brand-mark" aria-hidden="true">y′</span>AMATH 351 / Lab</a>
+      <nav aria-label="Main navigation"><a href="../../../">Chapters</a><a href="https://shzhang3.github.io/#teaching">Teaching</a><a href="https://github.com/shzhang3/amath351-lab" target="_blank" rel="noopener">GitHub ↗</a></nav>
+    </header>
+<nav class="site-breadcrumbs" aria-label="Breadcrumb"><a href="../../../">All chapters</a><span aria-hidden="true">/</span><a href="../">Chapter 02: Higher-order linear equations</a><span aria-hidden="true">/</span><span aria-current="page">Two initial conditions, one solution</span></nav>
+    <main id="main-content" tabindex="-1"><noscript>Enable JavaScript to use the interactive plots. Explanations and navigation remain available.</noscript><section class="lab-intro">
+  <div class="site-kicker">Section 3.1 · Second-order linear equations</div>
+  <h1>Two initial conditions, one solution</h1>
+  <p>Fix the starting value y(0). How many solutions pass through that point? Then specify the initial slope y′(0) and see which curve is selected.</p>
+</section>
+<div id="section31-ic-demo" class="lab-interactive">
+  <style>
+    #section31-ic-demo .ic-heading { padding-right: 0; }
+    #section31-ic-demo .ic-plot { width: 100%; margin-top: 12px; }
+    #section31-ic-demo .ic-svg { display: block; width: 100%; overflow: visible; }
+    #section31-ic-demo .ic-svg text { fill: var(--site-ink); font-size: 12px; font-weight: 400; }
+    #section31-ic-demo .ic-svg .domain,
+    #section31-ic-demo .ic-svg .tick line { stroke: var(--site-line); }
+    #section31-ic-demo .ic-frame { fill: none; stroke: var(--site-line); stroke-width: 1; }
+    #section31-ic-demo .ic-zero { stroke: var(--site-line); stroke-width: 1; }
+    #section31-ic-demo .ic-family { fill: none; stroke: var(--site-muted); stroke-width: 1.2; }
+    #section31-ic-demo .ic-selected { fill: none; stroke: var(--site-purple); stroke-width: 3; }
+    #section31-ic-demo .ic-tangent { fill: none; stroke: var(--site-teal); stroke-width: 2.5; stroke-dasharray: 7 4; }
+    #section31-ic-demo .ic-origin { fill: var(--site-ink); stroke: var(--site-paper); stroke-width: 1.5; }
+    #section31-ic-demo .ic-legend { gap: 18px; margin-top: 4px; }
+    #section31-ic-demo .ic-key { display: inline-flex; align-items: center; gap: 6px; }
+    #section31-ic-demo .ic-key[hidden] { display: none; }
+    #section31-ic-demo .ic-swatch { display: inline-block; width: 24px; height: 0; border-top: 2px solid var(--site-muted); }
+    #section31-ic-demo .ic-swatch-selected { border-top: 3px solid var(--site-purple); }
+    #section31-ic-demo .ic-swatch-tangent { border-top: 2px dashed var(--site-teal); }
+  
+  #section31-ic-demo .so-controls { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 24px; align-items: start; }
+  #section31-ic-demo .so-controls > label { min-width: 0; }
+  #section31-ic-demo .so-controls select { max-width: none; }
+  #section31-ic-demo .so-sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+  @media (max-width: 640px) { #section31-ic-demo .so-controls { grid-template-columns: minmax(0, 1fr); } }
+</style>
+  <h2 class="ic-heading" data-heading>One initial value, many solutions</h2>
+  <div class="lab-controls so-controls">
+    <label class="lab-label" for="section31-equation">Equation
+      <select class="lab-select" id="section31-equation">
+        <option value="zero">y″ = 0</option>
+        <option value="growth">y″ = y</option>
+      </select>
+    </label>
+    <label class="lab-label" for="section31-conditions">Initial conditions
+      <select class="lab-select" id="section31-conditions">
+        <option value="one">Only y(0)</option>
+        <option value="two">Both y(0) and y′(0)</option>
+      </select>
+    </label>
+    <label class="lab-label" for="section31-value">
+      <span class="lab-row">Initial value y(0) <output class="lab-numbers" for="section31-value" data-value-output>1.0</output></span>
+      <input class="lab-slider" id="section31-value" type="range" min="-2" max="2" step=".1" value="1">
+    </label>
+    <label class="lab-label" for="section31-slope">
+      <span class="lab-row">Initial slope y′(0) <output class="lab-numbers" for="section31-slope" data-slope-output>Not fixed</output></span>
+      <input class="lab-slider" id="section31-slope" type="range" min="-3" max="3" step=".1" value="2" disabled>
+    </label>
+  </div>
+  <div class="ic-plot">
+    <svg class="ic-svg" role="img" aria-labelledby="section31-chart-title section31-chart-desc">
+      <title id="section31-chart-title">Solutions with a shared initial value</title>
+      <desc id="section31-chart-desc">All curves pass through the point at x equals zero. Specifying the initial slope selects one solution.</desc>
+      <defs><clipPath id="section31-plot-clip"><rect></rect></clipPath></defs>
+      <rect class="ic-frame" data-chart-frame></rect>
+      <g class="ic-grid"></g>
+      <g class="ic-paths" clip-path="url(#section31-plot-clip)">
+        <g class="ic-family-group"></g>
+        <path class="ic-selected"></path>
+        <path class="ic-tangent"></path>
+        <circle class="ic-origin" r="4.5"></circle>
+      </g>
+      <g class="ic-x-axis"></g>
+      <g class="ic-y-axis"></g>
+      <text class="axis-title" data-axis="x">x</text>
+      <text class="axis-title" data-axis="y">y(x)</text>
+      <text class="ic-point-label"></text>
+    </svg>
+  </div>
+  <div class="lab-row lab-small ic-legend">
+    <span class="ic-key"><span class="ic-swatch" aria-hidden="true"></span>Solution family</span>
+    <span class="ic-key" data-selected-key hidden><span class="ic-swatch ic-swatch-selected" aria-hidden="true"></span>Selected solution</span>
+    <span class="ic-key" data-tangent-key hidden><span class="ic-swatch ic-swatch-tangent" aria-hidden="true"></span>Initial tangent</span>
+  </div>
+  <div class="so-sr-only" aria-live="polite" data-announcement></div>
+</div>
+<script src="../../../assets/vendor/d3.v7.9.0.min.js"></script>
+<script>
+(() => {
+  const root = document.getElementById("section31-ic-demo");
+  if (!root || !window.d3) return;
+  const d3 = window.d3;
+  const equation = root.querySelector("#section31-equation");
+  const conditions = root.querySelector("#section31-conditions");
+  const valueInput = root.querySelector("#section31-value");
+  const slopeInput = root.querySelector("#section31-slope");
+  const plot = root.querySelector(".ic-plot");
+  const svg = d3.select(root.querySelector(".ic-svg"));
+  const experiment = "section31-initial-conditions";
+  const samples = d3.range(241).map(i => (i - 120) / 100);
+  const slopes = d3.range(13).map(i => (i - 6) / 2);
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  let state = { equation: "zero", conditions: "one", initialValue: 1, initialSlope: 2 };
+  let resizeFrame = null;
+
+  const solution = (x, a, b, eq) => eq === "zero" ? a + b * x : a * Math.cosh(x) + b * Math.sinh(x);
+  const fmt = v => Math.abs(v) < .05 ? "0.0" : Number(v).toFixed(1);
+  const clipNumber = (n, lower, upper, fallback) => Number.isFinite(Number(n)) ? Math.max(lower, Math.min(upper, Number(n))) : fallback;
+
+  function restore(snapshot) {
+    const saved = snapshot && snapshot.modelContent ? snapshot.modelContent : snapshot;
+    if (!saved || saved.experiment !== experiment) return false;
+    state = {
+      equation: saved.equation === "growth" ? "growth" : "zero",
+      conditions: saved.conditions === "two" ? "two" : "one",
+      initialValue: clipNumber(saved.initialValue, -2, 2, 1),
+      initialSlope: clipNumber(saved.initialSlope, -3, 3, 2)
+    };
+    return true;
+  }
+
+  function persist() {
+    try { localStorage.setItem("amath351-section31-initial-conditions-v1", JSON.stringify({ experiment, ...state })); } catch (_) {}
+  }
+
+  function setAttributes(selection, attributes, duration) {
+    selection.interrupt();
+    const target = duration ? selection.transition().duration(duration).ease(d3.easeCubicOut) : selection;
+    Object.entries(attributes).forEach(([key, value]) => target.attr(key, value));
+  }
+
+  function checkLabels() {
+    const axisLabels = [...root.querySelectorAll(".ic-x-axis .tick text, .ic-y-axis .tick text, text.axis-title")];
+    const pointLabel = root.querySelector(".ic-point-label");
+    const box = pointLabel.getBoundingClientRect();
+    const overlaps = axisLabels.some(el => {
+      const b = el.getBoundingClientRect();
+      return box.left < b.right + 4 && box.right + 4 > b.left && box.top < b.bottom + 4 && box.bottom + 4 > b.top;
+    });
+    pointLabel.style.visibility = overlaps ? "hidden" : "visible";
+  }
+
+  function draw(animate = false) {
+    const width = Math.max(1, Math.round(plot.getBoundingClientRect().width));
+    if (width < 200) return;
+    const height = width < 420 ? 290 : 350;
+    const margin = { left: 64, right: 20, top: 32, bottom: 48 };
+    const frame = { x: margin.left, y: margin.top, width: width - margin.left - margin.right, height: height - margin.top - margin.bottom };
+    const duration = animate && !reducedMotion.matches ? 180 : 0;
+    const two = state.conditions === "two";
+
+    // Reference curves cover the slider range, so axes stay fixed while
+    // initial values change. Domains come from these reference observations.
+    const referenceValues = [];
+    [-2, 2].forEach(a => [-3, 3].forEach(b => {
+      samples.forEach(x => referenceValues.push(solution(x, a, b, state.equation)));
+    }));
+    const rawY = d3.extent(referenceValues);
+    const padding = (rawY[1] - rawY[0]) * .07;
+    const xScale = d3.scaleLinear().domain(d3.extent(samples)).range([frame.x + 4, frame.x + frame.width - 4]);
+    const yScale = d3.scaleLinear().domain([rawY[0] - padding, rawY[1] + padding]).range([frame.y + frame.height - 4, frame.y + 4]);
+    const line = d3.line().x(d => xScale(d.x)).y(d => yScale(d.y));
+    const curve = b => samples.map(x => ({ x, y: solution(x, state.initialValue, b, state.equation) }));
+
+    svg.attr("viewBox", "0 0 " + width + " " + height).attr("height", height);
+    svg.select("rect[data-chart-frame]").attr("x", frame.x).attr("y", frame.y).attr("width", frame.width).attr("height", frame.height);
+    svg.select("#section31-plot-clip rect").attr("x", frame.x).attr("y", frame.y).attr("width", frame.width).attr("height", frame.height);
+    svg.select(".ic-x-axis").attr("transform", "translate(0," + (frame.y + frame.height) + ")")
+      .call(d3.axisBottom(xScale).ticks(width < 420 ? 3 : 5).tickSizeOuter(0));
+    svg.select(".ic-y-axis").attr("transform", "translate(" + frame.x + ",0)")
+      .call(d3.axisLeft(yScale).ticks(5).tickSizeOuter(0));
+    svg.selectAll(".domain").attr("opacity", 0);
+    svg.select('text.axis-title[data-axis="x"]').attr("x", frame.x + frame.width).attr("y", height - 7).attr("text-anchor", "end");
+    svg.select('text.axis-title[data-axis="y"]').attr("x", 15).attr("y", 18).attr("text-anchor", "start");
+    const axes = [
+      { key: "vertical", x1: xScale(0), y1: frame.y, x2: xScale(0), y2: frame.y + frame.height },
+      { key: "horizontal", x1: frame.x, y1: yScale(0), x2: frame.x + frame.width, y2: yScale(0) }
+    ];
+    svg.select(".ic-grid").selectAll("line").data(axes, d => d.key).join("line").attr("class", "ic-zero")
+      .attr("x1", d => d.x1).attr("y1", d => d.y1).attr("x2", d => d.x2).attr("y2", d => d.y2);
+    const family = svg.select(".ic-family-group").selectAll("path").data(slopes, d => d).join("path").attr("class", "ic-family");
+    setAttributes(family, { d: b => line(curve(b)), opacity: two ? .32 : .65 }, duration);
+    const selected = svg.select(".ic-selected").attr("display", two ? null : "none");
+    setAttributes(selected, { d: line(curve(state.initialSlope)) }, duration);
+    const tangentData = [-.27, .27].map(x => ({ x, y: state.initialValue + state.initialSlope * x }));
+    const tangent = svg.select(".ic-tangent").attr("display", two ? null : "none");
+    setAttributes(tangent, { d: line(tangentData) }, duration);
+    setAttributes(svg.select(".ic-origin"), { cx: xScale(0), cy: yScale(state.initialValue) }, duration);
+    svg.select(".ic-point-label").attr("x", xScale(0) + 10).attr("y", yScale(state.initialValue) - 10).text("(0, " + fmt(state.initialValue) + ")");
+    root.querySelector("#section31-chart-desc").textContent = two
+      ? "Selected solution for " + (state.equation === "zero" ? "y double prime equals zero" : "y double prime equals y") + ", with initial value " + fmt(state.initialValue) + " and slope " + fmt(state.initialSlope) + ". The dashed segment is the tangent at x equals zero."
+      : "Thirteen example solutions share initial value " + fmt(state.initialValue) + " at x equals zero and have different initial slopes.";
+    requestAnimationFrame(checkLabels);
+  }
+
+  function sync(animate = false) {
+    equation.value = state.equation;
+    conditions.value = state.conditions;
+    valueInput.value = state.initialValue;
+    slopeInput.value = state.initialSlope;
+    const two = state.conditions === "two";
+    slopeInput.disabled = !two;
+    root.querySelector("[data-heading]").textContent = two ? "Two initial values, one solution" : "One initial value, many solutions";
+    root.querySelector("[data-value-output]").textContent = fmt(state.initialValue);
+    root.querySelector("[data-slope-output]").textContent = two ? fmt(state.initialSlope) : "Not fixed";
+    root.querySelector("[data-selected-key]").hidden = !two;
+    root.querySelector("[data-tangent-key]").hidden = !two;
+    draw(animate);
+  }
+
+  function announce() {
+    root.querySelector("[data-announcement]").textContent = state.conditions === "two"
+      ? "Initial value " + fmt(state.initialValue) + ", initial slope " + fmt(state.initialSlope) + ". One solution selected."
+      : "Initial value " + fmt(state.initialValue) + ". Initial slope is not fixed.";
+  }
+  equation.addEventListener("change", () => { state.equation = equation.value; sync(true); announce(); persist(); });
+  conditions.addEventListener("change", () => { state.conditions = conditions.value; sync(true); announce(); persist(); });
+  valueInput.addEventListener("input", () => { state.initialValue = Number(valueInput.value); sync(); });
+  slopeInput.addEventListener("input", () => { state.initialSlope = Number(slopeInput.value); sync(); });
+  [valueInput, slopeInput].forEach(el => el.addEventListener("change", () => { announce(); persist(); }));
+  try { restore(JSON.parse(localStorage.getItem("amath351-section31-initial-conditions-v1"))); } catch (_) {}
+  const observer = new ResizeObserver(() => {
+    if (resizeFrame) cancelAnimationFrame(resizeFrame);
+    resizeFrame = requestAnimationFrame(() => draw());
+  });
+  observer.observe(plot);
+  sync();
+})();
+</script>
+
+<section class="lab-explanation">
+  <h2>Start with the point. Then choose the direction.</h2>
+  <p>For y″ = 0, begin with only y(0) = 1. Each displayed line passes through (0, 1), but its slope can be different. Select both initial conditions and change y′(0) to choose a line.</p>
+  <p>Now switch to y″ = y. The same two initial conditions select a curve. The dashed segment is its tangent at x = 0; the differential equation determines how the slope changes afterward.</p>
+  <p><strong>Predict:</strong> If two solutions have the same initial value but different initial slopes, must they be the same solution?</p>
+  <p class="lab-small">For both equations in this experiment, each pair y(0), y′(0) determines exactly one solution for all real x. The gray curves are a sample from the infinitely many solutions with the same initial value. The curves are evaluated analytically; their formulas are left for the lecture.</p>
+</section>
+</main>
+<nav class="site-example-nav" aria-label="Example navigation"><span></span><a class="site-all-examples" href="../">All chapter examples</a><a href="../characteristic-equation/"><small>Next example</small>Which exponential solves the ODE? →</a></nav>
+    <footer class="site-footer"><span>University of Washington · Autumn 2026</span><div><a href="https://shzhang3.github.io/#teaching">Shiheng Zhang · Teaching</a><a href="https://github.com/shzhang3/amath351-lab" target="_blank" rel="noopener">Contribute on GitHub ↗</a></div></footer>
+  </div>
+
+</body>
+</html>

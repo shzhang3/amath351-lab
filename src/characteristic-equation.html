@@ -1,0 +1,329 @@
+<section class="lab-intro">
+  <div class="site-kicker">Section 3.1 · Characteristic equations</div>
+  <h1>Which exponential solves the ODE?</h1>
+  <p class="lab-math">Trial function: y = e<sup>rx</sup></p>
+  <p>Adjust r until the two sides of the differential equation agree. What happens to the point on the characteristic polynomial when the curves overlap?</p>
+</section>
+<div id="characteristic-equation-explorer" class="lab-interactive">
+  <div class="lab-controls so-controls">
+    <label class="lab-label" for="ce-equation">Differential equation
+      <select class="lab-select" id="ce-equation">
+        <option value="symmetric">y″ = y</option>
+        <option value="positive">y″ = 3y′ − 2y</option>
+      </select>
+    </label>
+    <label class="lab-label" for="ce-rate">
+      <span class="lab-row"><span>r in y = e<sup>rx</sup></span><output id="ce-rate-value" class="lab-numbers" for="ce-rate">0.50</output></span>
+      <input class="lab-slider" id="ce-rate" type="range" min="-2" max="2" step="0.05" value="0.5">
+    </label>
+  </div>
+  <div class="ce-state lab-numbers" id="ce-state" role="status" aria-live="polite"></div>
+  <div class="ce-panel">
+    <div class="ce-panel-title">Differential equation: compare both sides</div>
+    <div class="lab-row ce-legend" aria-label="Visible curves">
+      <button type="button" class="ce-series" data-series="lhs" aria-pressed="true">
+        <span class="ce-swatch ce-lhs" aria-hidden="true"></span><span>Left: y″</span>
+      </button>
+      <button type="button" class="ce-series" data-series="rhs" aria-pressed="true">
+        <span class="ce-swatch ce-rhs" aria-hidden="true"></span><span id="ce-rhs-label">Right: y</span>
+      </button>
+    </div>
+    <div id="ce-functions" class="ce-plot"></div>
+  </div>
+  <div class="ce-panel">
+    <div class="ce-panel-title" id="ce-polynomial-title">Characteristic polynomial: p(r) = r² − 1</div>
+    <div id="ce-polynomial" class="ce-plot"></div>
+  </div>
+  <div class="tooltip" id="ce-tooltip" role="tooltip" hidden></div>
+  <div class="so-sr-only" id="ce-description">Adjust the exponent r. The upper graph compares the two sides of the differential equation after substituting y = exp(rx). The lower graph shows the characteristic polynomial and its value at the selected r. Exact roots make the two sides agree for every x.</div>
+</div>
+<style>
+  #characteristic-equation-explorer { position: relative; }
+  #characteristic-equation-explorer .ce-state { margin: 12px 0 16px; }
+  #characteristic-equation-explorer .ce-panel + .ce-panel { margin-top: 12px; }
+  #characteristic-equation-explorer .ce-panel-title { font-weight: 500; }
+  #characteristic-equation-explorer .ce-legend { gap: 18px; margin: 8px 0 0; }
+  #characteristic-equation-explorer .ce-series {
+    display: inline-flex; align-items: center; gap: 7px; padding: 0;
+    background: transparent; border: 0; color: var(--site-ink); font: inherit;
+  }
+  #characteristic-equation-explorer .ce-series[aria-pressed="false"] .ce-swatch { opacity: .22; }
+  #characteristic-equation-explorer .ce-series[aria-pressed="false"] span:last-child { text-decoration: line-through; }
+  #characteristic-equation-explorer .ce-swatch { width: 24px; height: 0; display: inline-block; }
+  #characteristic-equation-explorer .ce-lhs { border-top: 3px solid var(--site-purple); }
+  #characteristic-equation-explorer .ce-rhs { border-top: 2px dashed var(--site-teal); }
+  #characteristic-equation-explorer .ce-plot { width: 100%; min-width: 0; }
+  #characteristic-equation-explorer .ce-chart { display: block; overflow: visible; width: 100%; }
+  #characteristic-equation-explorer .ce-chart text { font-size: 12px; fill: var(--site-ink); font-weight: 400; }
+  #characteristic-equation-explorer .ce-chart .tick line,
+  #characteristic-equation-explorer .ce-chart .domain { stroke: var(--site-line); }
+  #characteristic-equation-explorer .ce-chart .domain { display: none; }
+  #characteristic-equation-explorer .ce-chart [data-chart-frame] { fill: none; stroke: var(--site-line); }
+  #characteristic-equation-explorer .ce-chart .zero-line { stroke: var(--site-ink); opacity: .28; stroke-width: 1; }
+  #characteristic-equation-explorer .ce-chart .ce-curve { fill: none; }
+  #characteristic-equation-explorer .ce-chart .ce-left { stroke: var(--site-purple); stroke-width: 3.5; }
+  #characteristic-equation-explorer .ce-chart .ce-right { stroke: var(--site-teal); stroke-width: 2.25; stroke-dasharray: 7 5; }
+  #characteristic-equation-explorer .ce-chart .ce-poly { stroke: var(--site-purple); stroke-width: 2.5; }
+  #characteristic-equation-explorer .ce-chart .ce-selected { fill: var(--site-ink); stroke: var(--site-paper); stroke-width: 2; }
+  #characteristic-equation-explorer .ce-chart .ce-stem { stroke: var(--site-ink); stroke-width: 1; opacity: .55; stroke-dasharray: 3 3; }
+  #characteristic-equation-explorer .ce-chart [data-chart-hover-guide] { stroke: var(--site-ink); opacity: .3; stroke-width: 1; }
+  #characteristic-equation-explorer #ce-tooltip { position: absolute; z-index: 2; pointer-events: none; white-space: nowrap; }
+  #characteristic-equation-explorer #ce-tooltip[hidden] { display: none; }
+
+  #characteristic-equation-explorer .so-controls { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 24px; align-items: start; }
+  #characteristic-equation-explorer .so-controls > label { min-width: 0; }
+  #characteristic-equation-explorer .so-controls select { max-width: none; }
+  #characteristic-equation-explorer .so-sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+  @media (max-width: 640px) { #characteristic-equation-explorer .so-controls { grid-template-columns: minmax(0, 1fr); } }
+  #characteristic-equation-explorer #ce-tooltip { padding: 8px 12px; border: 1px solid var(--site-line); border-radius: 6px; background: var(--site-surface); color: var(--site-ink); }
+  @media (pointer: coarse) { #characteristic-equation-explorer .ce-series { min-height: 44px; } }
+</style>
+<script src="{{D3_URL}}"></script>
+<script>
+(function () {
+  const root = document.getElementById("characteristic-equation-explorer");
+  const equation = root.querySelector("#ce-equation");
+  const rate = root.querySelector("#ce-rate");
+  const rateValue = root.querySelector("#ce-rate-value");
+  const status = root.querySelector("#ce-state");
+  const tooltip = root.querySelector("#ce-tooltip");
+  const models = {
+    symmetric: { min: -2, max: 2, polynomial: r => r * r - 1, rhs: () => 1, rhsLabel: "y", polynomialLabel: "r² − 1", equationLabel: "y″ − y = 0" },
+    positive: { min: 0, max: 3, polynomial: r => r * r - 3 * r + 2, rhs: r => 3 * r - 2, rhsLabel: "3y′ − 2y", polynomialLabel: "r² − 3r + 2", equationLabel: "y″ − 3y′ + 2y = 0" }
+  };
+  let state = { equation: "symmetric", r: 0.5, visible: { lhs: true, rhs: true } };
+  let pinned = false;
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const fixed = (n, digits) => (Math.abs(n) < 1e-10 ? 0 : n).toFixed(digits).replace("-", "−");
+  const compact = n => d3.format(".3~g")(Math.abs(n) < 1e-10 ? 0 : n).replace("-", "−");
+  function restore(snapshot) {
+    const data = snapshot && (snapshot.modelContent || snapshot);
+    if (!data || data.experiment !== "section31-characteristic-equation" || !models[data.equation]) return;
+    const model = models[data.equation];
+    const nextRate = Number(data.r);
+    state.equation = data.equation;
+    if (Number.isFinite(nextRate)) state.r = Math.round(Math.max(model.min, Math.min(model.max, nextRate)) * 20) / 20;
+    const visible = snapshot.privateContent && snapshot.privateContent.visible;
+    if (visible && typeof visible.lhs === "boolean" && typeof visible.rhs === "boolean") state.visible = visible;
+  }
+  try { restore(JSON.parse(localStorage.getItem("amath351-section31-characteristic-v1"))); } catch (_) {}
+  function save() {
+    try {
+      localStorage.setItem("amath351-section31-characteristic-v1", JSON.stringify({
+        modelContent: { experiment: "section31-characteristic-equation", equation: state.equation, r: state.r },
+        privateContent: { visible: state.visible }
+      }));
+    } catch (_) {}
+  }
+  function makeChart(containerId, id, name) {
+    const container = root.querySelector(containerId);
+    const svg = d3.select(container).append("svg").attr("class", "ce-chart")
+      .attr("role", "img").attr("aria-label", name).attr("aria-describedby", "ce-description");
+    svg.append("title").text(name);
+    svg.append("defs").append("clipPath").attr("id", id).append("rect");
+    svg.append("rect").attr("data-chart-frame", "");
+    const content = svg.append("g").attr("clip-path", "url(#" + id + ")");
+    content.append("line").attr("class", "zero-line");
+    const xAxis = svg.append("g");
+    const yAxis = svg.append("g");
+    svg.append("text").attr("class", "axis-title").attr("data-axis", "x").attr("text-anchor", "end");
+    svg.append("text").attr("class", "axis-title").attr("data-axis", "y");
+    const hover = content.append("g").attr("visibility", "hidden").attr("pointer-events", "none");
+    hover.append("line").attr("data-chart-hover-guide", "");
+    const overlay = svg.append("rect").attr("data-chart-hit", "")
+      .attr("data-chart-hover-overlay", "cross-series").attr("fill", "transparent");
+    return { container, svg, content, xAxis, yAxis, hover, overlay, id };
+  }
+  const upper = makeChart("#ce-functions", "ce-functions-clip", "Left and right sides after substituting an exponential");
+  upper.content.insert("path", "g").attr("class", "ce-curve ce-left").attr("data-series", "lhs");
+  upper.content.insert("path", "g").attr("class", "ce-curve ce-right").attr("data-series", "rhs");
+  const lower = makeChart("#ce-polynomial", "ce-poly-clip", "Characteristic polynomial as a function of r");
+  lower.content.insert("path", "g").attr("class", "ce-curve ce-poly");
+  lower.content.insert("line", "g").attr("class", "ce-stem");
+  lower.content.insert("circle", "g").attr("class", "ce-selected").attr("r", 5.5);
+  function padded(values, fraction) {
+    let bounds = d3.extent(values);
+    const span = bounds[1] - bounds[0] || 1;
+    return [bounds[0] - fraction * span, bounds[1] + fraction * span];
+  }
+  function updateSelection(selection, attrs, animate) {
+    selection.interrupt();
+    const target = animate && !reducedMotion.matches ? selection.transition().duration(120) : selection;
+    Object.entries(attrs).forEach(([key, value]) => target.attr(key, value));
+  }
+  function layout(chart, dataX, dataY, height, xTitle, yTitle) {
+    const width = chart.container.getBoundingClientRect().width;
+    const box = { left: 64, top: 24, right: width - 18, bottom: height - 42 };
+    chart.width = width;
+    chart.box = box;
+    chart.x = d3.scaleLinear().domain(d3.extent(dataX)).range([box.left + 6, box.right - 6]);
+    chart.y = d3.scaleLinear().domain(padded(dataY, .12)).range([box.bottom - 6, box.top + 6]);
+    chart.svg.attr("viewBox", "0 0 " + width + " " + height).attr("height", height);
+    const attrs = { x: box.left, y: box.top, width: box.right - box.left, height: box.bottom - box.top };
+    Object.entries(attrs).forEach(([key, value]) => {
+      chart.svg.select("[data-chart-frame]").attr(key, value);
+      chart.svg.select("clipPath rect").attr(key, value);
+      chart.overlay.attr(key, value);
+    });
+    const xDomain = chart.x.domain();
+    let xTicks = d3.ticks(xDomain[0], xDomain[1], width < 440 ? 3 : 5);
+    if (width < 440 && xTicks.length > 4) xTicks = xTicks.filter((value, index) => index % 2 === 0);
+    chart.xAxis.attr("transform", "translate(0," + box.bottom + ")")
+      .call(d3.axisBottom(chart.x).tickValues(xTicks).tickSize(0).tickPadding(9));
+    chart.yAxis.attr("transform", "translate(" + box.left + ",0)")
+      .call(d3.axisLeft(chart.y).ticks(height < 240 ? 3 : 4).tickSize(0).tickPadding(9).tickFormat(compact));
+    chart.svg.select('[data-axis="x"]').attr("x", box.right).attr("y", height - 4).text(xTitle);
+    chart.svg.select('[data-axis="y"]').attr("x", 12).attr("y", 14).text(yTitle);
+    chart.content.select(".zero-line")
+      .attr("x1", box.left).attr("x2", box.right)
+      .attr("y1", chart.y(0)).attr("y2", chart.y(0));
+    chart.hover.select("line").attr("y1", box.top).attr("y2", box.bottom);
+  }
+  function tidyLabels(chart) {
+    const labels = Array.from(chart.svg.node().querySelectorAll(".tick text, .axis-title"));
+    const seen = [];
+    labels.reverse().forEach(node => {
+      node.style.visibility = "visible";
+      let rect = node.getBoundingClientRect();
+      const svgBounds = chart.svg.node().getBoundingClientRect();
+      if (node.closest(".tick") && node.parentNode.parentNode === chart.xAxis.node()) {
+        if (rect.left < svgBounds.left + 4) node.setAttribute("text-anchor", "start");
+        if (rect.right > svgBounds.right - 4) node.setAttribute("text-anchor", "end");
+        rect = node.getBoundingClientRect();
+      }
+      const overlap = seen.some(other => rect.left < other.right + 4 && rect.right + 4 > other.left && rect.top < other.bottom + 4 && rect.bottom + 4 > other.top);
+      if (overlap && node.closest(".tick")) node.style.visibility = "hidden";
+      else seen.push(rect);
+    });
+  }
+  function hideHover() {
+    upper.hover.attr("visibility", "hidden");
+    lower.hover.attr("visibility", "hidden");
+    tooltip.hidden = true;
+  }
+  function hoverAt(chart, event) {
+    const coordinates = d3.pointer(event, chart.svg.node());
+    const x = Math.max(chart.x.domain()[0], Math.min(chart.x.domain()[1], chart.x.invert(coordinates[0])));
+    const model = models[state.equation];
+    let series;
+    if (chart === upper) {
+      const exp = Math.exp(state.r * x);
+      series = [
+        { id: "lhs", name: "y″", value: state.r * state.r * exp, color: "var(--site-purple)" },
+        { id: "rhs", name: model.rhsLabel, value: model.rhs(state.r) * exp, color: "var(--site-teal)" }
+      ].filter(item => state.visible[item.id]);
+    } else {
+      series = [{ id: "polynomial", name: "p(r)", value: model.polynomial(x), color: "var(--site-purple)" }];
+    }
+    (chart === upper ? lower : upper).hover.attr("visibility", "hidden");
+    chart.hover.attr("visibility", "visible");
+    chart.hover.select("line").attr("x1", chart.x(x)).attr("x2", chart.x(x));
+    chart.hover.selectAll("circle").data(series, item => item.id).join("circle")
+      .attr("data-chart-hover-marker", "").attr("r", 4)
+      .attr("cx", chart.x(x)).attr("cy", item => chart.y(item.value))
+      .attr("fill", item => item.color).attr("stroke", "var(--site-paper)").attr("stroke-width", 1.5);
+    tooltip.replaceChildren();
+    const firstLine = document.createElement("div");
+    firstLine.textContent = (chart === upper ? "x = " : "r = ") + fixed(x, 2);
+    tooltip.appendChild(firstLine);
+    series.forEach(item => {
+      const row = document.createElement("div");
+      row.textContent = item.name + " = " + compact(item.value);
+      tooltip.appendChild(row);
+    });
+    tooltip.hidden = false;
+    const bounds = root.getBoundingClientRect();
+    const tipWidth = tooltip.offsetWidth;
+    const tipHeight = tooltip.offsetHeight;
+    const left = Math.max(0, Math.min(bounds.width - tipWidth, event.clientX - bounds.left + 12));
+    const top = Math.max(0, Math.min(bounds.height - tipHeight, event.clientY - bounds.top - tipHeight - 10));
+    tooltip.style.left = left + "px";
+    tooltip.style.top = top + "px";
+  }
+  [upper, lower].forEach(chart => {
+    chart.overlay.on("pointermove", event => { if (!pinned && event.pointerType !== "touch") hoverAt(chart, event); });
+    chart.overlay.on("pointerleave", () => { if (!pinned) hideHover(); });
+    chart.overlay.on("click", event => {
+      if (pinned) { pinned = false; hideHover(); }
+      else { pinned = true; hoverAt(chart, event); }
+    });
+  });
+  function render(animate) {
+    const model = models[state.equation];
+    equation.value = state.equation;
+    rate.min = model.min; rate.max = model.max; rate.value = state.r;
+    rateValue.textContent = fixed(state.r, 2);
+    rate.setAttribute("aria-valuetext", "r equals " + fixed(state.r, 2));
+    const polyValue = model.polynomial(state.r);
+    const matched = Math.abs(polyValue) < 1e-10;
+    status.textContent = "p(r) = " + fixed(polyValue, 4) + " · " + (matched ? "Matches for every x" : "Not a solution");
+    status.dataset.solution = String(matched);
+    root.querySelector("#ce-rhs-label").textContent = "Right: " + model.rhsLabel;
+    root.querySelector("#ce-polynomial-title").textContent = "Characteristic polynomial: p(r) = " + model.polynomialLabel;
+    root.querySelectorAll(".ce-series").forEach(button => {
+      button.setAttribute("aria-pressed", String(state.visible[button.dataset.series]));
+    });
+    pinned = false;
+    hideHover();
+    const samples = d3.range(201).map(i => {
+      const x = -1 + i / 100;
+      const exp = Math.exp(state.r * x);
+      return { x, lhs: state.r * state.r * exp, rhs: model.rhs(state.r) * exp };
+    });
+    const compactLayout = upper.container.getBoundingClientRect().width < 440;
+    layout(upper, samples.map(d => d.x), [0, ...samples.flatMap(d => [d.lhs, d.rhs])], compactLayout ? 260 : 290, "x", "Value");
+    ["lhs", "rhs"].forEach(key => {
+      const path = upper.content.select('[data-series="' + key + '"]');
+      path.attr("visibility", state.visible[key] ? "visible" : "hidden");
+      updateSelection(path, { d: d3.line().x(d => upper.x(d.x)).y(d => upper.y(d[key]))(samples) }, animate);
+    });
+    const polySamples = d3.range(241).map(i => {
+      const r = model.min + (model.max - model.min) * i / 240;
+      return { x: r, y: model.polynomial(r) };
+    });
+    layout(lower, polySamples.map(d => d.x), [0, ...polySamples.map(d => d.y)], compactLayout ? 200 : 220, "r", "p(r)");
+    updateSelection(lower.content.select(".ce-poly"), { d: d3.line().x(d => lower.x(d.x)).y(d => lower.y(d.y))(polySamples) }, animate);
+    updateSelection(lower.content.select(".ce-selected"), { cx: lower.x(state.r), cy: lower.y(polyValue) }, animate);
+    updateSelection(lower.content.select(".ce-stem"), { x1: lower.x(state.r), x2: lower.x(state.r), y1: lower.y(0), y2: lower.y(polyValue) }, animate);
+    upper.svg.select("title").text("For r = " + state.r + ", compare y″ and " + model.rhsLabel + ". " + (matched ? "They agree for every x." : "They do not agree."));
+    lower.svg.select("title").text("p(r) = " + model.polynomialLabel + ". Selected value: " + fixed(polyValue, 4));
+    tidyLabels(upper);
+    tidyLabels(lower);
+  }
+  rate.addEventListener("input", () => {
+    state.r = Number(rate.value);
+    render(true);
+  });
+  rate.addEventListener("change", save);
+  equation.addEventListener("change", () => {
+    state.equation = equation.value;
+    const model = models[state.equation];
+    state.r = Math.max(model.min, Math.min(model.max, state.r));
+    render(true); save();
+  });
+  root.querySelectorAll(".ce-series").forEach(button => button.addEventListener("click", () => {
+    const key = button.dataset.series;
+    state.visible[key] = !state.visible[key];
+    render(false); save();
+  }));
+  let previousWidth = 0;
+  new ResizeObserver(() => {
+    const width = upper.container.getBoundingClientRect().width;
+    if (Math.abs(width - previousWidth) > .5) { previousWidth = width; render(false); }
+  }).observe(upper.container);
+  render(false);
+})();
+</script>
+
+<section class="lab-explanation">
+  <h2>One parameter connects the two graphs</h2>
+  <p>The upper graph compares the left and right sides of the selected equation after substituting y = e<sup>rx</sup>. The lower graph shows the characteristic polynomial p(r); its marked point follows the r slider.</p>
+  <p><strong>Find both values of r:</strong> Start with y″ = y, then try y″ = 3y′ − 2y. A solution must satisfy the equation for every x, not just at a single point.</p>
+  <details>
+    <summary>Why do the roots select exponential solutions?</summary>
+    <p>Differentiating y = e<sup>rx</sup> gives y′ = re<sup>rx</sup> and y″ = r²e<sup>rx</sup>. For a constant-coefficient homogeneous equation,</p>
+    <p class="lab-math">ay″ + by′ + cy = (ar² + br + c)e<sup>rx</sup> = p(r)e<sup>rx</sup>.</p>
+    <p>Since e<sup>rx</sup> is never zero, the trial function satisfies the equation for every x exactly when p(r) = 0. This is the characteristic equation. The equation chooses the allowed values of r; initial conditions choose the coefficients in a combination of independent solutions.</p>
+  </details>
+  <p class="lab-small">The display samples −1 ≤ x ≤ 1. The “Matches for every x” result follows from the exact polynomial test, rather than a visual match at a few plotted points.</p>
+</section>
