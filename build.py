@@ -173,8 +173,10 @@ def main():
                 replacements = {"PHASE_LINE_MODEL":(SOURCE / "phase-line-model.cjs").read_text(), "D3_URL":href(path,"assets/vendor/d3.v7.9.0.min.js")}
             elif example["slug"] == "euler":
                 replacements = {"EULER_MODEL":(SOURCE / "euler-model.cjs").read_text(), "D3_URL":href(path,"assets/vendor/d3.v7.9.0.min.js")}
-            elif example["slug"] in ("initial-conditions", "characteristic-equation"):
+            elif example["slug"] in ("initial-conditions", "characteristic-equation", "linear-independence"):
                 replacements = {"D3_URL":href(path,"assets/vendor/d3.v7.9.0.min.js")}
+            elif example["slug"] == "dependence-on-interval":
+                replacements = {"D3_URL":href(path,"assets/vendor/d3.v7.9.0.min.js"), "INTERVAL_MODEL":(SOURCE / "interval-dependence-model.cjs").read_text()}
             fragment = replace(fragment, **replacements)
             page(path, example["title"], example["description"], fragment, chapter=chapter, example=example, index=i)
 

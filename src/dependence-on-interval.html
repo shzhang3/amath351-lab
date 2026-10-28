@@ -1,0 +1,212 @@
+<section class="lab-intro">
+  <div class="site-kicker">Section 3.1 · Dependence on an interval</div>
+  <h1>One multiplier, one whole interval</h1>
+  <p class="lab-math">f(x) = x³, &nbsp; g(x) = x²|x| = |x|³</p>
+  <p>Are these functions linearly dependent or independent on ℝ, (0, ∞), and (−∞, 0)? Look for one constant k such that g(x) = kf(x) throughout the selected interval.</p>
+</section>
+<div id="interval-explorer" class="lab-interactive">
+  <div class="lab-controls id-controls">
+    <label class="lab-label" for="id-interval">Choose the interval
+      <select class="lab-select" id="id-interval">
+        <option value="real">ℝ — the whole real line</option>
+        <option value="positive">(0, ∞) — positive x</option>
+        <option value="negative">(−∞, 0) — negative x</option>
+      </select>
+    </label>
+    <label class="lab-label" for="id-k">
+      <span class="lab-row"><span>Constant multiplier k</span><output class="lab-numbers" id="id-k-value" for="id-k">1.00</output></span>
+      <input class="lab-slider" id="id-k" type="range" min="-2" max="2" step="0.05" value="1">
+    </label>
+  </div>
+  <div class="lab-row">
+    <button class="lab-button" id="id-plus" type="button">Try k = 1</button>
+    <button class="lab-button" id="id-minus" type="button">Try k = −1</button>
+  </div>
+  <p id="id-status" role="status" aria-live="polite"></p>
+  <div class="id-panels">
+    <section aria-labelledby="id-curves-title">
+      <h2 id="id-curves-title">Do the functions overlap?</h2>
+      <div class="lab-row id-legend"><span><i class="id-g-key" aria-hidden="true"></i>g(x)</span><span><i class="id-k-key" aria-hidden="true"></i>kf(x)</span></div>
+      <div id="id-curves" class="id-chart-host"></div>
+      <p class="lab-small" id="id-window"></p>
+    </section>
+    <section aria-labelledby="id-ratio-title">
+      <h2 id="id-ratio-title">Can one k match the ratio?</h2>
+      <div class="lab-row id-legend"><span><i class="id-g-key" aria-hidden="true"></i>g(x)/f(x), x ≠ 0</span><span><i class="id-k-key" aria-hidden="true"></i>k</span></div>
+      <div id="id-ratio" class="id-chart-host"></div>
+      <p class="lab-small">Open circles: the ratio is undefined at x = 0 because f(0) = g(0) = 0.</p>
+    </section>
+  </div>
+  <label class="lab-label id-probe-control" for="id-probe">
+    <span class="lab-row"><span>Inspect a point x</span><output class="lab-numbers" id="id-probe-value" for="id-probe">1.00</output></span>
+    <input class="lab-slider" id="id-probe" type="range" min="-2" max="2" step="0.05" value="1">
+  </label>
+  <p id="id-values" class="lab-numbers"></p>
+</div>
+<section class="lab-explanation" aria-label="Understand dependence and the Wronskian">
+  <details id="id-conclusion">
+    <summary>Reveal the conclusion for this interval</summary>
+    <p id="id-answer"></p>
+    <p id="id-proof" class="lab-math"></p>
+    <p>A relation must hold for <em>every</em> x in the interval, with the same constants. The finite graph suggests a pattern; these identities establish it on the entire interval.</p>
+  </details>
+  <details id="id-wronskian">
+    <summary>But the Wronskian is zero everywhere. Why?</summary>
+    <p class="lab-math">f′(x) = 3x², &nbsp; g′(x) = 3x|x|</p>
+    <p class="lab-math">W(x) = fg′ − f′g = 3x⁴|x| − 3x⁴|x| = 0</p>
+    <p id="id-w-value" class="lab-numbers"></p>
+    <p>On ℝ, these two functions are linearly independent even though W ≡ 0. For arbitrary differentiable functions, a zero Wronskian is <strong>not enough</strong> to conclude dependence.</p>
+    <p>The stronger test applies to two solutions of the <em>same</em> homogeneous linear equation y″ + p(x)y′ + q(x)y = 0, with p and q continuous on the <em>whole</em> interval. Under these hypotheses, W(x₀) = 0 at one point implies dependence on that interval.</p>
+    <p>Those hypotheses fail here across x = 0. Both functions have value and derivative zero at 0 but are not identically zero; they cannot solve such a regular equation across 0, because uniqueness would force the zero solution.</p>
+    <p>Compare with <a href="../linear-independence/">two solutions of y″ − y = 0</a>, where the Wronskian test does apply.</p>
+  </details>
+</section>
+<style>
+  #interval-explorer .id-controls { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px 24px; align-items: start; }
+  #interval-explorer .id-controls > label { min-width: 0; }
+  #interval-explorer .id-controls select { max-width: none; }
+  #interval-explorer .id-panels { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 28px; }
+  #interval-explorer .id-panels > section { min-width: 0; }
+  #interval-explorer .id-panels h2 { font-size: 20px; margin: 8px 0; }
+  #interval-explorer .id-legend { min-height: 28px; margin-bottom: 5px; gap: 8px 16px; }
+  #interval-explorer .id-legend span { display: inline-flex; align-items: center; gap: 7px; }
+  #interval-explorer .id-legend i { display: inline-block; width: 24px; height: 0; }
+  #interval-explorer .id-g-key { border-top: 4px solid var(--site-purple); }
+  #interval-explorer .id-k-key { border-top: 2px dashed var(--site-teal); }
+  #interval-explorer .id-chart-host { min-width: 0; width: 100%; }
+  #interval-explorer svg { display: block; width: 100%; overflow: visible; }
+  #interval-explorer svg text { fill: var(--site-ink); font-size: 12px; }
+  #interval-explorer .domain { display: none; }
+  #interval-explorer .id-frame, #interval-explorer .id-grid line { stroke: var(--site-line); fill: none; }
+  #interval-explorer .id-zero { stroke: var(--site-muted); opacity: .4; }
+  #interval-explorer .id-g { stroke: var(--site-purple); stroke-width: 4; fill: none; }
+  #interval-explorer .id-k { stroke: var(--site-teal); stroke-width: 2.5; stroke-dasharray: 7 5; fill: none; }
+  #interval-explorer .id-open { fill: var(--site-paper); stroke: var(--site-purple); stroke-width: 2; }
+  #interval-explorer .id-guide { stroke: var(--site-muted); stroke-dasharray: 3 4; opacity: .65; }
+  #interval-explorer .id-dot-g { fill: var(--site-purple); stroke: var(--site-paper); stroke-width: 1.5; }
+  #interval-explorer .id-dot-k { fill: var(--site-teal); stroke: var(--site-paper); stroke-width: 1.5; }
+  #interval-explorer .id-probe-control { max-width: 540px; margin-top: 18px; }
+  #interval-explorer #id-values { min-height: 2em; margin-bottom: 0; }
+  @media (max-width: 799px) { #interval-explorer .id-panels { grid-template-columns: minmax(0,1fr); gap: 14px; } }
+  @media (max-width: 640px) { #interval-explorer .id-controls { grid-template-columns: minmax(0,1fr); } }
+</style>
+<script src="{{D3_URL}}"></script>
+<script>{{INTERVAL_MODEL}}</script>
+<script>
+(() => {
+  const M = IntervalDependence;
+  const root = document.getElementById('interval-explorer');
+  const byId = id => document.getElementById(id);
+  const state = { interval: 'real', k: 1, x: 1 };
+  const storageKey = 'amath351-interval-dependence-v1';
+  const fixed = x => (Math.abs(x) < 1e-9 ? 0 : x).toFixed(2).replace('-', '−');
+  const tick = x => d3.format('.3~g')(x).replace('-', '−');
+  const sliderValue = x => Math.round(Math.max(-2, Math.min(2, x)) * 20) / 20;
+  function constrainProbe() {
+    const [lo, hi] = M.intervals[state.interval].window;
+    state.x = Math.max(lo, Math.min(hi, state.x));
+    // Zero belongs to ℝ but not to either open half-line.
+    if (state.x === 0 && state.interval !== 'real') state.x = state.interval === 'positive' ? .05 : -.05;
+  }
+  try {
+    const saved = JSON.parse(localStorage.getItem(storageKey));
+    if (saved && Object.hasOwn(M.intervals, saved.interval)) state.interval = saved.interval;
+    if (saved && Number.isFinite(saved.k)) state.k = sliderValue(saved.k);
+    if (saved && Number.isFinite(saved.x)) state.x = sliderValue(saved.x);
+    constrainProbe();
+  } catch (_) {}
+  function save() { try { localStorage.setItem(storageKey, JSON.stringify(state)); } catch (_) {} }
+  function chart(id, label) {
+    const host = byId(id);
+    const svg = d3.select(host).append('svg').attr('role', 'img').attr('aria-label', label);
+    svg.append('title').text(label);
+    svg.append('defs').append('clipPath').attr('id', id + '-clip').append('rect');
+    svg.append('rect').attr('class', 'id-frame');
+    const grid = svg.append('g').attr('class', 'id-grid');
+    const content = svg.append('g').attr('clip-path', 'url(#' + id + '-clip)');
+    content.append('path').attr('class', 'id-zero');
+    content.append('path').attr('class', 'id-g');
+    content.append('path').attr('class', 'id-k');
+    content.append('line').attr('class', 'id-guide');
+    content.append('circle').attr('class', 'id-dot-g').attr('r', 5);
+    content.append('circle').attr('class', 'id-dot-k').attr('r', 3.5);
+    const xAxis = svg.append('g'), yAxis = svg.append('g');
+    svg.append('text').attr('class', 'id-y-title').attr('x', 4).attr('y', 15);
+    svg.append('text').attr('class', 'id-x-title').attr('text-anchor', 'end').text('x');
+    return { host, svg, content, grid, xAxis, yAxis, id };
+  }
+  const curves = chart('id-curves', 'Compare g(x) and k times f(x)');
+  const ratios = chart('id-ratio', 'Compare g(x) divided by f(x) with the constant k');
+  function layout(c, xd, yd, label) {
+    const width = c.host.clientWidth, height = width < 440 ? 280 : 320;
+    const box = { left: 42, right: width - 14, top: 27, bottom: height - 38 };
+    // Pad the domain so the open endpoints at x = 0 remain fully visible.
+    const pad = (xd[1] - xd[0]) * .035;
+    c.x = d3.scaleLinear().domain([xd[0] - pad, xd[1] + pad]).range([box.left, box.right]);
+    c.y = d3.scaleLinear().domain(yd).range([box.bottom, box.top]);
+    c.box = box;
+    c.svg.attr('viewBox', '0 0 ' + width + ' ' + height).attr('height', height);
+    c.svg.selectAll('.id-frame, clipPath rect').attr('x', box.left).attr('y', box.top).attr('width', box.right - box.left).attr('height', box.bottom - box.top);
+    c.grid.attr('transform', 'translate(' + box.left + ',0)').call(d3.axisLeft(c.y).ticks(4).tickSize(-(box.right-box.left)).tickFormat(''));
+    c.xAxis.attr('transform', 'translate(0,' + box.bottom + ')').call(d3.axisBottom(c.x).tickValues(d3.ticks(...xd, width < 440 ? 4 : 5)).tickFormat(tick).tickSize(0).tickPadding(8));
+    c.yAxis.attr('transform', 'translate(' + box.left + ',0)').call(d3.axisLeft(c.y).ticks(4).tickFormat(tick).tickSize(0).tickPadding(7));
+    c.svg.select('.id-y-title').text(label);
+    c.svg.select('.id-x-title').attr('x', box.right).attr('y', height-3);
+    c.content.select('.id-zero').attr('d', 'M'+box.left+','+c.y(0)+'H'+box.right+'M'+c.x(0)+','+box.top+'V'+box.bottom);
+  }
+  const line = (c, points) => d3.line().x(d => c.x(d[0])).y(d => c.y(d[1]))(points);
+  function probe(c, first, second) {
+    c.content.select('.id-guide').attr('x1', c.x(state.x)).attr('x2', c.x(state.x)).attr('y1', c.box.top).attr('y2', c.box.bottom);
+    c.content.select('.id-dot-g').attr('display', first === null ? 'none' : null).attr('cx', c.x(state.x)).attr('cy', c.y(first === null ? 0 : first));
+    c.content.select('.id-dot-k').attr('cx', c.x(state.x)).attr('cy', c.y(second));
+  }
+  function render() {
+    const interval = M.intervals[state.interval], [lo, hi] = interval.window;
+    byId('id-interval').value = state.interval;
+    byId('id-k').value = state.k;
+    byId('id-k-value').textContent = fixed(state.k);
+    byId('id-probe').min = state.interval === 'positive' ? .05 : lo;
+    byId('id-probe').max = state.interval === 'negative' ? -.05 : hi;
+    byId('id-probe').value = state.x;
+    byId('id-probe-value').textContent = fixed(state.x);
+    const matches = M.matches(state.interval, state.k);
+    const status = byId('id-status');
+    status.dataset.matched = String(matches);
+    status.textContent = matches ? 'The curves agree for every x in ' + interval.label + '.'
+      : state.interval === 'real' && Math.abs(state.k) === 1
+        ? 'With k = ' + tick(state.k) + ', the curves overlap for ' + (state.k === 1 ? 'positive' : 'negative') + ' x, but not on the other side of 0.'
+        : 'This k does not make the curves agree throughout ' + interval.label + '.';
+    byId('id-window').textContent = 'Displayed window: ' + (state.interval === 'real' ? '−2 ≤ x ≤ 2.' : state.interval === 'positive' ? '0 < x ≤ 2; x = 0 is excluded.' : '−2 ≤ x < 0; x = 0 is excluded.');
+    layout(curves, [lo, hi], [-17.5,17.5], 'Function value');
+    layout(ratios, [lo, hi], [-2.4,2.4], 'Ratio / multiplier');
+    const xs = d3.range(301).map(i => lo + (hi-lo)*i/300);
+    curves.content.select('.id-g').attr('d', line(curves, xs.map(x => [x, M.g(x)])));
+    curves.content.select('.id-k').attr('d', line(curves, xs.map(x => [x, state.k * M.f(x)])));
+    curves.content.selectAll('.id-open').data(state.interval === 'real' ? [] : [0]).join('circle').attr('class', 'id-open').attr('cx', curves.x(0)).attr('cy', curves.y(0)).attr('r', 5);
+    const branches = state.interval === 'real' ? [-1,1] : [state.interval === 'positive' ? 1 : -1];
+    ratios.content.select('.id-g').attr('d', branches.map(sign => line(ratios, sign === 1 ? [[0,1],[hi,1]] : [[lo,-1],[0,-1]])).join(' '));
+    ratios.content.select('.id-k').attr('d', line(ratios, [[lo,state.k],[hi,state.k]]));
+    ratios.content.selectAll('.id-open').data(branches).join('circle').attr('class', 'id-open').attr('cx', ratios.x(0)).attr('cy', d => ratios.y(d)).attr('r', 5);
+    probe(curves, M.g(state.x), state.k * M.f(state.x));
+    probe(ratios, M.ratio(state.x), state.k);
+    byId('id-values').textContent = 'At x = ' + fixed(state.x) + ': g = ' + tick(M.g(state.x)) + ', kf = ' + tick(state.k * M.f(state.x)) + ', g/f = ' + (state.x === 0 ? 'undefined (0/0)' : tick(M.ratio(state.x))) + '.';
+    byId('id-w-value').textContent = 'At x = ' + fixed(state.x) + ': f′ = ' + tick(M.df(state.x)) + ', g′ = ' + tick(M.dg(state.x)) + ', W = ' + fixed(M.wronskian(state.x)) + '.';
+    byId('id-answer').textContent = state.interval === 'real'
+      ? 'Linearly independent on ℝ. Positive x requires k = 1; negative x requires k = −1. No single multiplier works on the whole interval.'
+      : 'Linearly dependent on ' + interval.label + '. The same constant k = ' + tick(interval.multiplier) + ' works for every x in this interval.';
+    byId('id-proof').textContent = state.interval === 'real'
+      ? 'c₁f + c₂g ≡ 0 ⇒ c₁ + c₂ = 0 and c₁ − c₂ = 0 ⇒ c₁ = c₂ = 0.'
+      : state.interval === 'positive' ? 'x > 0 ⇒ |x| = x ⇒ g(x) = f(x).' : 'x < 0 ⇒ |x| = −x ⇒ g(x) = −f(x).';
+    curves.svg.select('title').text(status.textContent);
+    ratios.svg.select('title').text('On ' + interval.label + ', g/f is ' + (state.interval === 'real' ? '−1 for negative x and 1 for positive x; undefined at zero.' : tick(interval.multiplier) + ' everywhere.') + ' Current k = ' + state.k + '.');
+  }
+  byId('id-interval').addEventListener('change', event => { state.interval = event.target.value; constrainProbe(); byId('id-conclusion').open = false; render(); save(); });
+  byId('id-k').addEventListener('input', event => { state.k = Number(event.target.value); render(); });
+  byId('id-probe').addEventListener('input', event => { state.x = Number(event.target.value); render(); });
+  ['id-k','id-probe'].forEach(id => byId(id).addEventListener('change', save));
+  [['id-plus',1],['id-minus',-1]].forEach(([id,k]) => byId(id).addEventListener('click', () => { state.k = k; render(); save(); }));
+  let lastWidth = 0;
+  new ResizeObserver(() => { if (root.clientWidth !== lastWidth) { lastWidth = root.clientWidth; render(); } }).observe(root);
+  render();
+})();
+</script>

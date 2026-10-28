@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Try to match an initial value and slope. Connect linear independence to two arrows and the area measured by the Wronskian.">
+  <meta name="theme-color" content="#624298">
+  <title>Why do we need two independent solutions? · AMATH 351 Lab</title>
+  <link rel="canonical" href="https://shzhang3.github.io/amath351-lab/chapters/higher-order/linear-independence/">
+  <link rel="stylesheet" href="../../../assets/lab.css">
+</head>
+<body>
+  <a class="site-skip" href="#main-content">Skip to content</a>
+  <div class="site-wrap">
+    <header class="site-header">
+      <a class="site-brand" href="../../../"><span class="site-brand-mark" aria-hidden="true">y′</span>AMATH 351 / Lab</a>
+      <nav aria-label="Main navigation"><a href="../../../">Chapters</a><a href="https://shzhang3.github.io/#teaching">Teaching</a><a href="https://github.com/shzhang3/amath351-lab" target="_blank" rel="noopener">GitHub ↗</a></nav>
+    </header>
+<nav class="site-breadcrumbs" aria-label="Breadcrumb"><a href="../../../">All chapters</a><span aria-hidden="true">/</span><a href="../">Chapter 02: Higher-order linear equations</a><span aria-hidden="true">/</span><span aria-current="page">Why do we need two independent solutions?</span></nav>
+    <main id="main-content" tabindex="-1"><noscript>Enable JavaScript to use the interactive plots. Explanations and navigation remain available.</noscript><section class="lab-intro">
+  <div class="site-kicker">Section 3.1 · Linear independence &amp; Wronskians</div>
+  <h1>Why do we need two independent solutions?</h1>
+  <p class="lab-math">y = c₁y₁ + c₂y₂</p>
+  <p>Can your two solutions match both a starting value and a starting slope? Adjust the coefficients, then switch the pair and try again.</p>
+</section>
+<div id="liw-explorer" class="lab-interactive">
+  <div class="lab-small liw-equation">ODE: y″ − y = 0 · Initial point: x = 0</div>
+  <div class="lab-controls liw-controls">
+    <label class="lab-label" for="liw-pair">Choose two solutions
+      <select class="lab-select" id="liw-pair">
+        <option value="dependent">y₁ = eˣ, y₂ = 2eˣ</option>
+        <option value="independent">y₁ = eˣ, y₂ = e⁻ˣ</option>
+      </select>
+    </label>
+    <label class="lab-label" for="liw-target">Target initial conditions
+      <select class="lab-select" id="liw-target">
+        <option value="flat">y(0) = 1, y′(0) = 0</option>
+        <option value="rising">y(0) = 0, y′(0) = 1</option>
+        <option value="diagonal">y(0) = 1, y′(0) = 1</option>
+      </select>
+    </label>
+  </div>
+  <div class="lab-controls liw-controls">
+    <label class="lab-label" for="liw-c1">
+      <span class="lab-row"><span>Coefficient c₁</span><output class="lab-numbers" id="liw-c1-value" for="liw-c1">0.50</output></span>
+      <input class="lab-slider" type="range" id="liw-c1" min="-1" max="1" step="0.05" value="0.5">
+    </label>
+    <label class="lab-label" for="liw-c2">
+      <span class="lab-row"><span>Coefficient c₂</span><output class="lab-numbers" id="liw-c2-value" for="liw-c2">0.50</output></span>
+      <input class="lab-slider" type="range" id="liw-c2" min="-1" max="1" step="0.05" value="0.5">
+    </label>
+  </div>
+  <div class="lab-row liw-actions">
+    <button class="lab-button lab-primary" id="liw-match" type="button">Match the target</button>
+    <span id="liw-result" role="status" aria-live="polite">Initial conditions not matched</span>
+  </div>
+  <div class="liw-panels">
+    <section aria-labelledby="liw-curves-title">
+      <h3 id="liw-curves-title">Solution curves</h3>
+      <div class="lab-row liw-legend" aria-label="Visible curves">
+        <button type="button" class="liw-key " data-series="sum" aria-pressed="true"><span class="liw-swatch liw-sum-swatch" aria-hidden="true"></span>y = c₁y₁ + c₂y₂</button>
+        <button type="button" class="liw-key " data-series="first" aria-pressed="true"><span class="liw-swatch liw-first-swatch" aria-hidden="true"></span>y₁</button>
+        <button type="button" class="liw-key " data-series="second" aria-pressed="true"><span class="liw-swatch liw-second-swatch" aria-hidden="true"></span>y₂</button>
+      </div>
+      <div id="liw-curves" class="liw-chart-host"></div>
+      <div class="lab-row lab-small liw-static-key"><span class="liw-target-key"><span aria-hidden="true">○</span> Target point + initial tangent</span></div>
+    </section>
+    <section aria-labelledby="liw-data-title">
+      <h3 id="liw-data-title">Initial value–slope plane</h3>
+      <div class="lab-small lab-numbers liw-geometry-values" id="liw-area">W(0) = 0 · Parallelogram area = 0</div>
+      <div id="liw-data" class="liw-chart-host"></div>
+      <div class="lab-small lab-numbers" id="liw-current">Current: (1.50, 1.50) · Target: (1, 0)</div>
+    </section>
+  </div>
+  <div class="tooltip" id="liw-tooltip" role="tooltip" hidden></div>
+  <div class="sr-only" id="liw-description">Compare two pairs of solutions of the same equation, y double prime minus y equals zero. Adjust the two coefficients to match a target initial value and slope. The first graph shows the functions. The second plots each solution's value and derivative at zero as a vector. The unscaled vectors form a parallelogram whose area is the absolute value of the Wronskian. Coefficients do not change that area.</div>
+</div>
+<style>
+  #liw-explorer { position: relative; }
+  #liw-explorer .liw-equation { margin-bottom: 12px; }
+  #liw-explorer .liw-actions { margin: 12px 0 18px; }
+  #liw-explorer .liw-panels { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 28px; }
+  #liw-explorer .liw-panels > section { min-width: 0; }
+  #liw-explorer .liw-legend, #liw-explorer .liw-geometry-values { min-height: 28px; margin-bottom: 4px; }
+  #liw-explorer .liw-legend { gap: 14px; }
+  #liw-explorer .liw-key { display: inline-flex; gap: 6px; align-items: center; padding: 0; border: 0; background: transparent; color: var(--site-ink); font: inherit; }
+  #liw-explorer .liw-key[aria-pressed="false"] { text-decoration: line-through; }
+  #liw-explorer .liw-key[aria-pressed="false"] .liw-swatch { opacity: .25; }
+  #liw-explorer .liw-swatch { width: 22px; height: 0; display: inline-block; }
+  #liw-explorer .liw-sum-swatch { border-top: 3px solid var(--site-purple); }
+  #liw-explorer .liw-first-swatch { border-top: 2px dashed var(--site-teal); }
+  #liw-explorer .liw-second-swatch { border-top: 2px dotted var(--site-orange); }
+  #liw-explorer .liw-target-key { display: inline-flex; align-items: center; gap: 7px; }
+  #liw-explorer .liw-chart-host { width: 100%; min-width: 0; }
+  #liw-explorer .liw-chart { display: block; width: 100%; overflow: visible; }
+  #liw-explorer .liw-chart text { fill: var(--site-ink); font-size: 12px; font-weight: 400; }
+  #liw-explorer .liw-chart .tick line { stroke: var(--site-line); }
+  #liw-explorer .liw-chart .domain { display: none; }
+  #liw-explorer .liw-chart [data-chart-frame] { fill: none; stroke: var(--site-line); stroke-width: 1; }
+  #liw-explorer .liw-chart .liw-zero { fill: none; stroke: var(--site-line); stroke-width: 1; }
+  #liw-explorer .liw-chart .liw-curve { fill: none; }
+  #liw-explorer .liw-chart .liw-sum { stroke: var(--site-purple); stroke-width: 3; }
+  #liw-explorer .liw-chart .liw-first { stroke: var(--site-teal); stroke-width: 1.7; stroke-dasharray: 6 4; }
+  #liw-explorer .liw-chart .liw-second { stroke: var(--site-orange); stroke-width: 1.7; stroke-dasharray: 2 4; }
+  #liw-explorer .liw-chart .liw-target-line { stroke: var(--site-ink); stroke-width: 1.5; stroke-dasharray: 5 4; fill: none; }
+  #liw-explorer .liw-chart .liw-target-point { stroke: var(--site-ink); stroke-width: 2; fill: var(--site-paper); }
+  #liw-explorer .liw-chart .liw-current-point { fill: var(--site-purple); stroke: var(--site-paper); stroke-width: 1.5; }
+  #liw-explorer .liw-chart .liw-area { fill: var(--site-purple); fill-opacity: .12; stroke: none; }
+  #liw-explorer .liw-chart .liw-area-edges { fill: none; stroke: var(--site-line); stroke-width: 1; }
+  #liw-explorer .liw-chart .liw-reachable { fill: none; stroke: var(--site-muted); stroke-width: 1.5; opacity: .6; }
+  #liw-explorer .liw-chart .liw-vector-one { stroke: var(--site-teal); fill: none; stroke-width: 2.5; }
+  #liw-explorer .liw-chart .liw-vector-two { stroke: var(--site-orange); fill: none; stroke-width: 2.5; stroke-dasharray: 5 3; }
+  #liw-explorer .liw-chart [data-chart-hover-guide] { stroke: var(--site-ink); opacity: .25; stroke-width: 1; }
+  #liw-explorer #liw-tooltip { position: absolute; pointer-events: none; z-index: 2; white-space: nowrap; }
+  #liw-explorer #liw-tooltip[hidden] { display: none; }
+  @media (max-width: 799px) { #liw-explorer .liw-panels { grid-template-columns: minmax(0,1fr); gap: 18px; } }
+  #liw-explorer .liw-controls { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px 24px; align-items: start; }
+  #liw-explorer .liw-controls > label { min-width: 0; }
+  #liw-explorer .liw-controls select { max-width: none; }
+  #liw-explorer .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+  #liw-explorer #liw-tooltip { padding: 8px 12px; border: 1px solid var(--site-line); border-radius: 6px; background: var(--site-surface); color: var(--site-ink); }
+  @media (max-width: 640px) { #liw-explorer .liw-controls { grid-template-columns: minmax(0,1fr); } }
+  @media (pointer: coarse) { #liw-explorer .liw-key { min-height: 44px; } }
+</style>
+<script src="../../../assets/vendor/d3.v7.9.0.min.js"></script>
+<script>
+(() => {
+  const root = document.getElementById("liw-explorer");
+  const selectPair = root.querySelector("#liw-pair");
+  const selectTarget = root.querySelector("#liw-target");
+  const inputOne = root.querySelector("#liw-c1");
+  const inputTwo = root.querySelector("#liw-c2");
+  const result = root.querySelector("#liw-result");
+  const tooltip = root.querySelector("#liw-tooltip");
+  const experiment = "section31-linear-independence-wronskian";
+  const targets = { flat: [1,0], rising: [0,1], diagonal: [1,1] };
+  const reduced = matchMedia("(prefers-reduced-motion: reduce)");
+  let state = { pair: "dependent", target: "flat", c1: .5, c2: .5 };
+  let visible = { sum: true, first: true, second: true };
+  let attempted = false;
+  let pinned = false;
+  const format = (value, digits=2) => (Math.abs(value) < 1e-9 ? 0 : value).toFixed(digits).replace("-", "−");
+  const short = value => d3.format(".3~g")(Math.abs(value) < 1e-9 ? 0 : value).replace("-", "−");
+  const clamp = value => Math.round(Math.max(-1,Math.min(1,value)) * 20) / 20;
+  const basis = (pair, x) => [Math.exp(x), pair === "dependent" ? 2*Math.exp(x) : Math.exp(-x)];
+  const initialVectors = pair => [[1,1],pair === "dependent" ? [2,2] : [1,-1]];
+  const combine = (pair,c1,c2,x) => { const [a,b]=basis(pair,x); return c1*a+c2*b; };
+  const initial = () => {
+    const [a,b]=initialVectors(state.pair);
+    return [state.c1*a[0]+state.c2*b[0],state.c1*a[1]+state.c2*b[1]];
+  };
+  const wronskian = pair => {
+    const [a,b]=initialVectors(pair);
+    return a[0]*b[1]-a[1]*b[0];
+  };
+  function restore(snapshot) {
+    const data = snapshot && (snapshot.modelContent || snapshot);
+    if (!data || data.experiment !== experiment) return;
+    if (data.pair === "dependent" || data.pair === "independent") state.pair=data.pair;
+    if (Object.prototype.hasOwnProperty.call(targets,data.target)) state.target=data.target;
+    ["c1","c2"].forEach(key=>{if(Number.isFinite(data[key]))state[key]=clamp(data[key]);});
+    const savedVisibility = snapshot.privateContent && snapshot.privateContent.visible;
+    if(savedVisibility) ["sum","first","second"].forEach(key=>{if(typeof savedVisibility[key]==="boolean")visible[key]=savedVisibility[key];});
+    attempted = Boolean(snapshot.privateContent && snapshot.privateContent.attempted);
+  }
+  try { restore(JSON.parse(localStorage.getItem("amath351-wronskian-v1"))); } catch (_) {}
+  function save() {
+    try {
+      localStorage.setItem("amath351-wronskian-v1",JSON.stringify({
+        modelContent:{experiment,...state}, privateContent:{visible,attempted}
+      }));
+    } catch (_) {}
+  }
+  function chart(host,clipId,name) {
+    const element=root.querySelector(host);
+    const svg=d3.select(element).append("svg").attr("class","liw-chart")
+      .attr("role","img").attr("aria-label",name).attr("aria-describedby","liw-description");
+    svg.append("title").text(name);
+    const defs=svg.append("defs");
+    defs.append("clipPath").attr("id",clipId).append("rect");
+    svg.append("rect").attr("data-chart-frame","");
+    const content=svg.append("g").attr("clip-path","url(#"+clipId+")");
+    content.append("path").attr("class","liw-zero");
+    const xAxis=svg.append("g"),yAxis=svg.append("g");
+    svg.append("text").attr("class","axis-title").attr("data-axis","x").attr("text-anchor","end");
+    svg.append("text").attr("class","axis-title").attr("data-axis","y");
+    return {element,svg,defs,content,xAxis,yAxis,clipId};
+  }
+  const curves=chart("#liw-curves","liw-curves-clip","Solution curves and a target initial tangent");
+  const plane=chart("#liw-data","liw-plane-clip","Initial values and slopes of the two basis solutions and their combination");
+  ["first","second","sum"].forEach(key=>curves.content.append("path").attr("class","liw-curve liw-"+key).attr("data-series",key));
+  curves.content.append("path").attr("class","liw-target-line");
+  curves.content.append("circle").attr("class","liw-target-point").attr("r",7);
+  curves.content.append("circle").attr("class","liw-current-point").attr("r",4.5);
+  const hover=curves.content.append("g").attr("visibility","hidden").attr("pointer-events","none");
+  hover.append("line").attr("data-chart-hover-guide","");
+  const overlay=curves.svg.append("rect").attr("fill","transparent").attr("data-chart-hit","").attr("data-chart-hover-overlay","cross-series");
+  plane.content.append("path").attr("class","liw-area");
+  plane.content.append("path").attr("class","liw-area-edges");
+  plane.content.append("path").attr("class","liw-reachable");
+  [["one","var(--site-teal)"],["two","var(--site-orange)"]].forEach(([key,color])=>{
+    plane.defs.append("marker").attr("id","liw-arrow-"+key).attr("viewBox","0 0 8 8")
+      .attr("refX",7).attr("refY",4).attr("markerWidth",7).attr("markerHeight",7)
+      .attr("orient","auto").attr("markerUnits","userSpaceOnUse")
+      .append("path").attr("d","M0,0 L8,4 L0,8 Z").attr("fill",color);
+  });
+  ["two","one"].forEach(key=>plane.content.append("path").attr("class","liw-vector-"+key).attr("marker-end","url(#liw-arrow-"+key+")"));
+  plane.content.append("circle").attr("class","liw-target-point").attr("r",7);
+  plane.content.append("circle").attr("class","liw-current-point").attr("r",4.5);
+  plane.svg.append("text").attr("class","liw-vector-label-one");
+  plane.svg.append("text").attr("class","liw-vector-label-two");
+  function attrs(selection,values,animate) {
+    selection.interrupt();
+    const target=animate&&!reduced.matches?selection.transition().duration(150):selection;
+    Object.entries(values).forEach(([key,value])=>target.attr(key,value));
+  }
+  function layout(chart,dataX,dataY,height,xTitle,yTitle,equal=false){
+    const width=chart.element.getBoundingClientRect().width;
+    const box={left:64,right:width-18,top:26,bottom:height-42};
+    const rawX=d3.extent(dataX),rawY=d3.extent(dataY);
+    const padY=(rawY[1]-rawY[0]||1)*.1;
+    let xd=rawX,yd=[rawY[0]-padY,rawY[1]+padY];
+    if(equal){
+      const span=Math.max(rawX[1]-rawX[0],rawY[1]-rawY[0])*1.15;
+      const cx=(rawX[0]+rawX[1])/2,cy=(rawY[0]+rawY[1])/2;
+      const step=Math.min((box.right-box.left-12)/span,(box.bottom-box.top-12)/span);
+      const sx=(box.right-box.left-12)/step,sy=(box.bottom-box.top-12)/step;
+      xd=[cx-sx/2,cx+sx/2];yd=[cy-sy/2,cy+sy/2];
+    }
+    chart.x=d3.scaleLinear().domain(xd).range([box.left+6,box.right-6]);
+    chart.y=d3.scaleLinear().domain(yd).range([box.bottom-6,box.top+6]);
+    chart.width=width;chart.box=box;
+    chart.svg.attr("viewBox","0 0 "+width+" "+height).attr("height",height);
+    Object.entries({x:box.left,y:box.top,width:box.right-box.left,height:box.bottom-box.top}).forEach(([key,value])=>{
+      chart.svg.select("[data-chart-frame]").attr(key,value);chart.svg.select("clipPath rect").attr(key,value);
+    });
+    let ticks=d3.ticks(...xd,width<440?3:5);
+    if(width<440&&ticks.length>4)ticks=ticks.filter((v,i)=>i%2===0);
+    chart.xAxis.attr("transform","translate(0,"+box.bottom+")").call(d3.axisBottom(chart.x).tickValues(ticks).tickSize(0).tickPadding(8));
+    chart.yAxis.attr("transform","translate("+box.left+",0)").call(d3.axisLeft(chart.y).ticks(4).tickFormat(short).tickSize(0).tickPadding(8));
+    chart.svg.select('[data-axis="x"]').attr("x",box.right).attr("y",height-5).text(xTitle);
+    chart.svg.select('[data-axis="y"]').attr("x",12).attr("y",15).text(yTitle);
+    chart.content.select(".liw-zero").attr("d","M"+box.left+","+chart.y(0)+"H"+box.right+"M"+chart.x(0)+","+box.top+"V"+box.bottom);
+  }
+  function tidy(chart){
+    const occupied=[];
+    const elements=Array.from(chart.svg.node().querySelectorAll(".axis-title,.tick text"));
+    for(const node of elements){
+      node.style.visibility="visible";
+      const b=node.getBoundingClientRect();
+      const overlaps=occupied.some(a=>b.left<a.right+4&&b.right+4>a.left&&b.top<a.bottom+4&&b.bottom+4>a.top);
+      if(overlaps&&node.closest(".tick"))node.style.visibility="hidden";else occupied.push(b);
+    }
+  }
+  function hideTooltip(){tooltip.hidden=true;hover.attr("visibility","hidden");}
+  function inspect(event){
+    const [px]=d3.pointer(event,curves.svg.node());
+    const x=Math.max(-1,Math.min(1,curves.x.invert(px)));
+    const [first,second]=basis(state.pair,x);
+    const series=[
+      {id:"sum",name:"y",value:state.c1*first+state.c2*second,color:"var(--site-purple)"},
+      {id:"first",name:"y₁",value:first,color:"var(--site-teal)"},
+      {id:"second",name:"y₂",value:second,color:"var(--site-orange)"}
+    ].filter(d=>visible[d.id]);
+    hover.attr("visibility","visible");
+    hover.select("line").attr("x1",curves.x(x)).attr("x2",curves.x(x)).attr("y1",curves.box.top).attr("y2",curves.box.bottom);
+    hover.selectAll("circle").data(series,d=>d.id).join("circle").attr("data-chart-hover-marker","")
+      .attr("cx",curves.x(x)).attr("cy",d=>curves.y(d.value)).attr("r",4).attr("fill",d=>d.color)
+      .attr("stroke","var(--site-paper)").attr("stroke-width",1);
+    tooltip.replaceChildren();
+    ["x = "+format(x),...series.map(d=>d.name+" = "+short(d.value))].forEach(value=>{
+      const line=document.createElement("div");line.textContent=value;tooltip.appendChild(line);
+    });
+    tooltip.hidden=false;
+    const b=root.getBoundingClientRect();
+    tooltip.style.left=Math.max(0,Math.min(b.width-tooltip.offsetWidth,event.clientX-b.left+12))+"px";
+    tooltip.style.top=Math.max(0,Math.min(b.height-tooltip.offsetHeight,event.clientY-b.top-tooltip.offsetHeight-12))+"px";
+  }
+  overlay.on("pointermove",event=>{if(!pinned&&event.pointerType!=="touch")inspect(event);})
+    .on("pointerleave",()=>{if(!pinned)hideTooltip();})
+    .on("click",event=>{if(pinned){pinned=false;hideTooltip();}else{pinned=true;inspect(event);}});
+  function render(animate=false){
+    selectPair.value=state.pair;selectTarget.value=state.target;inputOne.value=state.c1;inputTwo.value=state.c2;
+    root.querySelector("#liw-c1-value").textContent=format(state.c1);
+    root.querySelector("#liw-c2-value").textContent=format(state.c2);
+    const [a,b]=initialVectors(state.pair),target=targets[state.target],current=initial();
+    const W=wronskian(state.pair);
+    const matched=Math.abs(current[0]-target[0])<1e-9&&Math.abs(current[1]-target[1])<1e-9;
+    const reachable=W!==0||target[0]===target[1];
+    result.textContent=matched
+      ?(W===0?"Matched · Infinitely many coefficient pairs":"Matched · Unique coefficient pair")
+      :(attempted&&!reachable?"No coefficient pair matches this target":"Initial conditions not matched");
+    result.dataset.matched=String(matched);result.dataset.reachable=String(reachable);
+    root.querySelector("#liw-area").textContent="W(0) = "+short(W)+" · Parallelogram area = "+short(Math.abs(W));
+    root.querySelector("#liw-current").textContent="Current: ("+format(current[0])+", "+format(current[1])+") · Target: ("+target.join(", ")+")";
+    root.querySelectorAll(".liw-key").forEach(button=>button.setAttribute("aria-pressed",String(visible[button.dataset.series])));
+    pinned=false;hideTooltip();
+    const samples=d3.range(201).map(i=>{
+      const x=(i-100)/100,[first,second]=basis(state.pair,x);
+      return {x,first,second,sum:state.c1*first+state.c2*second};
+    });
+    const targetTangent=[-.25,.25].map(x=>({x,y:target[0]+target[1]*x}));
+    const height=curves.element.getBoundingClientRect().width<440?310:340;
+    layout(curves,samples.map(d=>d.x),[0,target[0],...samples.flatMap(d=>[d.first,d.second,d.sum]),...targetTangent.map(d=>d.y)],height,"x","y(x)");
+    ["first","second","sum"].forEach(key=>{
+      curves.content.select('[data-series="'+key+'"]').attr("visibility",visible[key]?"visible":"hidden");
+      attrs(curves.content.select('[data-series="'+key+'"]'),{d:d3.line().x(d=>curves.x(d.x)).y(d=>curves.y(d[key]))(samples)},animate);
+    });
+    attrs(curves.content.select(".liw-target-line"),{d:d3.line().x(d=>curves.x(d.x)).y(d=>curves.y(d.y))(targetTangent)},animate);
+    attrs(curves.content.select(".liw-target-point"),{cx:curves.x(0),cy:curves.y(target[0])},animate);
+    attrs(curves.content.select(".liw-current-point"),{cx:curves.x(0),cy:curves.y(current[0])},animate);
+    curves.content.select(".liw-current-point").attr("visibility",visible.sum?"visible":"hidden");
+    Object.entries({x:curves.box.left,y:curves.box.top,width:curves.box.right-curves.box.left,height:curves.box.bottom-curves.box.top}).forEach(([key,value])=>overlay.attr(key,value));
+    // Include every slider corner for both pairs. The initial-data axes and
+    // unscaled parallelogram area remain fixed when coefficients change.
+    const references=[[0,0],...Object.values(targets)];
+    ["dependent","independent"].forEach(pair=>{
+      const [v1,v2]=initialVectors(pair);
+      references.push(v1,v2,[v1[0]+v2[0],v1[1]+v2[1]]);
+      [-1,1].forEach(c1=>[-1,1].forEach(c2=>references.push([c1*v1[0]+c2*v2[0],c1*v1[1]+c2*v2[1]])));
+    });
+    layout(plane,references.map(p=>p[0]),references.map(p=>p[1]),height,"Initial value y(0)","Initial slope y′(0)",true);
+    const line=d3.line().x(p=>plane.x(p[0])).y(p=>plane.y(p[1]));
+    const parallelogram=[[0,0],a,[a[0]+b[0],a[1]+b[1]],b,[0,0]];
+    attrs(plane.content.select(".liw-area"),{d:line(parallelogram)+"Z"},animate);
+    attrs(plane.content.select(".liw-area-edges"),{d:line([a,[a[0]+b[0],a[1]+b[1]],b])},animate);
+    const extent=Math.max(...plane.x.domain().map(Math.abs),...plane.y.domain().map(Math.abs));
+    plane.content.select(".liw-reachable").attr("display",W===0?null:"none").attr("d",line([[-extent,-extent],[extent,extent]]));
+    attrs(plane.content.select(".liw-vector-one"),{d:line([[0,0],a])},animate);
+    attrs(plane.content.select(".liw-vector-two"),{d:line([[0,0],b])},animate);
+    attrs(plane.content.select(".liw-target-point"),{cx:plane.x(target[0]),cy:plane.y(target[1])},animate);
+    attrs(plane.content.select(".liw-current-point"),{cx:plane.x(current[0]),cy:plane.y(current[1])},animate);
+    const narrow=plane.width<440;
+    plane.svg.select(".liw-vector-label-one").attr("x",plane.x(a[0])-9).attr("y",plane.y(a[1])+17)
+      .attr("text-anchor","end").text(narrow?"y₁":"y₁: (1, 1)");
+    plane.svg.select(".liw-vector-label-two").attr("x",plane.x(b[0])+9).attr("y",plane.y(b[1])+(W===0?-9:18))
+      .attr("text-anchor","start").text(narrow?"y₂":"y₂: ("+b.join(", ")+")");
+    plane.svg.select("title").text("Wronskian "+W+". Area "+Math.abs(W)+". "+(W===0?"The two initial-data vectors are collinear.":"The two initial-data vectors are independent.")+" Current initial data "+current.join(", ")+". Target "+target.join(", ")+".");
+    curves.svg.select("title").text("y = "+state.c1+" y1 + "+state.c2+" y2. Target initial value "+target[0]+" and slope "+target[1]+".");
+    tidy(curves);tidy(plane);
+  }
+  selectPair.addEventListener("change",()=>{state.pair=selectPair.value;attempted=false;render(true);save();});
+  selectTarget.addEventListener("change",()=>{state.target=selectTarget.value;attempted=false;render(true);save();});
+  [[inputOne,"c1"],[inputTwo,"c2"]].forEach(([input,key])=>{
+    input.addEventListener("input",()=>{state[key]=Number(input.value);attempted=false;render(true);});
+    input.addEventListener("change",save);
+  });
+  root.querySelector("#liw-match").addEventListener("click",()=>{
+    const [value,slope]=targets[state.target];
+    attempted=true;
+    if(state.pair==="independent"){state.c1=(value+slope)/2;state.c2=(value-slope)/2;}
+    else if(value===slope){state.c1=value;state.c2=0;}
+    render(true);save();
+  });
+  root.querySelectorAll(".liw-key").forEach(button=>button.addEventListener("click",()=>{
+    const key=button.dataset.series;visible[key]=!visible[key];render(false);save();
+  }));
+  let lastWidths="";
+  new ResizeObserver(()=>{
+    const widths=curves.element.clientWidth+","+plane.element.clientWidth;
+    if(widths!==lastWidths){lastWidths=widths;render(false);}
+  }).observe(root);
+  render(false);
+})();
+</script>
+
+<section class="lab-explanation" aria-label="Explore the Wronskian">
+  <p><strong>Try this:</strong> start with eˣ and 2eˣ and target (1, 0). Then switch to eˣ and e⁻ˣ. Finally, return to the first pair and target (1, 1): can two different coefficient pairs give the same curve?</p>
+  <details>
+    <summary>Connect the geometry to the Wronskian</summary>
+    <p>At x = 0, each solution gives an arrow (yᵢ(0), yᵢ′(0)). Its two coordinates are the starting value and slope. Combining solutions combines these arrows with the same coefficients.</p>
+    <p class="lab-math">W(0) = y₁(0)y₂′(0) − y₁′(0)y₂(0)</p>
+    <p>The parallelogram formed by the two <em>unscaled</em> arrows has area |W(0)|. For eˣ and 2eˣ, the arrows lie on one line: changing two coefficients still gives only y = (c₁ + 2c₂)eˣ. For eˣ and e⁻ˣ, W(0) = −2, so the arrows span the plane. With unrestricted real coefficients, every initial value–slope pair has exactly one coefficient pair.</p>
+    <p>The sliders cover −1 ≤ c₁, c₂ ≤ 1; the independent pair can reach every target offered here within that range. An unreachable target for the dependent pair does <em>not</em> mean that the ODE has no solution. It means that this pair cannot represent that solution.</p>
+  </details>
+  <details>
+    <summary>When does the Wronskian test apply?</summary>
+    <p>For two solutions of the same equation y″ + p(x)y′ + q(x)y = 0, with p and q continuous on an interval I, the solutions are linearly independent on I if and only if W(x₀) ≠ 0 at one point x₀ in I. In this setting, W is either zero everywhere or nonzero everywhere on I.</p>
+    <p>For arbitrary differentiable functions, W ≡ 0 alone does not prove dependence. Explore <a href="../dependence-on-interval/">x³ and x²|x| on three intervals</a> to see why the hypotheses matter.</p>
+  </details>
+</section>
+</main>
+<nav class="site-example-nav" aria-label="Example navigation"><a href="../characteristic-equation/"><small>Previous example</small>← Which exponential solves the ODE?</a><a class="site-all-examples" href="../">All chapter examples</a><a href="../dependence-on-interval/"><small>Next example</small>One multiplier, one whole interval →</a></nav>
+    <footer class="site-footer"><span>University of Washington · Autumn 2026</span><div><a href="https://shzhang3.github.io/#teaching">Shiheng Zhang · Teaching</a><a href="https://github.com/shzhang3/amath351-lab" target="_blank" rel="noopener">Contribute on GitHub ↗</a></div></footer>
+  </div>
+
+</body>
+</html>
