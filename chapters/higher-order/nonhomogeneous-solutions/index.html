@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Add a homogeneous solution to a particular solution, check the differential equation, and change the decomposition while preserving the total curve.">
+  <meta name="theme-color" content="#624298">
+  <title>One particular solution. A whole family. · AMATH 351 Lab</title>
+  <link rel="canonical" href="https://shzhang3.github.io/amath351-lab/chapters/higher-order/nonhomogeneous-solutions/">
+  <link rel="stylesheet" href="../../../assets/lab.css">
+</head>
+<body>
+  <a class="site-skip" href="#main-content">Skip to content</a>
+  <div class="site-wrap">
+    <header class="site-header">
+      <a class="site-brand" href="../../../"><span class="site-brand-mark" aria-hidden="true">y′</span>AMATH 351 / Lab</a>
+      <nav aria-label="Main navigation"><a href="../../../">Chapters</a><a href="https://shzhang3.github.io/#teaching">Teaching</a><a href="https://github.com/shzhang3/amath351-lab" target="_blank" rel="noopener">GitHub ↗</a></nav>
+    </header>
+<nav class="site-breadcrumbs" aria-label="Breadcrumb"><a href="../../../">All chapters</a><span aria-hidden="true">/</span><a href="../">Chapter 02: Higher-order linear equations</a><span aria-hidden="true">/</span><span aria-current="page">One particular solution. A whole family.</span></nav>
+    <main id="main-content" tabindex="-1"><noscript>Enable JavaScript to use the interactive plots. Explanations and navigation remain available.</noscript><section class="lab-intro">
+  <div class="site-kicker">Section 3.2 · General solutions of linear equations</div>
+  <h1>One particular solution. A whole family.</h1>
+  <p class="lab-math">y″ − 4y = 12 &emsp; y = y<sub>c</sub> + y<sub>p</sub></p>
+  <p>Adjust the two constants in the homogeneous solution. Add one particular solution, point by point, and watch every resulting curve satisfy the same nonhomogeneous equation.</p>
+</section>
+<div id="nh-explorer" class="lab-interactive">
+  <div class="nh-formulas" aria-label="The selected decomposition">
+    <div><span class="nh-swatch nh-c-swatch" aria-hidden="true"></span><span class="lab-math">y<sub>c</sub> = c₁e<sup>2x</sup> + c₂e<sup>−2x</sup></span></div>
+    <div><span class="nh-swatch nh-p-swatch" aria-hidden="true"></span><span class="lab-math" id="nh-particular-formula">yₚ = −3</span></div>
+  </div>
+  <div class="lab-controls nh-controls">
+    <label class="lab-label" for="nh-c1"><span class="lab-row"><span>Coefficient c₁</span><output id="nh-c1-value" class="lab-numbers" for="nh-c1">1.00</output></span>
+      <input class="lab-slider" id="nh-c1" type="range" min="-3" max="3" step="0.1" value="1">
+    </label>
+    <label class="lab-label" for="nh-c2"><span class="lab-row"><span>Coefficient c₂</span><output id="nh-c2-value" class="lab-numbers" for="nh-c2">0.50</output></span>
+      <input class="lab-slider" id="nh-c2" type="range" min="-3" max="3" step="0.1" value="0.5">
+    </label>
+    <label class="lab-label" for="nh-particular">Particular solution yₚ
+      <select class="lab-select" id="nh-particular">
+        <option value="constant">yₚ = −3</option>
+        <option value="exponential">yₚ = −3 + e²ˣ</option>
+      </select>
+    </label>
+  </div>
+  <div class="lab-row nh-actions">
+    <button class="lab-button lab-primary" type="button" id="nh-lecture">Match lecture IVP: y(0) = 2, y′(0) = −2</button>
+    <label class="lab-check" for="nh-family"><input type="checkbox" id="nh-family">Show a family of total solutions</label>
+  </div>
+  <p class="lab-numbers" id="nh-initial" role="status" aria-live="polite"></p>
+  <p id="nh-switch-note" role="status" aria-live="polite">Switch yₚ and watch the total curve stay in place while c₁ adjusts.</p>
+  <div class="nh-main">
+    <section aria-labelledby="nh-chart-title">
+      <h2 id="nh-chart-title">Add yₚ at each x</h2>
+      <div class="lab-row nh-legend" aria-label="Visible curves">
+        <button type="button" data-series="total" aria-pressed="true"><span class="nh-swatch nh-y-swatch" aria-hidden="true"></span><span>y = y<sub>c</sub> + y<sub>p</sub></span></button>
+        <button type="button" data-series="complementary" aria-pressed="true"><span class="nh-swatch nh-c-swatch" aria-hidden="true"></span><span>y<sub>c</sub></span></button>
+        <button type="button" data-series="particular" aria-pressed="true"><span class="nh-swatch nh-p-swatch" aria-hidden="true"></span><span>y<sub>p</sub></span></button>
+      </div>
+      <div id="nh-plot"></div>
+      <p class="lab-small" id="nh-addition-note">The vertical arrow adds the value of yₚ to y<sub>c</sub> at the selected x.</p>
+    </section>
+    <section class="nh-check-panel" aria-labelledby="nh-check-title">
+      <h2 id="nh-check-title">Check the equation</h2>
+      <p>Apply L[u] = u″ − 4u at <span class="lab-numbers" id="nh-table-x">x = 0.00</span>.</p>
+      <div class="nh-table-wrap">
+        <table class="lab-numbers">
+          <caption class="nh-sr-only">Values of each curve and its left side in the differential equation.</caption>
+          <thead><tr><th scope="col">Curve u</th><th scope="col">u(x)</th><th scope="col">L[u](x)</th></tr></thead>
+          <tbody>
+            <tr><th scope="row"><span class="nh-swatch nh-c-swatch" aria-hidden="true"></span>y<sub>c</sub></th><td id="nh-c-value"></td><td id="nh-c-operator"></td></tr>
+            <tr><th scope="row"><span class="nh-swatch nh-p-swatch" aria-hidden="true"></span>y<sub>p</sub></th><td id="nh-p-value"></td><td id="nh-p-operator"></td></tr>
+            <tr><th scope="row"><span class="nh-swatch nh-y-swatch" aria-hidden="true"></span>y</th><td id="nh-y-value"></td><td id="nh-y-operator"></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="nh-identity lab-math">L[y<sub>c</sub> + y<sub>p</sub>] = 0 + 12 = 12</p>
+      <p class="lab-small">Changing c₁ and c₂ changes the curve. The homogeneous part contributes zero to the left side.</p>
+      <p class="lab-small" id="nh-family-key" hidden>Faint curves are other choices of the two constants. Every one satisfies y″ − 4y = 12.</p>
+    </section>
+  </div>
+  <label class="lab-label nh-probe-control" for="nh-x"><span class="lab-row"><span>Inspect a point x</span><output id="nh-x-value" class="lab-numbers" for="nh-x">0.00</output></span>
+    <input class="lab-slider" type="range" id="nh-x" min="-0.8" max="0.8" step="0.01" value="0">
+  </label>
+  <p class="lab-numbers" id="nh-point-sum" aria-live="off"></p>
+  <p class="lab-small">The plotted window is −0.8 ≤ x ≤ 0.8. Sliders show a bounded sample; c₁ and c₂ can be any real numbers in the general solution.</p>
+  <p class="nh-sr-only" id="nh-description">Three linked curves show the complementary homogeneous solution, a particular solution, and their pointwise sum. A vertical arrow at the selected x adds the particular value to the complementary value. Sliders and the equation table provide keyboard-accessible inspection. Switching the particular solution compensates the complementary coefficient and preserves the entire total curve.</p>
+</div>
+<section class="lab-explanation">
+  <details>
+    <summary>Why does this describe every solution?</summary>
+    <p>Let Y be any solution of Y″ − 4Y = 12, and let yₚ be one particular solution. Subtract their equations:</p>
+    <p class="lab-math">L[Y − yₚ] = 12 − 12 = 0.</p>
+    <p>Thus Y − yₚ is a homogeneous solution. Since e<sup>2x</sup> and e<sup>−2x</sup> form a fundamental set, Y − yₚ = c₁e<sup>2x</sup> + c₂e<sup>−2x</sup>. Every nonhomogeneous solution is therefore y<sub>c</sub> + y<sub>p</sub>.</p>
+    <p>More generally, for a normalized linear equation of order n with continuous coefficients and forcing on an open interval I, choose a fundamental set y₁, …, yₙ of homogeneous solutions and one particular solution yₚ on I. The general solution is y = c₁y₁ + ⋯ + cₙyₙ + yₚ.</p>
+  </details>
+  <details>
+    <summary>Why is the particular solution not unique?</summary>
+    <p>The difference between −3 + e<sup>2x</sup> and −3 is the homogeneous solution e<sup>2x</sup>. Switching to the second choice gives the identity</p>
+    <p class="lab-math">c₁e<sup>2x</sup> + c₂e<sup>−2x</sup> − 3 = (c₁ − 1)e<sup>2x</sup> + c₂e<sup>−2x</sup> + (−3 + e<sup>2x</sup>).</p>
+    <p>The decomposition changes, while the total solution and its initial conditions stay fixed. With unrestricted coefficients, both choices describe exactly the same family.</p>
+    <p>A sum of two nonhomogeneous solutions generally has L[Y₁ + Y₂] = 24. Their difference has L[Y₁ − Y₂] = 0 and solves the associated homogeneous equation.</p>
+  </details>
+</section>
+<style>
+  #nh-explorer .nh-formulas { display: flex; flex-wrap: wrap; gap: 8px 28px; }
+  #nh-explorer .nh-formulas > div { display: flex; align-items: center; gap: 9px; }
+  #nh-explorer .nh-controls { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 12px 24px; align-items: start; }
+  #nh-explorer .nh-controls > label { min-width: 0; }
+  #nh-explorer .nh-actions { margin: 6px 0 14px; }
+  #nh-explorer .nh-main { display: grid; grid-template-columns: minmax(0,1.8fr) minmax(0,1fr); gap: 26px; margin-top: 20px; }
+  #nh-explorer .nh-main > section { min-width: 0; }
+  #nh-explorer h2 { font-size: 21px; margin: 0 0 12px; }
+  #nh-explorer .nh-legend { gap: 10px 18px; margin-bottom: 6px; }
+  #nh-explorer .nh-legend button { display: inline-flex; align-items: center; gap: 6px; color: var(--site-ink); font: inherit; border: 0; padding: 3px 0; background: transparent; }
+  #nh-explorer .nh-legend button[aria-pressed="false"] { text-decoration: line-through; }
+  #nh-explorer .nh-legend button[aria-pressed="false"] .nh-swatch { opacity: .25; }
+  #nh-explorer .nh-swatch { display: inline-block; width: 22px; height: 0; flex: 0 0 22px; vertical-align: middle; }
+  #nh-explorer .nh-y-swatch { border-top: 3.5px solid var(--site-purple); }
+  #nh-explorer .nh-c-swatch { border-top: 2.5px dashed var(--site-teal); }
+  #nh-explorer .nh-p-swatch { border-top: 2.5px dotted var(--site-orange); }
+  #nh-explorer #nh-plot { min-width: 0; width: 100%; }
+  #nh-explorer svg { width: 100%; display: block; overflow: visible; }
+  #nh-explorer svg text { fill: var(--site-ink); font-size: 12px; }
+  #nh-explorer .domain { display: none; }
+  #nh-explorer .nh-frame, #nh-explorer .nh-grid line { fill: none; stroke: var(--site-line); }
+  #nh-explorer .nh-zero { stroke: var(--site-muted); opacity: .35; fill: none; }
+  #nh-explorer .nh-curve { fill: none; }
+  #nh-explorer .nh-total { stroke: var(--site-purple); stroke-width: 3.5; }
+  #nh-explorer .nh-complementary { stroke: var(--site-teal); stroke-width: 2.25; stroke-dasharray: 7 5; }
+  #nh-explorer .nh-particular { stroke: var(--site-orange); stroke-width: 2.5; stroke-dasharray: 2 5; }
+  #nh-explorer .nh-family-curve { stroke: var(--site-muted); stroke-width: 1; opacity: .24; fill: none; }
+  #nh-explorer .nh-guide { stroke: var(--site-muted); stroke-width: 1; stroke-dasharray: 3 4; opacity: .5; }
+  #nh-explorer .nh-add-arrow { stroke: var(--site-orange); stroke-width: 2; fill: none; }
+  #nh-explorer .nh-dot { stroke: var(--site-paper); stroke-width: 1.5; }
+  #nh-explorer .nh-table-wrap { overflow-x: auto; }
+  #nh-explorer table { border-collapse: collapse; width: 100%; margin: 16px 0; }
+  #nh-explorer th, #nh-explorer td { text-align: right; border-bottom: 1px solid var(--site-line); padding: 12px 5px; white-space: nowrap; }
+  #nh-explorer th { font-weight: 500; }
+  #nh-explorer th:first-child { text-align: left; }
+  #nh-explorer th .nh-swatch { margin-right: 7px; }
+  #nh-explorer .nh-identity { font-size: 18px; }
+  #nh-explorer .nh-probe-control { max-width: 600px; margin-top: 20px; }
+  #nh-explorer .nh-sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+  @media (max-width: 850px) { #nh-explorer .nh-main { grid-template-columns: minmax(0,1fr); } }
+  @media (max-width: 640px) { #nh-explorer .nh-controls { grid-template-columns: minmax(0,1fr); } }
+  @media (pointer: coarse) { #nh-explorer .nh-legend button { min-height: 44px; } }
+</style>
+<script src="../../../assets/vendor/d3.v7.9.0.min.js"></script>
+<script>(function (root, factory) {
+  if (typeof module === 'object' && module.exports) module.exports = factory();
+  else root.NonhomogeneousModel = factory();
+})(typeof globalThis !== 'undefined' ? globalThis : this, function () {
+  const domain = [-0.8, 0.8];
+  const particulars = {
+    constant: { shift: 0, label: '−3' },
+    exponential: { shift: 1, label: '−3 + e²ˣ' }
+  };
+  const fresh = () => ({ a: 1, b: 0.5, particular: 'constant', x: 0, family: false,
+    visible: { total: true, complementary: true, particular: true } });
+  const clamp = (n,lo,hi) => Math.max(lo,Math.min(hi,n));
+  function restore(saved) {
+    const state = fresh();
+    if (!saved || saved.version !== 1) return state;
+    for (const key of ['a','b']) if (Number.isFinite(saved[key])) state[key] = Math.round(clamp(saved[key],-3,3)*10)/10;
+    if (Object.hasOwn(particulars,saved.particular)) state.particular = saved.particular;
+    if (Number.isFinite(saved.x)) state.x = clamp(saved.x,...domain);
+    if (typeof saved.family === 'boolean') state.family = saved.family;
+    for (const key of Object.keys(state.visible)) {
+      if (saved.visible && typeof saved.visible[key] === 'boolean') state.visible[key] = saved.visible[key];
+    }
+    return state;
+  }
+  function coefficients(state) {
+    return { c1: state.a-particulars[state.particular].shift, c2: state.b };
+  }
+  function terms(state,x) {
+    const ep = Math.exp(2*x), em = Math.exp(-2*x);
+    const shift = particulars[state.particular].shift;
+    const yc = (state.a-shift)*ep+state.b*em, yp = -3+shift*ep;
+    // Evaluate the total independently of the decomposition. Changing the
+    // particular solution preserves the entire curve, not only a sample point.
+    const y = state.a*ep+state.b*em-3;
+    const ddc = 4*yc, ddp = 4*shift*ep, ddy = 4*(state.a*ep+state.b*em);
+    return {
+      complementary: { value: yc, second: ddc, operator: ddc-4*yc },
+      particular: { value: yp, second: ddp, operator: ddp-4*yp },
+      total: { value: y, second: ddy, operator: ddy-4*y }
+    };
+  }
+  function initial(state) { return { value: state.a+state.b-3, slope: 2*(state.a-state.b) }; }
+  function matchInitial(state,value,slope) {
+    const a=(value+3)/2+slope/4, b=(value+3)/2-slope/4;
+    return { ...state,a,b };
+  }
+  const family = () => [-0.5,0.5,1.5,2.5].flatMap(a => [-0.5,0.5,1.5].map(b => ({a,b})));
+  function sample(state,count=241) {
+    return Array.from({length:count},(_,i)=>{
+      const x=domain[0]+(domain[1]-domain[0])*i/(count-1);
+      return {x,...terms(state,x)};
+    });
+  }
+  function yDomain(state) {
+    // Include both decompositions so switching y_p cannot rescale the axes.
+    const values=[0];
+    for (const particular of Object.keys(particulars)) {
+      for (const p of sample({...state,particular},81)) {
+        values.push(p.total.value,p.complementary.value,p.particular.value);
+      }
+    }
+    if (state.family) for (const pair of family()) {
+      for (const p of sample({...state,...pair},81)) values.push(p.total.value);
+    }
+    const lo=Math.min(...values),hi=Math.max(...values),pad=Math.max(1,(hi-lo)*0.12);
+    return [lo-pad,hi+pad];
+  }
+  return { domain, particulars, fresh, restore, coefficients, terms, initial, matchInitial, family, sample, yDomain };
+});
+</script>
+<script>
+(() => {
+  const M=NonhomogeneousModel, root=document.getElementById('nh-explorer');
+  const el=id=>root.querySelector('#nh-'+id);
+  let state=M.fresh();
+  const key='amath351-nonhomogeneous-v1';
+  try { state=M.restore(JSON.parse(localStorage.getItem(key))); } catch (_) {}
+  const save=()=>{try { localStorage.setItem(key,JSON.stringify({version:1,...state})); } catch (_) {}};
+  const clearSwitchNote=()=>{el('switch-note').textContent='Switch yₚ and watch the total curve stay in place while c₁ adjusts.';};
+  const fixed=(n,digits=2)=>(Math.abs(n)<1e-9?0:n).toFixed(digits).replace('-','−');
+  const short=n=>d3.format('.3~g')(Math.abs(n)<1e-9?0:n).replace('-','−');
+  const host=el('plot');
+  const svg=d3.select(host).append('svg').attr('role','img').attr('aria-label','Complementary solution plus particular solution equals the total solution').attr('aria-describedby','nh-description');
+  svg.append('title');
+  const defs=svg.append('defs');
+  defs.append('clipPath').attr('id','nh-clip').append('rect');
+  defs.append('marker').attr('id','nh-arrow-tip').attr('viewBox','0 0 8 8').attr('refX',7).attr('refY',4).attr('markerWidth',7).attr('markerHeight',7).attr('orient','auto').attr('markerUnits','userSpaceOnUse').append('path').attr('d','M0,0 L8,4 L0,8 Z').attr('fill','var(--site-orange)');
+  svg.append('rect').attr('class','nh-frame');
+  const grid=svg.append('g').attr('class','nh-grid');
+  const content=svg.append('g').attr('clip-path','url(#nh-clip)');
+  content.append('path').attr('class','nh-zero');
+  const familyGroup=content.append('g').attr('class','nh-family');
+  ['particular','complementary','total'].forEach(s=>content.append('path').attr('class','nh-curve nh-'+s).attr('data-series',s));
+  const probe=content.append('g').attr('pointer-events','none');
+  probe.append('line').attr('class','nh-guide');
+  probe.append('line').attr('class','nh-add-arrow').attr('marker-end','url(#nh-arrow-tip)');
+  const colors={complementary:'var(--site-teal)',particular:'var(--site-orange)',total:'var(--site-purple)'};
+  ['complementary','particular','total'].forEach(s=>probe.append('circle').attr('class','nh-dot').attr('data-dot',s).attr('r',s==='total'?5:4).attr('fill',colors[s]));
+  const xAxis=svg.append('g'),yAxis=svg.append('g');
+  svg.append('text').attr('class','nh-y-title').attr('x',4).attr('y',15).text('Function value');
+  svg.append('text').attr('class','nh-x-title').attr('text-anchor','end').text('x');
+  const hit=svg.append('rect').attr('fill','transparent').attr('data-chart-hit','');
+  let sx,sy,box;
+  const path=points=>d3.line().x(p=>sx(p.x)).y(p=>sy(p.value))(points);
+  function inspect() {
+    const t=M.terms(state,state.x),x=sx(state.x);
+    el('x').value=state.x;el('x-value').textContent=fixed(state.x);
+    el('table-x').textContent='x = '+fixed(state.x);
+    probe.select('.nh-guide').attr('x1',x).attr('x2',x).attr('y1',box.top).attr('y2',box.bottom);
+    for (const [name,id] of [['complementary','c'],['particular','p'],['total','y']]) {
+      probe.select('[data-dot="'+name+'"]').attr('cx',x).attr('cy',sy(t[name].value)).attr('display',state.visible[name]?null:'none');
+      el(id+'-value').textContent=fixed(t[name].value);
+      el(id+'-operator').textContent=short(t[name].operator);
+    }
+    const start=sy(t.complementary.value),end=sy(t.total.value),direction=Math.sign(end-start);
+    probe.select('.nh-add-arrow').attr('x1',x).attr('x2',x).attr('y1',start+direction*6).attr('y2',end-direction*6)
+      .attr('display',state.visible.total&&state.visible.complementary&&Math.abs(end-start)>18?null:'none');
+    el('point-sum').textContent='At x = '+fixed(state.x)+': '+fixed(t.complementary.value)+' + ('+fixed(t.particular.value)+') ≈ '+fixed(t.total.value)+'.';
+    svg.select('title').text('At x = '+fixed(state.x)+', complementary value '+fixed(t.complementary.value)+', particular value '+fixed(t.particular.value)+', total '+fixed(t.total.value)+'. The total satisfies y double prime minus four y equals twelve.');
+  }
+  function render() {
+    const shift=M.particulars[state.particular].shift,c=M.coefficients(state),initial=M.initial(state);
+    el('c1').min=-3-shift;el('c1').max=3-shift;el('c1').value=c.c1;
+    el('c2').value=c.c2;el('c1-value').textContent=fixed(c.c1);el('c2-value').textContent=fixed(c.c2);
+    el('particular').value=state.particular;el('particular-formula').textContent='yₚ = '+M.particulars[state.particular].label;
+    el('family').checked=state.family;el('family-key').hidden=!state.family;
+    el('initial').textContent='Current total solution: y(0) = '+fixed(initial.value)+', y′(0) = '+fixed(initial.slope)+'.';
+    const width=host.clientWidth,height=width<440?320:390;
+    box={left:48,right:width-14,top:27,bottom:height-38};
+    sx=d3.scaleLinear().domain(M.domain).range([box.left+5,box.right-5]);
+    sy=d3.scaleLinear().domain(M.yDomain(state)).nice(5).range([box.bottom-5,box.top+5]);
+    svg.attr('viewBox','0 0 '+width+' '+height).attr('height',height);
+    svg.selectAll('.nh-frame,clipPath rect').attr('x',box.left).attr('y',box.top).attr('width',box.right-box.left).attr('height',box.bottom-box.top);
+    grid.attr('transform','translate('+box.left+',0)').call(d3.axisLeft(sy).ticks(5).tickSize(-(box.right-box.left)).tickFormat(''));
+    xAxis.attr('transform','translate(0,'+box.bottom+')').call(d3.axisBottom(sx).tickValues([-.8,-.4,0,.4,.8]).tickFormat(short).tickSize(0).tickPadding(8));
+    yAxis.attr('transform','translate('+box.left+',0)').call(d3.axisLeft(sy).ticks(5).tickFormat(short).tickSize(0).tickPadding(7));
+    svg.select('.nh-x-title').attr('x',box.right).attr('y',height-3);
+    content.select('.nh-zero').attr('d','M'+box.left+','+sy(0)+'H'+box.right+'M'+sx(0)+','+box.top+'V'+box.bottom);
+    const samples=M.sample(state);
+    for (const series of ['complementary','particular','total']) {
+      content.select('.nh-'+series).attr('d',path(samples.map(p=>({x:p.x,value:p[series].value})))).attr('display',state.visible[series]?null:'none');
+    }
+    familyGroup.attr('display',state.family?null:'none').selectAll('path').data(M.family()).join('path').attr('class','nh-family-curve')
+      .attr('d',pair=>path(M.sample({...state,...pair},121).map(p=>({x:p.x,value:p.total.value}))));
+    root.querySelectorAll('.nh-legend button').forEach(b=>b.setAttribute('aria-pressed',String(state.visible[b.dataset.series])));
+    hit.attr('x',box.left).attr('y',box.top).attr('width',box.right-box.left).attr('height',box.bottom-box.top);
+    inspect();
+  }
+  function inspectAt(event) {
+    const [px]=d3.pointer(event,svg.node());
+    state.x=Math.max(M.domain[0],Math.min(M.domain[1],sx.invert(px)));inspect();
+  }
+  hit.on('pointermove',event=>{if(event.pointerType!=='touch')inspectAt(event);}).on('click',event=>{inspectAt(event);save();});
+  el('x').addEventListener('input',event=>{state.x=Number(event.target.value);inspect();});el('x').addEventListener('change',save);
+  el('c1').addEventListener('input',event=>{state.a=Number(event.target.value)+M.particulars[state.particular].shift;clearSwitchNote();render();});
+  el('c2').addEventListener('input',event=>{state.b=Number(event.target.value);clearSwitchNote();render();});
+  ['c1','c2'].forEach(id=>el(id).addEventListener('change',save));
+  el('particular').addEventListener('change',event=>{
+    const old=M.coefficients(state).c1;state.particular=event.target.value;
+    const next=M.coefficients(state).c1;
+    el('switch-note').textContent='Same total curve and initial conditions. c₁ changes from '+fixed(old)+' to '+fixed(next)+'; c₂ stays '+fixed(state.b)+'.';
+    render();save();
+  });
+  el('family').addEventListener('change',event=>{state.family=event.target.checked;render();save();});
+  el('lecture').addEventListener('click',()=>{state=M.matchInitial(state,2,-2);clearSwitchNote();render();save();});
+  root.querySelectorAll('.nh-legend button').forEach(button=>button.addEventListener('click',()=>{state.visible[button.dataset.series]=!state.visible[button.dataset.series];render();save();}));
+  let lastWidth=0;new ResizeObserver(()=>{if(host.clientWidth!==lastWidth){lastWidth=host.clientWidth;render();}}).observe(host);
+  render();
+})();
+</script>
+</main>
+<nav class="site-example-nav" aria-label="Example navigation"><a href="../dependence-on-interval/"><small>Previous example</small>← One multiplier, one whole interval</a><a class="site-all-examples" href="../">All chapter examples</a><span></span></nav>
+    <footer class="site-footer"><span>University of Washington · Autumn 2026</span><div><a href="https://shzhang3.github.io/#teaching">Shiheng Zhang · Teaching</a><a href="https://github.com/shzhang3/amath351-lab" target="_blank" rel="noopener">Contribute on GitHub ↗</a></div></footer>
+  </div>
+
+</body>
+</html>

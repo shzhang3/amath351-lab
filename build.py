@@ -177,6 +177,8 @@ def main():
                 replacements = {"D3_URL":href(path,"assets/vendor/d3.v7.9.0.min.js")}
             elif example["slug"] == "dependence-on-interval":
                 replacements = {"D3_URL":href(path,"assets/vendor/d3.v7.9.0.min.js"), "INTERVAL_MODEL":(SOURCE / "interval-dependence-model.cjs").read_text()}
+            elif example["slug"] == "nonhomogeneous-solutions":
+                replacements = {"D3_URL":href(path,"assets/vendor/d3.v7.9.0.min.js"), "NONHOMOGENEOUS_MODEL":(SOURCE / "nonhomogeneous-model.cjs").read_text()}
             fragment = replace(fragment, **replacements)
             page(path, example["title"], example["description"], fragment, chapter=chapter, example=example, index=i)
 
