@@ -181,6 +181,8 @@ def main():
                 replacements = {"D3_URL":href(path,"assets/vendor/d3.v7.9.0.min.js"), "NONHOMOGENEOUS_MODEL":(SOURCE / "nonhomogeneous-model.cjs").read_text()}
             elif example["slug"] == "wronskian-volume":
                 replacements = {"D3_URL":href(path,"assets/vendor/d3.v7.9.0.min.js"), "WRONSKIAN_VOLUME_MODEL":(SOURCE / "wronskian-volume-model.cjs").read_text()}
+            elif example["slug"] == "vector-area":
+                replacements = {"D3_URL":href(path,"assets/vendor/d3.v7.9.0.min.js"), "VECTOR_AREA_MODEL":(SOURCE / "vector-area-model.cjs").read_text()}
             fragment = replace(fragment, **replacements)
             page(path, example["title"], example["description"], fragment, chapter=chapter, example=example, index=i)
 

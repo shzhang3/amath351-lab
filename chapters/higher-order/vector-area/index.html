@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Drag two vectors, drop a perpendicular, and rotate the base to horizontal. Connect a right triangle to the area formula |ad − bc|.">
+  <meta name="theme-color" content="#624298">
+  <title>Why does sine give the height? · AMATH 351 Lab</title>
+  <link rel="canonical" href="https://shzhang3.github.io/amath351-lab/chapters/higher-order/vector-area/">
+  <link rel="stylesheet" href="../../../assets/lab.css">
+</head>
+<body>
+  <a class="site-skip" href="#main-content">Skip to content</a>
+  <div class="site-wrap">
+    <header class="site-header">
+      <a class="site-brand" href="../../../"><span class="site-brand-mark" aria-hidden="true">y′</span>AMATH 351 / Lab</a>
+      <nav aria-label="Main navigation"><a href="../../../">Chapters</a><a href="https://shzhang3.github.io/#teaching">Teaching</a><a href="https://github.com/shzhang3/amath351-lab" target="_blank" rel="noopener">GitHub ↗</a></nav>
+    </header>
+<nav class="site-breadcrumbs" aria-label="Breadcrumb"><a href="../../../">All chapters</a><span aria-hidden="true">/</span><a href="../">Chapter 02: Higher-order linear equations</a><span aria-hidden="true">/</span><span aria-current="page">Why does sine give the height?</span></nav>
+    <main id="main-content" tabindex="-1"><noscript>Enable JavaScript to use the interactive plots. Explanations and navigation remain available.</noscript><section class="lab-intro">
+  <div class="site-kicker">Section 3.2 · Geometry behind the Wronskian</div>
+  <h1>Why does sine give the height?</h1>
+  <p class="lab-math">u = (a, b), &nbsp; v = (c, d) &emsp; Area = |ad − bc|</p>
+  <p>Use u as the base. Drop a perpendicular from the tip of v to the base line. Rotate the whole picture so the base is horizontal, then read the height from a right triangle.</p>
+</section>
+<div id="va-explorer" class="lab-interactive">
+  <div class="lab-controls va-controls">
+    <label class="lab-label" for="va-r"><span class="lab-row"><span>Base length r</span><output class="lab-numbers" id="va-r-value" for="va-r">2.50</output></span><input class="lab-slider" id="va-r" type="range" min="0.75" max="3" step="0.05" value="2.5"></label>
+    <label class="lab-label" for="va-s"><span class="lab-row"><span>Second length s</span><output class="lab-numbers" id="va-s-value" for="va-s">2.30</output></span><input class="lab-slider" id="va-s" type="range" min="0.75" max="3" step="0.05" value="2.3"></label>
+    <label class="lab-label" for="va-alpha"><span class="lab-row"><span>Common rotation α</span><output class="lab-numbers" id="va-alpha-value" for="va-alpha">25°</output></span><input class="lab-slider" id="va-alpha" type="range" min="-180" max="180" step="1" value="25"></label>
+    <label class="lab-label" for="va-theta"><span class="lab-row"><span>Angle θ = β − α</span><output class="lab-numbers" id="va-theta-value" for="va-theta">55°</output></span><input class="lab-slider" id="va-theta" type="range" min="-180" max="180" step="1" value="55"></label>
+  </div>
+  <div class="lab-row va-presets">
+    <label class="lab-label" for="va-case">Explore an angle
+      <select class="lab-select" id="va-case">
+        <option value="custom">Explore freely</option>
+        <option value="acute">Acute: θ = 55°</option>
+        <option value="obtuse">Obtuse: θ = 130°</option>
+        <option value="negative">Negative orientation: θ = −55°</option>
+        <option value="perpendicular">Perpendicular: θ = 90°</option>
+        <option value="parallel">Parallel: θ = 0°</option>
+      </select>
+    </label>
+    <button class="lab-button lab-primary" type="button" id="va-align">Rotate the base to horizontal</button>
+  </div>
+  <p class="lab-numbers" id="va-coordinates"></p>
+  <p class="lab-small">Drag A or B in the original picture. The α slider rotates both arrows together and preserves their relative angle.</p>
+  <div class="va-readouts lab-numbers">
+    <div><span class="lab-small">Perpendicular height</span><strong id="va-height">h ≈ 1.88</strong></div>
+    <div><span class="lab-small">Area = base × height</span><strong id="va-area">r h ≈ 4.71</strong></div>
+    <div><span class="lab-small">Signed area</span><strong id="va-signed">ad − bc ≈ 4.71</strong></div>
+  </div>
+  <div class="va-panels">
+    <section aria-labelledby="va-original-title">
+      <h2 id="va-original-title">Original coordinates</h2>
+      <p class="lab-small" id="va-original-angles">α = 25°, β = 80°</p>
+      <div id="va-original"></div>
+    </section>
+    <section aria-labelledby="va-aligned-title">
+      <h2 id="va-aligned-title">The same picture, rotated by −α</h2>
+      <p class="lab-small">Length s is the hypotenuse OB. Height h is the perpendicular BH.</p>
+      <div id="va-aligned"></div>
+    </section>
+  </div>
+  <div class="lab-row va-key" aria-label="Diagram key">
+    <span><i class="va-u-key" aria-hidden="true"></i>Base u, length r</span>
+    <span><i class="va-v-key" aria-hidden="true"></i>Vector v, length s</span>
+    <span><i class="va-h-key" aria-hidden="true"></i>Perpendicular height h</span>
+  </div>
+  <p id="va-case-note" role="status" aria-live="polite"></p>
+  <div class="va-explanation">
+    <p class="lab-math" id="va-triangle-equation"></p>
+    <p class="lab-math">h = s |sin θ| &emsp; Area = r h = r s |sin(β − α)|</p>
+    <p class="lab-small">The shaded parallelogram has area r h. The smaller triangle helps us find h. Rotation preserves lengths, perpendicular distances, and area.</p>
+  </div>
+  <p class="va-sr-only" id="va-description">Two linked coordinate diagrams show vectors u and v, their parallelogram, the perpendicular from B to the base line at H, and a right-angle marker. The right diagram rotates the entire figure so u is horizontal. Four sliders and angle presets provide alternatives to dragging. Height is the absolute value of s times the sine of the relative angle. The signed area changes sign with orientation; the geometric area is nonnegative.</p>
+</div>
+<section class="lab-explanation">
+  <details>
+    <summary>Why is the height s |sin(β − α)|?</summary>
+    <p>Both α and β are measured from the same horizontal direction. Rotating the picture by −α makes the base horizontal, and v now makes angle θ = β − α with that direction.</p>
+    <p>For an acute positive θ, the right triangle OBH has hypotenuse OB = s and opposite side BH = h. By definition, sin θ = h/s, so h = s sin θ.</p>
+    <p>For an obtuse angle, H lies behind O. The small triangle uses the acute angle φ = 180° − |θ|, whose sine equals |sin θ|. For a negative θ, B lies on the other side of the base, while the height remains a nonnegative length. In every case, h = s |sin θ|.</p>
+  </details>
+  <details>
+    <summary>How does this become |ad − bc|?</summary>
+    <p class="lab-math">a = r cos α, &nbsp; b = r sin α, &nbsp; c = s cos β, &nbsp; d = s sin β.</p>
+    <p class="lab-math">ad − bc = r s (cos α sin β − sin α cos β) = r s sin(β − α).</p>
+    <p>Taking the absolute value gives the area r h. The sign records orientation. Parallel vectors have zero height and zero area.</p>
+    <p>For the initial-data arrows (y₁, y₁′) and (y₂, y₂′), this expression is the Wronskian W = y₁y₂′ − y₁′y₂. The geometric area is |W|.</p>
+    <p>Continue to <a href="../wronskian-volume/">Wronskians as three-dimensional volume</a> or <a href="../linear-independence/">two solutions and their initial data</a>.</p>
+  </details>
+</section>
+<style>
+  #va-explorer .va-controls { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 12px 24px; }
+  #va-explorer .va-controls > label { min-width: 0; }
+  #va-explorer .va-presets { align-items: end; margin: 0 0 18px; }
+  #va-explorer .va-presets .lab-label { max-width: 430px; }
+  #va-explorer .va-readouts { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 16px; margin: 20px 0 24px; }
+  #va-explorer .va-readouts span, #va-explorer .va-readouts strong { display: block; }
+  #va-explorer .va-readouts strong { font-size: 20px; font-weight: 500; }
+  #va-explorer .va-panels { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 26px; }
+  #va-explorer .va-panels > section { min-width: 0; }
+  #va-explorer h2 { font-size: 20px; margin: 0 0 8px; }
+  #va-explorer .va-panels .lab-small { min-height: 38px; margin: 0; }
+  #va-explorer .va-plot { width: 100%; display: block; overflow: visible; }
+  #va-explorer svg text { fill: var(--site-ink); font-size: 12px; }
+  #va-explorer .domain { display: none; }
+  #va-explorer .va-grid line, #va-explorer .va-frame { stroke: var(--site-line); fill: none; }
+  #va-explorer .va-zero { stroke: var(--site-muted); stroke-width: 1; opacity: .45; }
+  #va-explorer .va-parallelogram { fill: var(--site-purple); fill-opacity: .07; stroke: var(--site-muted); stroke-width: 1; stroke-opacity: .5; }
+  #va-explorer .va-triangle { fill: var(--site-teal); fill-opacity: .10; stroke: none; }
+  #va-explorer .va-extension { fill: none; stroke: var(--site-muted); stroke-width: 1.5; stroke-dasharray: 4 4; }
+  #va-explorer .va-vector { fill: none; stroke-width: 3; }
+  #va-explorer .va-u { stroke: var(--site-purple); }
+  #va-explorer .va-v { stroke: var(--site-teal); }
+  #va-explorer .va-height { fill: none; stroke: var(--site-orange); stroke-width: 2.5; }
+  #va-explorer .va-right-angle { fill: none; stroke: var(--site-orange); stroke-width: 1.5; }
+  #va-explorer .va-angle { fill: none; stroke: var(--site-ink); stroke-width: 1; opacity: .7; }
+  #va-explorer .va-phi-angle { fill: none; stroke: var(--site-orange); stroke-width: 1.5; }
+  #va-explorer .va-origin { fill: var(--site-ink); }
+  #va-explorer .va-end { stroke: var(--site-paper); stroke-width: 1.5; }
+  #va-explorer .va-foot { fill: var(--site-paper); stroke: var(--site-orange); stroke-width: 1.5; }
+  #va-explorer .va-draggable { cursor: grab; touch-action: none; }
+  #va-explorer .va-draggable:active { cursor: grabbing; }
+  #va-explorer .va-key { margin-top: 14px; gap: 10px 20px; }
+  #va-explorer .va-key span { display: inline-flex; align-items: center; gap: 7px; }
+  #va-explorer .va-key i { width: 22px; height: 0; display: inline-block; }
+  #va-explorer .va-u-key { border-top: 3px solid var(--site-purple); }
+  #va-explorer .va-v-key { border-top: 3px solid var(--site-teal); }
+  #va-explorer .va-h-key { border-top: 3px solid var(--site-orange); }
+  #va-explorer .va-explanation { margin-top: 18px; }
+  #va-explorer .va-sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+  @media (max-width: 900px) { #va-explorer .va-controls { grid-template-columns: repeat(2,minmax(0,1fr)); } }
+  @media (max-width: 760px) { #va-explorer .va-panels { grid-template-columns: minmax(0,1fr); } }
+  @media (max-width: 500px) { #va-explorer .va-controls, #va-explorer .va-readouts { grid-template-columns: minmax(0,1fr); } }
+</style>
+<script src="../../../assets/vendor/d3.v7.9.0.min.js"></script>
+<script>(function(root,factory){
+  if(typeof module==='object'&&module.exports)module.exports=factory();
+  else root.VectorAreaModel=factory();
+})(typeof globalThis!=='undefined'?globalThis:this,function(){
+  const presets={acute:55,obtuse:130,negative:-55,perpendicular:90,parallel:0};
+  const fresh=()=>({r:2.5,s:2.3,alpha:25,theta:55});
+  const clean=v=>Math.abs(v)<1e-12?0:v;
+  const rad=v=>v*Math.PI/180;
+  const rotate=(p,degrees)=>{const c=Math.cos(rad(degrees)),s=Math.sin(rad(degrees));return [clean(p[0]*c-p[1]*s),clean(p[0]*s+p[1]*c)];};
+  const cross=(u,v)=>clean(u[0]*v[1]-u[1]*v[0]);
+  function geometry(state){
+    const {r,s,alpha,theta}=state,t=rad(theta),projection=clean(s*Math.cos(t)),signedHeight=clean(s*Math.sin(t));
+    const aligned={O:[0,0],A:[r,0],B:[projection,signedHeight],H:[projection,0],C:[r+projection,signedHeight]};
+    const original=Object.fromEntries(Object.entries(aligned).map(([name,p])=>[name,rotate(p,alpha)]));
+    const center=[aligned.C[0]/2,aligned.C[1]/2];
+    const radius=Math.max(...Object.values(aligned).map(p=>Math.hypot(p[0]-center[0],p[1]-center[1])))+.45;
+    const signedArea=cross(original.A,original.B),height=Math.abs(signedHeight);
+    const magnitude=Math.abs(theta),phi=Math.min(magnitude,180-magnitude);
+    const kind=height===0?'parallel':projection===0?'perpendicular':projection<0?'obtuse':'acute';
+    return {original,aligned,center,radius,signedArea,area:Math.abs(signedArea),height,signedHeight,projection,phi,kind,beta:alpha+theta};
+  }
+  const clamp=(v,lo,hi)=>Math.max(lo,Math.min(hi,v));
+  const wrap=v=>{const n=((v+180)%360+360)%360-180;return n===-180?180:n;};
+  function drag(state,which,point){
+    if(Math.hypot(...point)<1e-8)return {...state};
+    const angle=Math.atan2(point[1],point[0])*180/Math.PI,length=clamp(Math.hypot(...point),.75,3);
+    if(which==='A')return {...state,r:length,alpha:angle,theta:wrap(state.alpha+state.theta-angle)};
+    return {...state,s:length,theta:wrap(angle-state.alpha)};
+  }
+  function restore(saved){
+    const state=fresh();if(!saved||saved.version!==1)return state;
+    for(const [key,lo,hi]of [['r',.75,3],['s',.75,3],['alpha',-180,180],['theta',-180,180]]){
+      if(Number.isFinite(saved[key]))state[key]=clamp(saved[key],lo,hi);
+    }
+    return state;
+  }
+  return {presets,fresh,clean,rad,rotate,cross,geometry,drag,restore};
+});
+</script>
+<script>
+(() => {
+  const M=VectorAreaModel,root=document.getElementById('va-explorer'),el=id=>root.querySelector('#va-'+id);
+  const storageKey='amath351-vector-area-v1';let state=M.fresh();
+  try{state=M.restore(JSON.parse(localStorage.getItem(storageKey)));}catch(_){}
+  const save=()=>{try{localStorage.setItem(storageKey,JSON.stringify({version:1,...state}));}catch(_){}};
+  const fixed=n=>M.clean(n).toFixed(2).replace('-','−');
+  const angle=n=>M.clean(n).toFixed(0).replace('-','−')+'°';
+  const short=n=>d3.format('.2~g')(M.clean(n)).replace('-','−');
+  const line=(chart,points)=>d3.line().x(p=>chart.x(p[0])).y(p=>chart.y(p[1]))(points);
+  function chart(id,aligned){
+    const host=el(id),svg=d3.select(host).append('svg').attr('class','va-plot').attr('role','img').attr('aria-label',aligned?'The same parallelogram rotated so the base is horizontal':'Vectors and perpendicular height in the original coordinates').attr('aria-describedby','va-description');
+    svg.append('title');
+    const defs=svg.append('defs');defs.append('clipPath').attr('id','va-'+id+'-clip').append('rect');
+    for(const [name,color]of [['u','var(--site-purple)'],['v','var(--site-teal)']])defs.append('marker').attr('id','va-'+id+'-'+name).attr('viewBox','0 0 8 8').attr('refX',7).attr('refY',4).attr('markerWidth',7).attr('markerHeight',7).attr('orient','auto').attr('markerUnits','userSpaceOnUse').append('path').attr('d','M0,0 L8,4 L0,8 Z').attr('fill',color);
+    svg.append('rect').attr('class','va-frame');
+    const grid=svg.append('g').attr('class','va-grid'),content=svg.append('g').attr('clip-path','url(#va-'+id+'-clip)');
+    content.append('path').attr('class','va-zero');
+    for(const cls of ['parallelogram','triangle','extension','height','right-angle','angle','phi-angle'])content.append('path').attr('class','va-'+cls);
+    for(const name of ['u','v'])content.append('path').attr('class','va-vector va-'+name).attr('marker-end','url(#va-'+id+'-'+name+')');
+    const points=svg.append('g');
+    points.append('circle').attr('class','va-origin').attr('data-point','O').attr('r',3);
+    for(const [name,color]of [['A','var(--site-purple)'],['B','var(--site-teal)']])points.append('circle').attr('class','va-end'+(aligned?'':' va-draggable')).attr('data-point',name).attr('r',aligned?4:7).attr('fill',color);
+    points.append('circle').attr('class','va-foot').attr('data-point','H').attr('r',4);
+    const labels=svg.append('g');for(const name of ['O','A','B','H','r','s','h','theta','phi'])labels.append('text').attr('data-label',name);
+    const xAxis=svg.append('g'),yAxis=svg.append('g');
+    svg.append('text').attr('class','va-y-title').attr('x',4).attr('y',14).text(aligned?'Perpendicular to u':'y');
+    svg.append('text').attr('class','va-x-title').attr('text-anchor','end').text(aligned?'Along u':'x');
+    return {host,svg,content,points,labels,grid,xAxis,yAxis,aligned};
+  }
+  const original=chart('original',false),aligned=chart('aligned',true);
+  function label(c,id,text,point,offset=[0,0]){
+    c.labels.select('[data-label="'+id+'"]').text(text).attr('x',c.x(point[0])+offset[0]).attr('y',c.y(point[1])+offset[1]);
+  }
+  function arc(c,r,from,to){return line(c,d3.range(41).map(i=>{const t=M.rad(from+(to-from)*i/40);return [r*Math.cos(t),r*Math.sin(t)];}));}
+  function draw(c,g){
+    const width=c.host.clientWidth,height=width<440?330:365,box={left:38,right:width-16,top:27,bottom:height-38};
+    const center=c.aligned?g.center:M.rotate(g.center,state.alpha);
+    const scale=Math.min(box.right-box.left,box.bottom-box.top)/(2*g.radius);
+    const cx=(box.left+box.right)/2,cy=(box.top+box.bottom)/2;
+    c.x=d3.scaleLinear().domain([center[0]-(cx-box.left)/scale,center[0]+(box.right-cx)/scale]).range([box.left,box.right]);
+    c.y=d3.scaleLinear().domain([center[1]-(box.bottom-cy)/scale,center[1]+(cy-box.top)/scale]).range([box.bottom,box.top]);
+    c.box=box;c.scale=scale;
+    c.svg.attr('viewBox','0 0 '+width+' '+height).attr('height',height);
+    c.svg.selectAll('.va-frame,clipPath rect').attr('x',box.left).attr('y',box.top).attr('width',box.right-box.left).attr('height',box.bottom-box.top);
+    c.grid.attr('transform','translate('+box.left+',0)').call(d3.axisLeft(c.y).ticks(4).tickSize(-(box.right-box.left)).tickFormat(''));
+    c.xAxis.attr('transform','translate(0,'+box.bottom+')').call(d3.axisBottom(c.x).ticks(width<440?3:4).tickFormat(short).tickSize(0).tickPadding(8));
+    c.yAxis.attr('transform','translate('+box.left+',0)').call(d3.axisLeft(c.y).ticks(4).tickFormat(short).tickSize(0).tickPadding(7));
+    c.svg.select('.va-x-title').attr('x',box.right).attr('y',height-3);
+    c.content.select('.va-zero').attr('d','M'+box.left+','+c.y(0)+'H'+box.right+'M'+c.x(0)+','+box.top+'V'+box.bottom);
+    const p=c.aligned?g.aligned:g.original;
+    c.content.select('.va-parallelogram').attr('d',line(c,[p.O,p.A,p.C,p.B])+'Z');
+    c.content.select('.va-triangle').attr('d',line(c,[p.O,p.H,p.B])+'Z');
+    c.content.select('.va-extension').attr('d',line(c,[p.O,p.H]));
+    c.content.select('.va-height').attr('d',line(c,[p.H,p.B]));
+    c.content.select('.va-u').attr('d',line(c,[p.O,p.A]));c.content.select('.va-v').attr('d',line(c,[p.O,p.B]));
+    const baseAngle=c.aligned?0:state.alpha,u=M.rotate([1,0],baseAngle),n=M.rotate([0,Math.sign(g.signedHeight)||1],baseAngle);
+    const towardOrigin=g.projection>0?-1:1,size=9/scale;
+    const e=u.map(v=>v*towardOrigin*size),f=n.map(v=>v*size);
+    c.content.select('.va-right-angle').attr('d',line(c,[[p.H[0]+e[0],p.H[1]+e[1]],[p.H[0]+e[0]+f[0],p.H[1]+e[1]+f[1]],[p.H[0]+f[0],p.H[1]+f[1]]])).attr('display',g.height*scale>10?null:'none');
+    const radius=Math.min(state.r,state.s)*.24;
+    c.content.select('.va-angle').attr('d',arc(c,radius,baseAngle,baseAngle+state.theta)).attr('display',state.theta===0?'none':null);
+    const phiStart=baseAngle+(state.theta<0?-180:180);
+    c.content.select('.va-phi-angle').attr('d',arc(c,radius*.62,phiStart,baseAngle+state.theta)).attr('display',g.kind==='obtuse'?null:'none');
+    for(const name of ['O','A','B','H'])c.points.select('[data-point="'+name+'"]').attr('cx',c.x(p[name][0])).attr('cy',c.y(p[name][1]));
+    const near=(a,b)=>Math.hypot(a[0]-b[0],a[1]-b[1])*scale<8;
+    const atO=near(p.H,p.O),atA=near(p.H,p.A),atB=near(p.H,p.B);
+    c.points.select('[data-point="H"]').attr('display',atO||atA||atB?'none':null);
+    label(c,'O',atO?'O = H':'O',p.O,[-12,18]);
+    label(c,'A',atA&&!atO?'A = H':'A',p.A,[7,17]);
+    label(c,'B',atB&&!atO&&!atA?'B = H':'B',p.B,[7,-10]);
+    label(c,'H',atO||atA||atB?'':'H',p.H,[-6,20]);
+    const mid=(a,b)=>[(a[0]+b[0])/2,(a[1]+b[1])/2];
+    const baseSide=state.theta<0?-1:1;
+    label(c,'r','r',mid(p.O,p.A),[u[1]*34*baseSide,u[0]*34*baseSide]);
+    const side=state.theta<0?-1:1,vDirection=M.rotate([1,0],baseAngle+state.theta);
+    label(c,'s','s',mid(p.O,p.B),[-vDirection[1]*14*side,-vDirection[0]*14*side]);
+    label(c,'h',g.height*scale>10?'h':'',mid(p.H,p.B),[u[0]*12,-u[1]*12]);
+    label(c,'theta',Math.abs(state.theta)<2?'':'θ',M.rotate([radius+.17,0],baseAngle+state.theta/2),[-3,4]);
+    label(c,'phi',g.kind==='obtuse'?'φ':'',M.rotate([radius*.62+.14,0],(phiStart+baseAngle+state.theta)/2),[-3,4]);
+    // Keep labels inside the plot when a foot or arrow is near a boundary.
+    c.labels.selectAll('text').each(function(){const node=this,b=node.getBBox();let x=Number(node.getAttribute('x')),y=Number(node.getAttribute('y'));if(b.x<box.left+3)x+=box.left+3-b.x;if(b.x+b.width>box.right-3)x-=b.x+b.width-box.right+3;if(b.y<box.top+3)y+=box.top+3-b.y;if(b.y+b.height>box.bottom-3)y-=b.y+b.height-box.bottom+3;node.setAttribute('x',x);node.setAttribute('y',y);});
+    c.svg.select('title').text((c.aligned?'Rotated':'Original')+' view. Height '+fixed(g.height)+', area '+fixed(g.area)+', signed area '+fixed(g.signedArea)+'.');
+  }
+  function render(){
+    const g=M.geometry(state);
+    for(const key of ['r','s','alpha','theta']){el(key).value=state[key];el(key+'-value').textContent=key==='r'||key==='s'?fixed(state[key]):angle(state[key]);}
+    el('case').value=Object.keys(M.presets).find(key=>Math.abs(M.presets[key]-state.theta)<1e-8)||'custom';
+    el('coordinates').textContent='u = ('+g.original.A.map(fixed).join(', ')+'), v = ('+g.original.B.map(fixed).join(', ')+').';
+    el('original-angles').textContent='α = '+angle(state.alpha)+', β = α + θ = '+angle(g.beta)+'.';
+    el('height').textContent='h ≈ '+fixed(g.height);el('area').textContent='r h ≈ '+fixed(g.area);el('signed').textContent='ad − bc ≈ '+fixed(g.signedArea);
+    let note,equation;
+    if(g.kind==='parallel'){note='The arrows are parallel. B is on the base line, so h = 0 and the parallelogram has zero area.';equation='h = 0';}
+    else if(g.kind==='perpendicular'){note='The arrows are perpendicular. H coincides with O, and the entire length s is the height.';equation='h = s |sin θ| = s';}
+    else if(g.kind==='obtuse'){note='H lies behind O. The small right triangle uses φ = 180° − |θ| = '+angle(g.phi)+'. Its sine equals |sin θ|.';equation='sin φ = h / s  ⇒  h = s sin φ = s |sin θ|';}
+    else {note=state.theta>0?'In right triangle OBH, θ is the angle at O. Height h is the opposite side, and s is the hypotenuse.':'B lies below the base. The small triangle uses the positive angle |θ|; the height is still a nonnegative length.';equation=state.theta>0?'sin θ = h / s  ⇒  h = s sin θ':'sin |θ| = h / s  ⇒  h = s |sin θ|';}
+    el('case-note').textContent=note;el('triangle-equation').textContent=equation;
+    draw(original,g);draw(aligned,g);
+  }
+  for(const key of ['r','s','alpha','theta']){el(key).addEventListener('input',event=>{state[key]=Number(event.target.value);render();});el(key).addEventListener('change',save);}
+  el('case').addEventListener('change',event=>{if(Object.hasOwn(M.presets,event.target.value))state.theta=M.presets[event.target.value];render();save();});
+  el('align').addEventListener('click',()=>{state.alpha=0;render();save();});
+  for(const name of ['A','B'])original.points.select('[data-point="'+name+'"]').call(d3.drag().container(()=>original.svg.node()).on('drag',event=>{state=M.drag(state,name,[original.x.invert(event.x),original.y.invert(event.y)]);render();}).on('end',save));
+  let widths='';new ResizeObserver(()=>{const next=original.host.clientWidth+','+aligned.host.clientWidth;if(next!==widths){widths=next;render();}}).observe(root);
+  render();
+})();
+</script>
+</main>
+<nav class="site-example-nav" aria-label="Example navigation"><a href="../dependence-on-interval/"><small>Previous example</small>← One multiplier, one whole interval</a><a class="site-all-examples" href="../">All chapter examples</a><a href="../wronskian-volume/"><small>Next example</small>See the Wronskian as volume →</a></nav>
+    <footer class="site-footer"><span>University of Washington · Autumn 2026</span><div><a href="https://shzhang3.github.io/#teaching">Shiheng Zhang · Teaching</a><a href="https://github.com/shzhang3/amath351-lab" target="_blank" rel="noopener">Contribute on GitHub ↗</a></div></footer>
+  </div>
+
+</body>
+</html>
