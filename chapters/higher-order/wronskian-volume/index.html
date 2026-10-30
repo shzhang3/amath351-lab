@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Turn three solutions into arrows of initial data. Flatten or reverse the solid, rotate the view, and test which initial values the solutions can match.">
+  <meta name="theme-color" content="#624298">
+  <title>See the Wronskian as volume · AMATH 351 Lab</title>
+  <link rel="canonical" href="https://shzhang3.github.io/amath351-lab/chapters/higher-order/wronskian-volume/">
+  <link rel="stylesheet" href="../../../assets/lab.css">
+</head>
+<body>
+  <a class="site-skip" href="#main-content">Skip to content</a>
+  <div class="site-wrap">
+    <header class="site-header">
+      <a class="site-brand" href="../../../"><span class="site-brand-mark" aria-hidden="true">y′</span>AMATH 351 / Lab</a>
+      <nav aria-label="Main navigation"><a href="../../../">Chapters</a><a href="https://shzhang3.github.io/#teaching">Teaching</a><a href="https://github.com/shzhang3/amath351-lab" target="_blank" rel="noopener">GitHub ↗</a></nav>
+    </header>
+<nav class="site-breadcrumbs" aria-label="Breadcrumb"><a href="../../../">All chapters</a><span aria-hidden="true">/</span><a href="../">Chapter 02: Higher-order linear equations</a><span aria-hidden="true">/</span><span aria-current="page">See the Wronskian as volume</span></nav>
+    <main id="main-content" tabindex="-1"><noscript>Enable JavaScript to use the interactive plots. Explanations and navigation remain available.</noscript><section class="lab-intro">
+  <div class="site-kicker">Section 3.2 · Wronskians and initial data</div>
+  <h1>See the Wronskian as volume</h1>
+  <p class="lab-math">y‴ = 0 &emsp; vᵢ(a) = (yᵢ(a), yᵢ′(a), yᵢ″(a))</p>
+  <p>Each solution gives three initial values at the same point. Treat them as the coordinates of an arrow. Can three such arrows fill three dimensions?</p>
+</section>
+<div id="wv-explorer" class="lab-interactive">
+  <p class="lab-math wv-functions">y₁ = 1 &emsp; y₂ = x &emsp; <span id="wv-third-function">y₃ = λx²/2</span></p>
+  <p class="lab-small">All three functions solve the same equation y‴ = 0 on ℝ.</p>
+  <div class="lab-controls wv-controls">
+    <label class="lab-label" for="wv-shape">Third solution
+      <select id="wv-shape" class="lab-select">
+        <option value="unit">y₃ = λx²/2</option>
+        <option value="slanted">y₃ = 1 + x + λx²/2</option>
+      </select>
+    </label>
+    <label class="lab-label" for="wv-lambda"><span class="lab-row"><span>λ: lift the third arrow</span><output class="lab-numbers" id="wv-lambda-value" for="wv-lambda">1.00</output></span>
+      <input class="lab-slider" id="wv-lambda" type="range" min="-1" max="1" step="0.05" value="1">
+    </label>
+    <label class="lab-label" for="wv-a"><span class="lab-row"><span>Evaluate at x = a</span><output class="lab-numbers" id="wv-a-value" for="wv-a">0.00</output></span>
+      <input class="lab-slider" id="wv-a" type="range" min="-1" max="1" step="0.05" value="0">
+    </label>
+  </div>
+  <div class="lab-row wv-presets">
+    <button class="lab-button lab-primary" type="button" id="wv-cube">Start with a unit cube</button>
+    <button class="lab-button" type="button" id="wv-flatten">Flatten: y₃ = y₁ + y₂</button>
+    <button class="lab-button" type="button" id="wv-reverse">Reverse the sign of λ</button>
+  </div>
+  <div class="wv-numbers lab-numbers" aria-label="Wronskian and geometric volume">
+    <div><span class="lab-small">Signed Wronskian</span><strong id="wv-w">W(a) = 1.00</strong></div>
+    <div><span class="lab-small">Geometric volume</span><strong id="wv-volume">|W(a)| = 1.00</strong></div>
+    <div><span class="lab-small">Base area × height</span><strong id="wv-product">1.00 × 1.00 = 1.00</strong></div>
+  </div>
+  <p id="wv-status" role="status" aria-live="polite"></p>
+  <div class="wv-main">
+    <section aria-labelledby="wv-space-title">
+      <h2 id="wv-space-title">Three arrows of initial data</h2>
+      <div id="wv-space"></div>
+      <div class="lab-row wv-view-controls">
+        <button class="lab-button" type="button" id="wv-left">Rotate left</button>
+        <button class="lab-button" type="button" id="wv-right">Rotate right</button>
+        <span class="lab-small">Drag left or right to rotate.</span>
+      </div>
+      <p class="lab-small">The solid is formed by the three unscaled arrows. Its volume is measured in the displayed initial-data coordinates.</p>
+    </section>
+    <section aria-labelledby="wv-data-title">
+      <h2 id="wv-data-title">Read each arrow</h2>
+      <p>At <span class="lab-numbers" id="wv-point-label">a = 0.00</span>, read the value, slope, and second derivative.</p>
+      <div class="wv-table-wrap">
+        <table class="lab-numbers">
+          <caption class="wv-sr-only">The three coordinates of each solution's initial-data arrow.</caption>
+          <thead><tr><th scope="col">Solution</th><th scope="col">y(a)</th><th scope="col">y′(a)</th><th scope="col">y″(a)</th></tr></thead>
+          <tbody id="wv-data"></tbody>
+        </table>
+      </div>
+      <p id="wv-identity"></p>
+      <p class="lab-small">The first two arrows always lie in the plane y″(a) = 0 and span a base of area 1. The third arrow has perpendicular height |λ| above or below that plane.</p>
+      <p class="lab-small">Changing the viewing angle changes the drawing. It does not change W or the volume.</p>
+    </section>
+  </div>
+  <section class="wv-match" aria-labelledby="wv-match-title">
+    <h2 id="wv-match-title">Can the three solutions match three initial values?</h2>
+    <p class="lab-math">y = c₁y₁ + c₂y₂ + c₃y₃</p>
+    <div class="lab-row">
+      <label class="lab-label" for="wv-target">Target initial data
+        <select id="wv-target" class="lab-select">
+          <option value="curvature">y(a) = 0, y′(a) = 0, y″(a) = 1</option>
+          <option value="flat">y(a) = 1, y′(a) = 1, y″(a) = 0</option>
+        </select>
+      </label>
+      <button class="lab-button lab-primary" type="button" id="wv-fit">Match these initial values</button>
+    </div>
+    <p class="lab-small">The hollow circle in the 3D view marks the target initial data.</p>
+    <p id="wv-match-result" role="status" aria-live="polite">Can these three solutions reach the target? Try matching it.</p>
+    <p class="lab-numbers" id="wv-coefficients"></p>
+  </section>
+  <p class="wv-sr-only" id="wv-description">A three-dimensional drawing shows three arrows. Their coordinates are each solution's value, first derivative, and second derivative at the selected point. The parallelepiped has base area one, height the absolute value of lambda, and volume the absolute value of the Wronskian. Buttons and sliders provide keyboard and touchscreen alternatives to dragging.</p>
+</div>
+<section class="lab-explanation">
+  <details>
+    <summary>What does the volume tell us?</summary>
+    <p>For λ ≠ 0, the arrows fill three dimensions: every initial-data triple can be formed in exactly one way from these arrows. Equivalently, the three independent solutions can match any prescribed y(a), y′(a), and y″(a) with exactly one coefficient triple.</p>
+    <p>For λ = 0, all arrows lie in y″(a) = 0. Every combination has zero second derivative, so this chosen set cannot represent a solution with y″(a) = 1. The original ODE still has a solution for that initial condition; the chosen set of solutions is incomplete.</p>
+    <p>These functions all solve the same regular homogeneous linear equation on ℝ. More generally, the Wronskian test for n solutions uses a common normalized homogeneous equation of order n with continuous coefficients on the whole interval. For arbitrary functions, W ≡ 0 alone does not imply dependence.</p>
+  </details>
+  <details>
+    <summary>Why can W be negative when volume cannot?</summary>
+    <p>The Wronskian is a signed volume for the ordered arrows v₁, v₂, v₃. In this example, W(a) = λ. A positive or negative λ puts the third arrow on opposite sides of the base plane. The ordinary geometric volume is |W(a)| = |λ|.</p>
+    <p>Swapping the order of two arrows also reverses the sign of W while preserving the geometric volume. For two solutions, the corresponding picture is the signed area of a parallelogram.</p>
+    <p>Compare with <a href="../linear-independence/">the two-dimensional Wronskian example</a>.</p>
+  </details>
+</section>
+<style>
+  #wv-explorer .wv-functions { margin-top: 0; }
+  #wv-explorer .wv-controls { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 12px 24px; align-items: start; }
+  #wv-explorer .wv-controls > label { min-width: 0; }
+  #wv-explorer .wv-presets { margin: 10px 0 20px; }
+  #wv-explorer .wv-numbers { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 16px; margin: 20px 0 12px; }
+  #wv-explorer .wv-numbers span, #wv-explorer .wv-numbers strong { display: block; }
+  #wv-explorer .wv-numbers strong { font-size: 20px; font-weight: 500; }
+  #wv-explorer .wv-main { display: grid; grid-template-columns: minmax(0,1.7fr) minmax(0,1fr); gap: 26px; margin-top: 22px; }
+  #wv-explorer .wv-main > section { min-width: 0; }
+  #wv-explorer h2 { font-size: 21px; margin: 0 0 12px; }
+  #wv-explorer #wv-space { width: 100%; min-width: 0; }
+  #wv-explorer svg { display: block; width: 100%; overflow: visible; cursor: grab; }
+  #wv-explorer svg:active { cursor: grabbing; }
+  #wv-explorer svg text { fill: var(--site-ink); font-size: 12px; }
+  #wv-explorer .wv-axis { stroke: var(--site-muted); stroke-width: 1; opacity: .65; }
+  #wv-explorer .wv-plane-grid { stroke: var(--site-line); stroke-width: 1; fill: none; }
+  #wv-explorer .wv-plane-label { fill: var(--site-muted); }
+  #wv-explorer .wv-edge { stroke: var(--site-muted); stroke-width: 1; fill: none; opacity: .6; }
+  #wv-explorer .wv-face { fill: var(--site-purple); stroke: none; }
+  #wv-explorer .wv-base { fill: var(--site-teal); fill-opacity: .12; stroke: var(--site-teal); stroke-width: 1; stroke-opacity: .6; }
+  #wv-explorer .wv-vector { fill: none; stroke-width: 3; }
+  #wv-explorer .wv-one { stroke: var(--site-purple); }
+  #wv-explorer .wv-two { stroke: var(--site-teal); }
+  #wv-explorer .wv-three { stroke: var(--site-orange); }
+  #wv-explorer .wv-height { stroke: var(--site-orange); stroke-width: 1.5; stroke-dasharray: 4 4; fill: none; }
+  #wv-explorer .wv-origin { fill: var(--site-ink); }
+  #wv-explorer .wv-target { fill: var(--site-paper); stroke: var(--site-ink); stroke-width: 2; }
+  #wv-explorer .wv-matched { fill: var(--site-purple); stroke: var(--site-paper); stroke-width: 1; }
+  #wv-explorer .wv-view-controls { margin-top: 6px; }
+  #wv-explorer .wv-table-wrap { overflow-x: auto; }
+  #wv-explorer table { border-collapse: collapse; width: 100%; margin: 16px 0; }
+  #wv-explorer th, #wv-explorer td { border-bottom: 1px solid var(--site-line); text-align: right; padding: 12px 4px; white-space: nowrap; }
+  #wv-explorer th { font-weight: 500; }
+  #wv-explorer th:first-child { text-align: left; }
+  #wv-explorer .wv-swatch { display: inline-block; width: 18px; height: 0; border-top: 3px solid var(--site-purple); margin-right: 6px; vertical-align: middle; }
+  #wv-explorer .wv-swatch-two { border-color: var(--site-teal); }
+  #wv-explorer .wv-swatch-three { border-color: var(--site-orange); }
+  #wv-explorer .wv-match { border-top: 1px solid var(--site-line); margin-top: 24px; padding-top: 22px; }
+  #wv-explorer .wv-match .lab-label { max-width: 530px; }
+  #wv-explorer .wv-match .lab-row { align-items: end; }
+  #wv-explorer .wv-sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+  @media (max-width: 850px) { #wv-explorer .wv-main { grid-template-columns: minmax(0,1fr); } }
+  @media (max-width: 640px) { #wv-explorer .wv-controls { grid-template-columns: minmax(0,1fr); } #wv-explorer .wv-numbers { grid-template-columns: minmax(0,1fr); gap: 10px; } }
+</style>
+<script src="../../../assets/vendor/d3.v7.9.0.min.js"></script>
+<script>(function (root,factory) {
+  if (typeof module==='object'&&module.exports) module.exports=factory();
+  else root.WronskianVolumeModel=factory();
+})(typeof globalThis!=='undefined'?globalThis:this,function () {
+  const fresh=()=>({shape:'unit',lambda:1,a:0,yaw:45,target:'curvature'});
+  const targets={curvature:[0,0,1],flat:[1,1,0]};
+  const offsets=shape=>shape==='slanted'?[1,1]:[0,0];
+  const add=(a,b)=>a.map((v,i)=>v+b[i]);
+  const scale=(a,c)=>a.map(v=>v*c);
+  const dot=(a,b)=>a.reduce((sum,v,i)=>sum+v*b[i],0);
+  const cross=(a,b)=>[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]];
+  const clamp=(v,lo,hi)=>Math.max(lo,Math.min(hi,v));
+  function vectors(state,x=state.a) {
+    const [alpha,beta]=offsets(state.shape),l=state.lambda;
+    return [[1,0,0],[x,1,0],[alpha+beta*x+l*x*x/2,beta+l*x,l]];
+  }
+  function geometry(state) {
+    const v=vectors(state),normal=cross(v[0],v[1]),area=Math.hypot(...normal);
+    const signed=dot(normal,v[2]);
+    const vertices=Array.from({length:8},(_,mask)=>v.reduce((p,vi,i)=>mask&(1<<i)?add(p,vi):p,[0,0,0]));
+    return {vectors:v,vertices,signed,volume:Math.abs(signed),baseArea:area,height:Math.abs(signed)/area};
+  }
+  function combine(state,coefficients,x=state.a) {
+    return vectors(state,x).reduce((sum,v,i)=>add(sum,scale(v,coefficients[i])),[0,0,0]);
+  }
+  function match(state,target=targets[state.target]) {
+    const [b0,b1,b2]=target,[alpha,beta]=offsets(state.shape),a=state.a,l=state.lambda;
+    if(l===0) {
+      if(b2!==0) return {kind:'unreachable',coefficients:null};
+      return {kind:'many',coefficients:[b0-a*b1,b1,0]};
+    }
+    const c3=b2/l,c2=b1-c3*(beta+l*a),c1=b0-a*c2-c3*(alpha+beta*a+l*a*a/2);
+    return {kind:'unique',coefficients:[c1,c2,c3]};
+  }
+  function project(point,yaw=45) {
+    const angle=yaw*Math.PI/180,elevation=Math.PI/6;
+    const [x,y,z]=point;
+    const horizontal=Math.sin(angle)*x+Math.cos(angle)*y;
+    return {u:Math.cos(angle)*x-Math.sin(angle)*y,v:Math.sin(elevation)*horizontal-Math.cos(elevation)*z,
+      depth:Math.cos(elevation)*horizontal+Math.sin(elevation)*z};
+  }
+  function reference(state) {
+    // Both extreme heights share one scale; reducing lambda must visibly
+    // flatten the solid rather than zoom the height back to a full cube.
+    const points=[...geometry({...state,lambda:1}).vertices,...geometry({...state,lambda:-1}).vertices,
+      ...Object.values(targets)];
+    const lo=[0,0,0],hi=[1.35,1.35,1.35];
+    points.forEach(p=>p.forEach((v,i)=>{lo[i]=Math.min(lo[i],v);hi[i]=Math.max(hi[i],v+.35);}));
+    const axes=[0,1,2].map(i=>({lo:lo.map((v,j)=>i===j?v:0),hi:hi.map((v,j)=>i===j?v:0)}));
+    const plane=[[lo[0],lo[1],0],[hi[0],lo[1],0],[hi[0],hi[1],0],[lo[0],hi[1],0]];
+    return {points:[...points,...axes.flatMap(v=>[v.lo,v.hi]),...plane],axes,plane};
+  }
+  function restore(saved) {
+    const state=fresh();
+    if(!saved||saved.version!==1)return state;
+    if(['unit','slanted'].includes(saved.shape))state.shape=saved.shape;
+    for(const [key,lo,hi]of [['lambda',-1,1],['a',-1,1]])if(Number.isFinite(saved[key]))state[key]=Math.round(clamp(saved[key],lo,hi)*20)/20;
+    if(Number.isFinite(saved.yaw))state.yaw=((saved.yaw%360)+360)%360;
+    if(Object.hasOwn(targets,saved.target))state.target=saved.target;
+    return state;
+  }
+  return {fresh,targets,offsets,add,scale,dot,cross,vectors,geometry,combine,match,project,reference,restore};
+});
+</script>
+<script>
+(() => {
+  const M=WronskianVolumeModel,root=document.getElementById('wv-explorer');
+  const el=id=>root.querySelector('#wv-'+id);
+  const key='amath351-wronskian-volume-v1';let state=M.fresh(),attempted=false;
+  try { state=M.restore(JSON.parse(localStorage.getItem(key))); } catch (_) {}
+  const save=()=>{try {localStorage.setItem(key,JSON.stringify({version:1,...state}));} catch (_) {}};
+  const fixed=n=>(Math.abs(n)<1e-9?0:n).toFixed(2).replace('-','−');
+  const host=el('space'),svg=d3.select(host).append('svg').attr('role','img').attr('aria-label','Wronskian as the volume of three initial-data arrows').attr('aria-describedby','wv-description');
+  svg.append('title');const defs=svg.append('defs');
+  const colors=['var(--site-purple)','var(--site-teal)','var(--site-orange)'];
+  colors.forEach((color,i)=>defs.append('marker').attr('id','wv-arrow-'+i).attr('viewBox','0 0 8 8').attr('refX',7).attr('refY',4).attr('markerWidth',8).attr('markerHeight',8).attr('orient','auto').attr('markerUnits','userSpaceOnUse').append('path').attr('d','M0,0 L8,4 L0,8 Z').attr('fill',color));
+  defs.append('marker').attr('id','wv-axis-tip').attr('viewBox','0 0 8 8').attr('refX',7).attr('refY',4).attr('markerWidth',6).attr('markerHeight',6).attr('orient','auto').append('path').attr('d','M0,0 L8,4 L0,8 Z').attr('fill','var(--site-muted)');
+  const planeGrid=svg.append('g'),axes=svg.append('g'),faces=svg.append('g'),edges=svg.append('g'),base=svg.append('path').attr('class','wv-base');
+  const heightLine=svg.append('path').attr('class','wv-height');
+  const arrows=svg.append('g'),labels=svg.append('g');
+  const planeLabel=svg.append('text').attr('class','wv-plane-label').attr('text-anchor','middle').text('Plane y″(a) = 0');
+  const origin=svg.append('circle').attr('class','wv-origin').attr('r',3);
+  const target=svg.append('circle').attr('class','wv-target').attr('r',7);
+  const matched=svg.append('circle').attr('class','wv-matched').attr('r',3);
+  const axisNames=['Value y(a)','Slope y′(a)','Second derivative y″(a)'];
+  const faceIndices=[[0,1,3,2],[4,5,7,6],[0,1,5,4],[2,3,7,6],[0,2,6,4],[1,3,7,5]];
+  const edgeIndices=[];for(let mask=0;mask<8;mask++)for(let i=0;i<3;i++)if(!(mask&(1<<i)))edgeIndices.push([mask,mask|(1<<i)]);
+  function renderMatch() {
+    if(!attempted){el('match-result').dataset.kind='pending';el('match-result').textContent='Can these three solutions reach the target? Try matching it.';el('coefficients').textContent='';return;}
+    const match=M.match(state);
+    el('match-result').dataset.kind=match.kind;
+    el('match-result').textContent=match.kind==='unique'?'Unique coefficient set: all three initial values are matched.'
+      :match.kind==='many'?'Infinitely many coefficient sets describe the same solution curve. One choice is shown below.'
+      :'No coefficient set reaches this target. Every combination has y″(a) = 0, but the target requires y″(a) = 1.';
+    el('coefficients').textContent=match.coefficients?match.coefficients.map((c,i)=>'c'+['₁','₂','₃'][i]+' = '+fixed(c)).join(', '):'';
+  }
+  function render() {
+    const g=M.geometry(state),refs=M.reference(state),width=host.clientWidth,height=width<440?360:440;
+    svg.attr('viewBox','0 0 '+width+' '+height).attr('height',height);
+    const projected=refs.points.map(p=>M.project(p,state.yaw));
+    const ru=d3.extent(projected,p=>p.u),rv=d3.extent(projected,p=>p.v);
+    const scale=Math.min((width-100)/(ru[1]-ru[0]),(height-100)/(rv[1]-rv[0]));
+    const cx=(ru[0]+ru[1])/2,cy=(rv[0]+rv[1])/2;
+    const project=p=>{const q=M.project(p,state.yaw);return [width/2+(q.u-cx)*scale,height/2+(q.v-cy)*scale];};
+    const line=points=>d3.line().x(p=>project(p)[0]).y(p=>project(p)[1])(points);
+    const [p0,,p2]=refs.plane;
+    const gridLines=[...d3.ticks(p0[0],p2[0],5).map(x=>[[x,p0[1],0],[x,p2[1],0]]),...d3.ticks(p0[1],p2[1],5).map(y=>[[p0[0],y,0],[p2[0],y,0]])];
+    planeGrid.selectAll('path').data(gridLines).join('path').attr('class','wv-plane-grid').attr('d',line);
+    const planeText=project(p2);
+    planeLabel.attr('x',Math.max(85,Math.min(width-85,planeText[0]))).attr('y',planeText[1]+22).attr('display',g.volume===0?null:'none');
+    axes.selectAll('path').data(refs.axes).join('path').attr('class','wv-axis').attr('d',d=>line([d.lo,d.hi])).attr('marker-end','url(#wv-axis-tip)');
+    axes.selectAll('text').data(refs.axes).join('text').attr('x',(d,i)=>project(d.hi)[0]+(i===0?5:i===1?-5:0)).attr('y',(d,i)=>project(d.hi)[1]+(i===2?-12:18)).attr('text-anchor',(d,i)=>i===0?'start':i===1?'end':'middle').text((d,i)=>axisNames[i]);
+    const sortedFaces=faceIndices.map(ids=>({ids,depth:d3.mean(ids,i=>M.project(g.vertices[i],state.yaw).depth)})).sort((a,b)=>a.depth-b.depth);
+    faces.selectAll('path').data(sortedFaces,d=>d.ids.join('-')).join('path').attr('class','wv-face').attr('d',d=>line(d.ids.map(i=>g.vertices[i]))+'Z').attr('fill-opacity',(d,i)=>.04+i*.016);
+    edges.selectAll('path').data(edgeIndices).join('path').attr('class','wv-edge').attr('d',ids=>line(ids.map(i=>g.vertices[i])));
+    base.attr('d',line([g.vertices[0],g.vertices[1],g.vertices[3],g.vertices[2]])+'Z');
+    const v3=g.vectors[2],foot=[v3[0],v3[1],0];
+    heightLine.attr('d',line([foot,v3])).attr('display',g.volume===0?'none':null);
+    arrows.selectAll('path').data(g.vectors).join('path').attr('class',(d,i)=>'wv-vector wv-'+['one','two','three'][i]).attr('d',d=>line([[0,0,0],d])).attr('marker-end',(d,i)=>'url(#wv-arrow-'+i+')');
+    labels.selectAll('text').data(g.vectors).join('text').attr('x',(d,i)=>project(d)[0]+[11,-12,12][i]).attr('y',(d,i)=>project(d)[1]+[13,13,-9][i]).attr('text-anchor',(d,i)=>i===1?'end':'start').text((d,i)=>'v'+['₁','₂','₃'][i]);
+    const o=project([0,0,0]),t=project(M.targets[state.target]);
+    origin.attr('cx',o[0]).attr('cy',o[1]);target.attr('cx',t[0]).attr('cy',t[1]);
+    const isMatched=attempted&&M.match(state).kind!=='unreachable';matched.attr('cx',t[0]).attr('cy',t[1]).attr('display',isMatched?null:'none');
+    el('shape').value=state.shape;el('lambda').value=state.lambda;el('a').value=state.a;el('target').value=state.target;
+    el('lambda-value').textContent=fixed(state.lambda);el('a-value').textContent=fixed(state.a);
+    el('third-function').textContent=state.shape==='unit'?'y₃ = λx²/2':'y₃ = 1 + x + λx²/2';
+    el('w').textContent='W(a) = '+fixed(g.signed);el('volume').textContent='|W(a)| = '+fixed(g.volume);
+    el('product').textContent=fixed(g.baseArea)+' × '+fixed(g.height)+' = '+fixed(g.volume);
+    el('status').textContent=g.volume===0?'Volume 0: all three arrows lie in the plane y″(a) = 0.'
+      :g.signed>0?'Positive W: three independent directions, with nonzero volume.'
+      :'Negative W: the orientation is reversed; the geometric volume is still positive.';
+    el('point-label').textContent='a = '+fixed(state.a);
+    const table=el('data');table.replaceChildren();
+    g.vectors.forEach((v,i)=>{
+      const tr=document.createElement('tr'),th=document.createElement('th');th.scope='row';
+      const swatch=document.createElement('span');swatch.className='wv-swatch wv-swatch-'+['one','two','three'][i];swatch.setAttribute('aria-hidden','true');
+      th.append(swatch,document.createTextNode('y'+['₁','₂','₃'][i]));tr.append(th);
+      v.forEach(n=>{const td=document.createElement('td');td.textContent=fixed(n);tr.append(td);});table.append(tr);
+    });
+    el('identity').textContent=state.lambda===0?(state.shape==='slanted'?'Here y₃ = y₁ + y₂. A third name adds no new independent direction.':'Here y₃ = 0. The chosen set has only two independent solutions.')
+      :state.shape==='unit'&&state.a===0&&state.lambda===1?'At a = 0, the arrows are (1, 0, 0), (0, 1, 0), and (0, 0, 1): a unit cube.'
+      :'Changing a or adding 1 + x to y₃ shears the solid. Its base area remains 1 and its volume remains |λ|.';
+    renderMatch();
+    svg.select('title').text('At a = '+fixed(state.a)+', Wronskian '+fixed(g.signed)+', geometric volume '+fixed(g.volume)+'. '+el('status').textContent);
+  }
+  const change=()=>{attempted=false;render();save();};
+  el('shape').addEventListener('change',event=>{state.shape=event.target.value;change();});
+  for(const key of ['lambda','a']){
+    el(key).addEventListener('input',event=>{state[key]=Number(event.target.value);attempted=false;render();});
+    el(key).addEventListener('change',save);
+  }
+  el('cube').addEventListener('click',()=>{state={...state,shape:'unit',lambda:1,a:0,yaw:45};change();});
+  el('flatten').addEventListener('click',()=>{state={...state,shape:'slanted',lambda:0,a:0};change();});
+  el('reverse').addEventListener('click',()=>{state.lambda=state.lambda===0?-1:-state.lambda;change();});
+  el('target').addEventListener('change',event=>{state.target=event.target.value;change();});
+  el('fit').addEventListener('click',()=>{attempted=true;render();});
+  for(const [id,step]of [['left',-30],['right',30]])el(id).addEventListener('click',()=>{state.yaw=(state.yaw+step+360)%360;render();save();});
+  svg.call(d3.drag().touchable(()=>false).on('drag',event=>{state.yaw=(state.yaw+event.dx*.5+360)%360;render();}).on('end',save));
+  let lastWidth=0;new ResizeObserver(()=>{if(host.clientWidth!==lastWidth){lastWidth=host.clientWidth;render();}}).observe(host);
+  render();
+})();
+</script>
+</main>
+<nav class="site-example-nav" aria-label="Example navigation"><a href="../dependence-on-interval/"><small>Previous example</small>← One multiplier, one whole interval</a><a class="site-all-examples" href="../">All chapter examples</a><a href="../nonhomogeneous-solutions/"><small>Next example</small>One particular solution. A whole family. →</a></nav>
+    <footer class="site-footer"><span>University of Washington · Autumn 2026</span><div><a href="https://shzhang3.github.io/#teaching">Shiheng Zhang · Teaching</a><a href="https://github.com/shzhang3/amath351-lab" target="_blank" rel="noopener">Contribute on GitHub ↗</a></div></footer>
+  </div>
+
+</body>
+</html>
