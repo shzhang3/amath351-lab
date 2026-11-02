@@ -20,7 +20,8 @@ position/velocity/acceleration, Planet Gzyx, the tangent-to-slope-field explorat
 separable and exact equations, the AI self-improvement growth models, phase lines,
 and Euler’s method.
 Chapter 2 includes initial conditions, characteristic equations, independence,
-Wronskian geometry, nonhomogeneous solutions, and free mechanical vibrations.
+Wronskian geometry, nonhomogeneous solutions, complex roots and real solutions,
+and free mechanical vibrations.
 Future examples are explicitly labeled as planned and have no inactive or broken
 experiment links. Chapter groupings follow the
 Autumn 2026 syllabus, rather than the textbook's chapter numbering.
@@ -403,3 +404,22 @@ Rotate to view the plane from the front or edge-on, and reveal the
 relation `v3 = (5/2)v1 − (8/3)v2`. The same relation holds for the
 functions on the real line; all solve the common equation `y‴ = 0`.
 Arrows retain their actual coordinates and are not normalized.
+
+## Section 3.3: complex roots and real solutions
+
+[Complex roots, real solutions](https://shzhang3.github.io/amath351-lab/chapters/higher-order/complex-roots/)
+uses the lecture IVP `y″ + 2y′ + 5y = 0`, `y(0) = 2`, `y′(0) = 0`.
+One complex exponential `e^((-1 + 2i)x)` traces an inward spiral; its
+real and imaginary parts are the two real basis functions
+`u = e^(-x) cos(2x)` and `v = e^(-x) sin(2x)`.
+The synchronized real plot shows `y = C1 u + C2 v`, initially with
+`C1 = 2`, `C2 = 1`. Reveal the basis curves or decay envelope, play the
+shared position, or change the real constants and observe the initial
+value and slope. A restore button returns to the lecture IVP.
+
+Playback starts paused, stops on edits or hiding, and uses discrete steps
+with reduced motion. Plot bounds remain fixed during playback and contain
+the entire solution for each choice of constants. The local model and tests
+check the roots, basis equations, initial values, derivatives, envelope,
+plot bounds, and saved-state validation. Lecture source files are not
+published with the Lab.

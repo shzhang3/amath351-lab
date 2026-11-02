@@ -1,0 +1,195 @@
+<section class="lab-intro">
+  <div class="site-kicker">Section 3.3 · Complex roots and real solutions</div>
+  <h1>Complex roots, real solutions</h1>
+  <p class="lab-math">y″ + 2y′ + 5y = 0 &emsp; y(0) = 2, &nbsp; y′(0) = 0</p>
+  <p>The characteristic roots are −1 ± 2i. Follow one complex exponential, read its real and imaginary parts, and combine those two real functions to solve the lecture’s initial value problem.</p>
+</section>
+<div id="cr-lab" class="lab-interactive">
+  <div class="lab-row cr-playback">
+    <button class="lab-button lab-primary" type="button" id="cr-play">Follow the solution</button>
+    <button class="lab-button" type="button" id="cr-rewind">Back to x = 0</button>
+  </div>
+  <label class="lab-label cr-x-control" for="cr-x"><span class="lab-row">Position x <output id="cr-x-out" for="cr-x">0.00</output></span><input class="lab-slider" id="cr-x" type="range" min="0" max="6" step="0.01" value="0"></label>
+  <div class="lab-row cr-toggles">
+    <label for="cr-basis"><input id="cr-basis" type="checkbox"> Show the two real basis curves</label>
+    <label for="cr-envelope"><input id="cr-envelope" type="checkbox" checked> Show the decay envelope</label>
+  </div>
+  <div class="cr-panels">
+    <section aria-labelledby="cr-complex-title">
+      <h2 id="cr-complex-title">One complex exponential</h2>
+      <p class="lab-math">z = e<sup>(−1 + 2i)x</sup> = u + iv</p>
+      <div id="cr-complex"></div>
+      <p class="lab-numbers" id="cr-z-value"></p>
+      <p class="lab-small">The spiral shrinks because of e<sup>−x</sup>. Its angle increases as 2x. The projections give two real numbers u and v.</p>
+    </section>
+    <section aria-labelledby="cr-real-title">
+      <h2 id="cr-real-title">A real solution</h2>
+      <p class="lab-math">y = C₁u + C₂v &emsp; C₁, C₂ ∈ ℝ</p>
+      <div id="cr-real"></div>
+      <div class="lab-row lab-small cr-legend" aria-label="Curve legend">
+        <span><i class="cr-total-key" aria-hidden="true"></i>Real solution y</span>
+        <span id="cr-u-key" hidden><i class="cr-u-key" aria-hidden="true"></i>u = e<sup>−x</sup> cos 2x</span>
+        <span id="cr-v-key" hidden><i class="cr-v-key" aria-hidden="true"></i>v = e<sup>−x</sup> sin 2x</span>
+        <span id="cr-envelope-key"><i class="cr-envelope-key" aria-hidden="true"></i>Decay envelope</span>
+      </div>
+      <p class="lab-numbers" id="cr-combination"></p>
+      <p class="lab-small" id="cr-values"></p>
+    </section>
+  </div>
+  <p class="lab-small" id="cr-initial" role="status" aria-live="polite"></p>
+  <details class="cr-coefficients">
+    <summary>Try other real constants</summary>
+    <div class="lab-controls cr-coefficient-controls">
+      <label class="lab-label" for="cr-c1"><span class="lab-row">C₁ <output id="cr-c1-out" for="cr-c1">2.0</output></span><input class="lab-slider" id="cr-c1" type="range" min="-3" max="3" step="0.1" value="2"></label>
+      <label class="lab-label" for="cr-c2"><span class="lab-row">C₂ <output id="cr-c2-out" for="cr-c2">1.0</output></span><input class="lab-slider" id="cr-c2" type="range" min="-3" max="3" step="0.1" value="1"></label>
+    </div>
+    <p class="lab-small">Changing the real constants preserves the differential equation and changes the initial values. The complex exponential and its real and imaginary parts stay the same.</p>
+    <button class="lab-button" type="button" id="cr-restore">Restore the lecture IVP</button>
+  </details>
+  <p class="cr-sr-only" id="cr-status" aria-live="polite" role="status"></p>
+</div>
+<section class="lab-explanation">
+  <details>
+    <summary>Why do complex roots give real solutions?</summary>
+    <p class="lab-math">e<sup>(−1 + 2i)x</sup> = e<sup>−x</sup> cos 2x + i e<sup>−x</sup> sin 2x = u + iv.</p>
+    <p>The real and imaginary parts are real-valued functions. With real coefficients, substituting u + iv into the ODE gives</p>
+    <p class="lab-math">(u″ + 2u′ + 5u) + i(v″ + 2v′ + 5v) = 0.</p>
+    <p>Both parts must be zero, so u and v each solve the original real equation. The conjugate root gives the same two real functions. Their real linear combinations give the real general solution.</p>
+  </details>
+  <details>
+    <summary>Check the lecture initial value problem</summary>
+    <p class="lab-math">r² + 2r + 5 = (r + 1)² + 4 = 0 &emsp; r = −1 ± 2i.</p>
+    <p class="lab-math">y = e<sup>−x</sup>(C₁ cos 2x + C₂ sin 2x).</p>
+    <p>At x = 0, the initial value and slope are y(0) = C₁ and y′(0) = −C₁ + 2C₂. Thus y(0) = 2 gives C₁ = 2, and y′(0) = 0 then gives C₂ = 1.</p>
+    <p class="lab-math">y = e<sup>−x</sup>(2 cos 2x + sin 2x).</p>
+    <p>The dashed envelope bounds the real curve by ±√(C₁² + C₂²)e<sup>−x</sup>. The oscillations shrink as x increases.</p>
+  </details>
+</section>
+<style>
+  #cr-lab .cr-playback {gap:10px;margin:0 0 20px;}
+  #cr-lab .cr-x-control {max-width:none;}
+  #cr-lab .cr-toggles {gap:8px 24px;margin:12px 0 24px;}
+  #cr-lab .cr-toggles label {display:inline-flex;align-items:center;gap:9px;min-height:44px;}
+  #cr-lab input[type="checkbox"] {width:18px;height:18px;accent-color:var(--site-purple);}
+  #cr-lab .cr-panels {display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:30px;}
+  #cr-lab .cr-panels > section {min-width:0;}
+  #cr-lab h2 {font-size:22px;margin:0 0 10px;}
+  #cr-lab .cr-panels .lab-math {font-size:18px;min-height:35px;margin:0 0 10px;}
+  #cr-lab svg {display:block;width:100%;}
+  #cr-lab svg text {fill:var(--site-ink);font-size:12px;}
+  #cr-lab .cr-frame,#cr-lab .cr-grid line {stroke:var(--site-line);fill:none;}
+  #cr-lab .domain {display:none;}
+  #cr-lab .cr-zero {stroke:var(--site-muted);stroke-width:1;opacity:.5;}
+  #cr-lab .cr-circle {stroke:var(--site-muted);stroke-width:1;stroke-dasharray:3 4;fill:none;opacity:.6;}
+  #cr-lab .cr-spiral {stroke:var(--site-purple);stroke-width:1.5;fill:none;opacity:.35;}
+  #cr-lab .cr-progress,#cr-lab .cr-total {stroke:var(--site-purple);stroke-width:3;fill:none;}
+  #cr-lab .cr-u {stroke:var(--site-teal);fill:none;stroke-width:1.8;}
+  #cr-lab .cr-v {stroke:var(--site-orange);fill:none;stroke-width:1.8;}
+  #cr-lab .cr-projection {stroke-dasharray:4 4;}
+  #cr-lab .cr-envelope {stroke:var(--site-muted);stroke-width:1.3;stroke-dasharray:5 4;fill:none;opacity:.65;}
+  #cr-lab .cr-guide {stroke:var(--site-muted);stroke-width:1;stroke-dasharray:4 4;}
+  #cr-lab .cr-marker {stroke:var(--site-paper);stroke-width:1.5;}
+  #cr-lab .cr-legend {gap:7px 16px;min-height:28px;margin-top:7px;}
+  #cr-lab .cr-legend span {display:inline-flex;align-items:center;gap:6px;}
+  #cr-lab .cr-legend span[hidden] {display:none;}
+  #cr-lab .cr-legend i {display:inline-block;width:21px;border-top:2px solid;}
+  #cr-lab .cr-legend .cr-total-key {border-color:var(--site-purple);}
+  #cr-lab .cr-legend .cr-u-key {border-color:var(--site-teal);}
+  #cr-lab .cr-legend .cr-v-key {border-color:var(--site-orange);}
+  #cr-lab .cr-legend .cr-envelope-key {border-color:var(--site-muted);border-top-style:dashed!important;}
+  #cr-lab #cr-initial {border-top:1px solid var(--site-line);padding-top:20px;margin-top:20px;}
+  #cr-lab .cr-coefficients {margin:18px 0 0;}
+  #cr-lab .cr-coefficients summary {color:var(--site-purple);cursor:pointer;}
+  #cr-lab .cr-coefficient-controls {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;margin-top:20px;}
+  #cr-lab .cr-coefficient-controls > label {min-width:0;}
+  #cr-lab .cr-sr-only {position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
+  @media(max-width:900px){#cr-lab .cr-panels {grid-template-columns:minmax(0,1fr);gap:32px;}}
+  @media(max-width:500px){#cr-lab .cr-coefficient-controls {grid-template-columns:minmax(0,1fr);}}
+</style>
+<script src="{{D3_URL}}"></script>
+<script>{{COMPLEX_ROOTS_MODEL}}</script>
+<script>
+(()=>{
+  const M=ComplexRootsModel,root=document.getElementById('cr-lab'),el=id=>root.querySelector('#cr-'+id),key='amath351-complex-roots-v1';
+  let state=M.fresh(),playing=false,last=0,raf=0,widthKey='';
+  try{state=M.restore(JSON.parse(localStorage.getItem(key)));}catch(_){}
+  const reduced=matchMedia('(prefers-reduced-motion: reduce)');
+  const fmt=(v,d=3)=>(Math.abs(v)<.5*10**(-d)?0:v).toFixed(d).replace('-','−');
+  const save=()=>{try{localStorage.setItem(key,JSON.stringify({version:1,...state}));}catch(_){}};
+  const colors={u:'var(--site-teal)',v:'var(--site-orange)',y:'var(--site-purple)'};
+  function chart(id,desc,xTitle,yTitle){
+    const host=el(id),svg=d3.select(host).append('svg').attr('role','img').attr('aria-label',desc);svg.append('title');
+    svg.append('defs').append('clipPath').attr('id','cr-'+id+'-clip').append('rect');svg.append('rect').attr('class','cr-frame').attr('data-chart-frame','');svg.append('g').attr('class','cr-grid');
+    const content=svg.append('g').attr('clip-path','url(#cr-'+id+'-clip)');
+    svg.append('g').attr('class','cr-x-axis');svg.append('g').attr('class','cr-y-axis');
+    svg.append('text').attr('class','axis-title').attr('data-axis','x').attr('text-anchor','end').text(xTitle);svg.append('text').attr('class','axis-title').attr('data-axis','y').text(yTitle);
+    return {host,svg,content};
+  }
+  const complex=chart('complex','The complex exponential spirals inward. Its horizontal and vertical coordinates are real functions u and v.','Real part u','Imaginary part v');
+  const real=chart('real','A real linear combination of the two basis functions solves the ODE. The moving points share the same independent variable x.','x','Real value');
+  complex.content.append('circle').attr('class','cr-circle');complex.content.append('path').attr('class','cr-zero');complex.content.append('path').attr('class','cr-spiral');complex.content.append('path').attr('class','cr-progress');
+  for(const name of ['u','v']){complex.content.append('path').attr('class','cr-'+name+' cr-projection');complex.content.append('circle').attr('class','cr-marker cr-'+name+'-point').attr('fill',colors[name]).attr('r',4);}
+  complex.content.append('circle').attr('class','cr-marker cr-z-point').attr('fill',colors.y).attr('r',5);
+  for(const cls of ['zero','envelope cr-upper','envelope cr-lower','u cr-u-curve','v cr-v-curve','total','guide'])real.content.append(cls==='zero'||cls==='guide'?'line':'path').attr('class','cr-'+cls);
+  for(const name of ['u','v','y'])real.content.append('circle').attr('class','cr-marker cr-point-'+name).attr('fill',colors[name]).attr('r',name==='y'?5:3.5);
+  const hit=real.svg.append('rect').attr('fill','transparent').attr('data-chart-hit','').attr('aria-hidden','true');
+  let samples=M.sample(state),spiralLine;
+  function axes(c,x,y,box,h){
+    c.x=x;c.y=y;c.box=box;
+    c.svg.attr('viewBox','0 0 '+c.host.clientWidth+' '+h).attr('height',h);
+    c.svg.selectAll('.cr-frame,clipPath rect').attr('x',box.left).attr('y',box.top).attr('width',box.right-box.left).attr('height',box.bottom-box.top);
+    c.svg.select('.cr-grid').attr('transform','translate('+box.left+',0)').call(d3.axisLeft(y).ticks(4).tickSize(-(box.right-box.left)).tickFormat(''));
+    c.svg.select('.cr-x-axis').attr('transform','translate(0,'+box.bottom+')').call(d3.axisBottom(x).tickValues(c===complex?[-1,0,1]:c.host.clientWidth<450?[0,2,4,6]:[0,1,2,3,4,5,6]).tickSize(0).tickPadding(8));
+    c.svg.select('.cr-y-axis').attr('transform','translate('+box.left+',0)').call(d3.axisLeft(y).tickValues(c===complex?[-1,0,1]:y.ticks(4)).tickSize(0).tickPadding(7));
+    c.svg.select('[data-axis="x"]').attr('x',box.right).attr('y',h-3);c.svg.select('[data-axis="y"]').attr('x',4).attr('y',14);
+  }
+  function draw(){
+    samples=M.sample(state);
+    const cw=complex.host.clientWidth,ch=365,d=Math.min(cw-80,ch-78),left=64+(cw-80-d)/2,top=28+(ch-78-d)/2;
+    axes(complex,d3.scaleLinear().domain([-1.2,1.2]).range([left,left+d]),d3.scaleLinear().domain([-1.2,1.2]).range([top+d,top]),{left,right:left+d,top,bottom:top+d},ch);
+    complex.content.select('.cr-circle').attr('cx',complex.x(0)).attr('cy',complex.y(0)).attr('r',complex.x(1)-complex.x(0));
+    complex.content.select('.cr-zero').attr('d','M'+complex.box.left+','+complex.y(0)+'H'+complex.box.right+'M'+complex.x(0)+','+complex.box.top+'V'+complex.box.bottom);
+    spiralLine=d3.line().x(p=>complex.x(p.u)).y(p=>complex.y(p.v));complex.content.select('.cr-spiral').attr('d',spiralLine(samples));
+    const rw=real.host.clientWidth,rh=365,box={left:64,right:rw-16,top:28,bottom:rh-48},bound=M.plotBound(state);
+    axes(real,d3.scaleLinear().domain(M.domain).range([box.left+6,box.right-6]),d3.scaleLinear().domain([-bound,bound]).range([box.bottom,box.top]),box,rh);
+    real.content.select('.cr-zero').attr('x1',box.left).attr('x2',box.right).attr('y1',real.y(0)).attr('y2',real.y(0));
+    const curve=name=>d3.line().x(p=>real.x(p.x)).y(p=>real.y(p[name]))(samples);
+    real.content.select('.cr-total').attr('d',curve('y'));real.content.select('.cr-u-curve').attr('d',curve('u')).attr('display',state.basis?null:'none');real.content.select('.cr-v-curve').attr('d',curve('v')).attr('display',state.basis?null:'none');
+    for(const [cls,sign]of [['upper',1],['lower',-1]])real.content.select('.cr-'+cls).attr('d',d3.line().x(p=>real.x(p.x)).y(p=>real.y(sign*p.envelope))(samples)).attr('display',state.envelope?null:'none');
+    hit.attr('x',box.left).attr('y',box.top).attr('width',box.right-box.left).attr('height',box.bottom-box.top);renderPosition();
+  }
+  function renderPosition(){
+    if(!spiralLine)return;const p=M.at(state),active=[...samples.filter(s=>s.x<state.x),p];
+    el('x').value=state.x;el('x-out').textContent=fmt(state.x,2);
+    complex.content.select('.cr-progress').attr('d',spiralLine(active));
+    complex.content.select('.cr-u.cr-projection').attr('d','M'+complex.x(p.u)+','+complex.y(p.v)+'V'+complex.y(0));complex.content.select('.cr-v.cr-projection').attr('d','M'+complex.x(p.u)+','+complex.y(p.v)+'H'+complex.x(0));
+    complex.content.select('.cr-u-point').attr('cx',complex.x(p.u)).attr('cy',complex.y(0));complex.content.select('.cr-v-point').attr('cx',complex.x(0)).attr('cy',complex.y(p.v));complex.content.select('.cr-z-point').attr('cx',complex.x(p.u)).attr('cy',complex.y(p.v));
+    real.content.select('.cr-guide').attr('x1',real.x(state.x)).attr('x2',real.x(state.x)).attr('y1',real.box.top).attr('y2',real.box.bottom);
+    for(const name of ['u','v','y'])real.content.select('.cr-point-'+name).attr('cx',real.x(state.x)).attr('cy',real.y(p[name])).attr('display',name==='y'||state.basis?null:'none');
+    el('z-value').textContent='z ≈ '+fmt(p.u)+(p.v<-.0005?' − ':' + ')+fmt(Math.abs(p.v))+' i';
+    el('combination').textContent='y = '+fmt(state.c1,1)+' u '+(state.c2<0?'−':'+')+' '+fmt(Math.abs(state.c2),1)+' v ≈ '+fmt(p.y);
+    el('values').textContent='u ≈ '+fmt(p.u)+', v ≈ '+fmt(p.v)+', y′ ≈ '+fmt(p.yp)+'.';
+  }
+  function playbackLabel(){el('play').textContent=reduced.matches?'Advance x by 0.25':playing?'Pause':'Follow the solution';el('play').setAttribute('aria-pressed',String(playing));}
+  function pause(){playing=false;cancelAnimationFrame(raf);raf=0;last=0;playbackLabel();}
+  function announce(){const p=M.at(state);el('status').textContent='At x = '+fmt(state.x,2)+', u = '+fmt(p.u)+', v = '+fmt(p.v)+', and y = '+fmt(p.y)+'.';}
+  function render(){
+    for(const name of ['c1','c2']){el(name).value=state[name];el(name+'-out').textContent=fmt(state[name],1);}
+    el('basis').checked=state.basis;el('envelope').checked=state.envelope;
+    for(const name of ['u','v'])el(name+'-key').hidden=!state.basis;el('envelope-key').hidden=!state.envelope;
+    const init=M.initial(state);el('initial').dataset.matches=String(M.matchesLecture(state));el('initial').textContent='Current initial values: y(0) = '+fmt(init.value,1)+', y′(0) = '+fmt(init.slope,1)+'. '+(M.matchesLecture(state)?'These match the lecture IVP.':'Use “Restore the lecture IVP” to return to the given initial conditions.');
+    playbackLabel();draw();
+  }
+  el('x').addEventListener('input',e=>{pause();state.x=+e.target.value;renderPosition();announce();save();});
+  for(const name of ['basis','envelope'])el(name).addEventListener('change',e=>{pause();state[name]=e.target.checked;render();save();});
+  for(const name of ['c1','c2'])el(name).addEventListener('input',e=>{pause();state[name]=+e.target.value;state.x=0;render();announce();save();});
+  el('restore').addEventListener('click',()=>{pause();state={...state,c1:2,c2:1,x:0};render();announce();save();});
+  el('rewind').addEventListener('click',()=>{pause();state.x=0;renderPosition();announce();save();});
+  hit.on('click',event=>{pause();state.x=Math.max(0,Math.min(6,real.x.invert(d3.pointer(event,real.svg.node())[0])));renderPosition();announce();save();});
+  function tick(now){if(!playing)return;if(last)state.x=Math.min(6,state.x+.75*Math.min(.1,(now-last)/1000));last=now;renderPosition();if(state.x>=6){pause();announce();save();}else raf=requestAnimationFrame(tick);}
+  el('play').addEventListener('click',()=>{if(reduced.matches){state.x=state.x>=6?0:Math.min(6,state.x+.25);renderPosition();announce();save();return;}if(playing){pause();announce();save();return;}if(state.x>=6)state.x=0;playing=true;last=0;playbackLabel();raf=requestAnimationFrame(tick);});
+  document.addEventListener('visibilitychange',()=>{if(document.hidden){pause();save();}});reduced.addEventListener('change',()=>{pause();save();});
+  new ResizeObserver(()=>{const key=complex.host.clientWidth+','+real.host.clientWidth;if(key!==widthKey){widthKey=key;draw();}}).observe(root);
+  render();
+})();
+</script>
