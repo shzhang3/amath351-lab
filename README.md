@@ -391,3 +391,15 @@ steps with reduced motion. Source and mathematical helpers are
 reference solutions, the ODE, initial values, continuity through critical
 damping, and energy conservation or dissipation. Lecture source files are not
 published with the Lab.
+
+## Section 3.2: the lecture's dependent polynomials
+
+[Three functions, zero volume](https://shzhang3.github.io/amath351-lab/chapters/higher-order/dependent-polynomials/)
+uses `f1 = 2x`, `f2 = 3x²`, and `f3 = 5x − 8x²`. At zero their
+initial-data vectors are `(0, 2, 0)`, `(0, 0, 6)`, and `(0, 5, −16)`.
+The first two span area 12, but all three lie in the zero-value plane,
+so the perpendicular height and three-dimensional volume are zero.
+Rotate to view the plane from the front or edge-on, and reveal the
+relation `v3 = (5/2)v1 − (8/3)v2`. The same relation holds for the
+functions on the real line; all solve the common equation `y‴ = 0`.
+Arrows retain their actual coordinates and are not normalized.

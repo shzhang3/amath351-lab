@@ -1,0 +1,170 @@
+<section class="lab-intro">
+  <div class="site-kicker">Section 3.2 · Linear dependence and Wronskian volume</div>
+  <h1>Three functions, zero volume</h1>
+  <p class="lab-math">f₁ = 2x &emsp; f₂ = 3x² &emsp; f₃ = 5x − 8x²</p>
+  <p>At x = 0, turn each function’s value, slope, and second derivative into a vector. The three arrows have different directions, but they all lie in one plane. View that plane from the side to see why the volume is zero.</p>
+</section>
+<div id="dp-lab" class="lab-interactive">
+  <p class="lab-math dp-definition">vᵢ = (fᵢ(0), fᵢ′(0), fᵢ″(0))</p>
+  <div class="lab-row dp-views" role="group" aria-label="Choose a camera view">
+    <button class="lab-button lab-primary" type="button" id="dp-oblique">3D view</button>
+    <button class="lab-button" type="button" id="dp-front">Look at the plane</button>
+    <button class="lab-button" type="button" id="dp-edge">Look edge-on</button>
+  </div>
+  <div class="dp-main">
+    <section aria-labelledby="dp-chart-title">
+      <h2 id="dp-chart-title">Three initial-data arrows</h2>
+      <div id="dp-space"></div>
+      <p class="lab-small" id="dp-view-note" role="status" aria-live="polite"></p>
+      <div class="lab-controls dp-camera">
+        <label class="lab-label" for="dp-yaw"><span class="lab-row">Rotate <output id="dp-yaw-out" for="dp-yaw">45°</output></span><input class="lab-slider" id="dp-yaw" type="range" min="0" max="360" step="1" value="45"></label>
+        <label class="lab-label" for="dp-tilt"><span class="lab-row">Tilt <output id="dp-tilt-out" for="dp-tilt">25°</output></span><input class="lab-slider" id="dp-tilt" type="range" min="-60" max="60" step="1" value="25"></label>
+      </div>
+    </section>
+    <section aria-labelledby="dp-data-title">
+      <h2 id="dp-data-title">Evaluate at x = 0</h2>
+      <p class="lab-small">Coordinates are value, slope, and second derivative, in that order. These vectors form the columns of the Wronskian.</p>
+      <div class="dp-table-wrap">
+        <table class="lab-numbers">
+          <caption class="dp-sr-only">The coordinates of the three initial-data vectors at x equals zero.</caption>
+          <thead><tr><th scope="col">Vector</th><th scope="col">f(0)</th><th scope="col">f′(0)</th><th scope="col">f″(0)</th></tr></thead>
+          <tbody>
+            <tr><th scope="row"><i class="dp-swatch dp-one" aria-hidden="true"></i>v₁</th><td>0</td><td>2</td><td>0</td></tr>
+            <tr><th scope="row"><i class="dp-swatch dp-two" aria-hidden="true"></i>v₂</th><td>0</td><td>0</td><td>6</td></tr>
+            <tr><th scope="row"><i class="dp-swatch dp-three" aria-hidden="true"></i>v₃</th><td>0</td><td>5</td><td>−16</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Every first coordinate is zero. All three arrows lie in the plane <strong>f(0) = 0</strong>.</p>
+      <div class="dp-numbers lab-numbers">
+        <div><span class="lab-small">Base area from v₁ and v₂</span><strong id="dp-area">12</strong></div>
+        <div><span class="lab-small">Perpendicular height of v₃</span><strong id="dp-height">0</strong></div>
+        <div><span class="lab-small">Geometric volume |W(0)|</span><strong id="dp-volume">12 × 0 = 0</strong></div>
+      </div>
+      <p class="lab-small">The arrows use their actual coordinates. They are not normalized to equal lengths. The shaded shape is the flattened parallelepiped; its thickness is zero.</p>
+    </section>
+  </div>
+  <section class="dp-relation" aria-labelledby="dp-relation-title">
+    <h2 id="dp-relation-title">Does the third arrow add a new direction?</h2>
+    <label class="dp-toggle" for="dp-reveal"><input type="checkbox" id="dp-reveal"> Show how v₃ is built from v₁ and v₂</label>
+    <div id="dp-relation-detail" hidden>
+      <p class="lab-math">v₃ = (5/2) v₁ − (8/3) v₂</p>
+      <p>The dashed path first follows v₁ to (0, 5, 0), then moves opposite to v₂ to reach (0, 5, −16). It stays in the same plane throughout.</p>
+      <p>The same constants relate the functions for every x:</p>
+      <p class="lab-math">f₃ = (5/2) f₁ − (8/3) f₂.</p>
+    </div>
+  </section>
+  <p class="dp-sr-only" id="dp-description">Three vectors are (0, 2, 0), (0, 0, 6), and (0, 5, minus 16). They all have first coordinate zero and lie in one plane. The first two span a base of area 12, but the third has zero perpendicular height, so the three-dimensional volume is zero. Camera buttons and sliders change only the projection. A checkbox shows the third vector as a linear combination of the first two.</p>
+</div>
+<section class="lab-explanation">
+  <details>
+    <summary>How does this connect to linear independence?</summary>
+    <p>Two of these vectors are independent: v₁ and v₂ are not parallel. Adding v₃ gives no direction outside their plane, so the set of three vectors is dependent. It has nonzero area within its plane, but zero three-dimensional volume.</p>
+    <p>All three polynomials solve the same regular third-order homogeneous equation y‴ = 0 on ℝ. Their constant function relation directly proves dependence on ℝ. In particular, every combination of this chosen set has y(0) = 0, so it cannot represent a solution with y(0) = 1.</p>
+    <p>The Wronskian is W(0) = 0. For solutions of the same regular homogeneous linear equation, a zero Wronskian at one point detects dependence. For arbitrary functions, a zero Wronskian at one point alone is not enough.</p>
+  </details>
+  <p>Continue to <a href="../wronskian-volume/">lift an arrow out of a plane and create nonzero volume</a>, or revisit <a href="../vector-area/">the area made by two vectors</a>.</p>
+</section>
+<style>
+  #dp-lab .dp-definition {margin-top:0;}
+  #dp-lab .dp-views {gap:10px;margin:18px 0 26px;}
+  #dp-lab .dp-main {display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:30px;}
+  #dp-lab .dp-main > section {min-width:0;}
+  #dp-lab h2 {font-size:21px;margin:0 0 14px;}
+  #dp-lab #dp-space svg {display:block;width:100%;touch-action:pan-y;}
+  #dp-lab svg text {fill:var(--site-ink);font-size:12px;}
+  #dp-lab .dp-grid {stroke:var(--site-line);stroke-width:1;fill:none;}
+  #dp-lab .dp-plane {fill:var(--site-purple);fill-opacity:.045;stroke:var(--site-muted);stroke-opacity:.4;stroke-width:1;}
+  #dp-lab .dp-flat {fill:var(--site-purple);fill-opacity:.1;stroke:var(--site-purple);stroke-opacity:.5;stroke-width:1;}
+  #dp-lab .dp-base {fill:var(--site-teal);fill-opacity:.17;stroke:var(--site-teal);stroke-width:1;}
+  #dp-lab .dp-edge {stroke:var(--site-muted);stroke-width:1;stroke-dasharray:3 3;fill:none;opacity:.55;}
+  #dp-lab .dp-axis {stroke:var(--site-muted);stroke-width:1;fill:none;}
+  #dp-lab .dp-vector {fill:none;stroke-width:3;}
+  #dp-lab .dp-component {fill:none;stroke-width:2;stroke-dasharray:6 4;}
+  #dp-lab .dp-vector-one,#dp-lab .dp-component-one {stroke:var(--site-purple);}
+  #dp-lab .dp-vector-two,#dp-lab .dp-component-two {stroke:var(--site-teal);}
+  #dp-lab .dp-vector-three {stroke:var(--site-orange);}
+  #dp-lab .dp-origin {fill:var(--site-ink);}
+  #dp-lab .dp-camera {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;}
+  #dp-lab .dp-camera > label {min-width:0;}
+  #dp-lab .dp-table-wrap {overflow-x:auto;}
+  #dp-lab table {width:100%;border-collapse:collapse;margin:20px 0;}
+  #dp-lab th,#dp-lab td {text-align:right;white-space:nowrap;padding:11px 5px;border-bottom:1px solid var(--site-line);}
+  #dp-lab th {font-weight:500;}
+  #dp-lab th:first-child {text-align:left;}
+  #dp-lab .dp-swatch {display:inline-block;width:17px;border-top:3px solid;vertical-align:middle;margin-right:6px;}
+  #dp-lab .dp-one {border-color:var(--site-purple);}
+  #dp-lab .dp-two {border-color:var(--site-teal);}
+  #dp-lab .dp-three {border-color:var(--site-orange);}
+  #dp-lab .dp-numbers {display:grid;gap:12px;margin:20px 0;}
+  #dp-lab .dp-numbers span,#dp-lab .dp-numbers strong {display:block;}
+  #dp-lab .dp-numbers strong {font-size:22px;font-weight:500;}
+  #dp-lab .dp-relation {border-top:1px solid var(--site-line);padding-top:22px;margin-top:22px;}
+  #dp-lab .dp-toggle {display:inline-flex;gap:10px;align-items:center;min-height:44px;}
+  #dp-lab .dp-toggle input {width:18px;height:18px;accent-color:var(--site-purple);}
+  #dp-lab .dp-sr-only {position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
+  @media(max-width:850px){#dp-lab .dp-main {grid-template-columns:minmax(0,1fr);}}
+  @media(max-width:440px){#dp-lab .dp-camera {grid-template-columns:minmax(0,1fr);}}
+</style>
+<script src="{{D3_URL}}"></script>
+<script>{{WRONSKIAN_VOLUME_MODEL}}</script>
+<script>
+(()=>{
+  const M=WronskianVolumeModel,root=document.getElementById('dp-lab'),el=id=>root.querySelector('#dp-'+id),key='amath351-dependent-polynomials-v1';
+  const g=M.dependentGeometry(),colors=['var(--site-purple)','var(--site-teal)','var(--site-orange)'];
+  let state={yaw:45,tilt:25,reveal:false};
+  try{const s=JSON.parse(localStorage.getItem(key));if(s?.version===1){for(const [name,lo,hi]of [['yaw',0,360],['tilt',-60,60]])if(typeof s[name]==='number'&&Number.isFinite(s[name]))state[name]=Math.max(lo,Math.min(hi,s[name]));state.reveal=s.reveal===true;}}catch(_){}
+  const save=()=>{try{localStorage.setItem(key,JSON.stringify({version:1,...state}));}catch(_){}};
+  const svg=d3.select(el('space')).append('svg').attr('role','img').attr('aria-label','Three coplanar initial-data arrows with zero Wronskian volume').attr('aria-describedby','dp-description');svg.append('title');
+  const defs=svg.append('defs');
+  [...colors,'var(--site-muted)'].forEach((color,i)=>defs.append('marker').attr('id','dp-arrow-'+i).attr('viewBox','0 0 8 8').attr('refX',7).attr('refY',4).attr('markerWidth',i===3?6:8).attr('markerHeight',i===3?6:8).attr('orient','auto').attr('markerUnits','userSpaceOnUse').append('path').attr('d','M0,0L8,4L0,8Z').attr('fill',color));
+  const plane=svg.append('path').attr('class','dp-plane'),grid=svg.append('g'),axes=svg.append('g'),flat=svg.append('path').attr('class','dp-flat'),edges=svg.append('g'),base=svg.append('path').attr('class','dp-base');
+  const components=svg.append('g'),arrows=svg.append('g'),labels=svg.append('g');svg.append('circle').attr('class','dp-origin').attr('r',3);
+  for(const name of ['v1','v2','v3','origin','plane','component1','component2'])labels.append('text').attr('data-label',name);
+  const planePoints=[[0,-1,-18],[0,8,-18],[0,8,8],[0,-1,8]],origin=[0,0,0],corner=[0,5,0];
+  const hull=d3.polygonHull(g.vertices.map(v=>[v[1],v[2]])).map(p=>[0,...p]);
+  const axisData=[{lo:[0,0,0],hi:[7,0,0],name:'Value f(0)'},{lo:[0,-1,0],hi:[0,8,0],name:'Slope f′(0)'},{lo:[0,0,-18],hi:[0,0,8],name:'Second derivative f″(0)'}];
+  const edgeIndices=[];for(let mask=0;mask<8;mask++)for(let i=0;i<3;i++)if(!(mask&(1<<i)))edgeIndices.push([mask,mask|(1<<i)]);
+  function render(){
+    const width=el('space').clientWidth,height=width<400?470:520;
+    svg.attr('viewBox','0 0 '+width+' '+height).attr('height',height);
+    const refs=[...planePoints,...g.vertices,...axisData.flatMap(a=>[a.lo,a.hi])],projected=refs.map(v=>M.project(v,state.yaw,state.tilt));
+    const ru=d3.extent(projected,p=>p.u),rv=d3.extent(projected,p=>p.v),scale=Math.min((width-100)/Math.max(.1,ru[1]-ru[0]),(height-110)/Math.max(.1,rv[1]-rv[0]));
+    const cx=(ru[0]+ru[1])/2,cy=(rv[0]+rv[1])/2;
+    const project=v=>{const p=M.project(v,state.yaw,state.tilt);return [width/2+(p.u-cx)*scale,height/2+(p.v-cy)*scale];};
+    const line=points=>d3.line().x(p=>project(p)[0]).y(p=>project(p)[1])(points),polygon=points=>line(points)+'Z';
+    const normalFacing=Math.abs(Math.sin(state.yaw*Math.PI/180)*Math.cos(state.tilt*Math.PI/180)),edgeOn=normalFacing<1e-5,frontOn=Math.abs(normalFacing-1)<1e-5;
+    plane.attr('d',polygon(planePoints)).attr('fill-opacity',edgeOn?0:.045);
+    const gridLines=[...d3.range(0,9,2).map(y=>[[0,y,-18],[0,y,8]]),...d3.range(-16,9,4).map(z=>[[0,-1,z],[0,8,z]])];
+    grid.selectAll('path').data(edgeOn?[]:gridLines).join('path').attr('class','dp-grid').attr('d',line);
+    flat.attr('d',polygon(hull));base.attr('d',polygon([origin,g.vectors[0],M.add(g.vectors[0],g.vectors[1]),g.vectors[1]]));
+    edges.selectAll('path').data(edgeIndices).join('path').attr('class','dp-edge').attr('d',ids=>line(ids.map(i=>g.vertices[i])));
+    axes.selectAll('path').data(axisData).join('path').attr('class','dp-axis').attr('d',a=>line([a.lo,a.hi])).attr('marker-end','url(#dp-arrow-3)');
+    const visibleAxes=axisData.filter(a=>Math.hypot(...project(a.hi).map((v,i)=>v-project(origin)[i]))>22);
+    axes.selectAll('text').data(visibleAxes,a=>a.name).join('text').attr('x',a=>project(a.hi)[0]+5).attr('y',a=>project(a.hi)[1]-10).text(a=>a.name);
+    const projectedLength=v=>Math.hypot(...project(v).map((n,i)=>n-project(origin)[i]));
+    arrows.selectAll('path').data(g.vectors).join('path').attr('class',(v,i)=>'dp-vector dp-vector-'+['one','two','three'][i]).attr('d',v=>line([origin,v])).attr('marker-end',(v,i)=>'url(#dp-arrow-'+i+')').attr('display',v=>projectedLength(v)<2?'none':null);
+    const componentData=state.reveal?[{points:[origin,corner],name:'one',color:0},{points:[corner,g.vectors[2]],name:'two',color:1}]:[];
+    components.selectAll('path').data(componentData).join('path').attr('class',d=>'dp-component dp-component-'+d.name).attr('d',d=>line(d.points)).attr('marker-end',d=>'url(#dp-arrow-'+d.color+')').attr('display',d=>Math.hypot(...project(d.points[1]).map((v,i)=>v-project(d.points[0])[i]))<2?'none':null);
+    function label(name,text,point,dx=0,dy=0,anchor='start'){const p=project(point);labels.select('[data-label="'+name+'"]').text(text).attr('x',p[0]+dx).attr('y',p[1]+dy).attr('text-anchor',anchor);}
+    g.vectors.forEach((v,i)=>label('v'+(i+1),projectedLength(v)<6?'':'v'+['₁','₂','₃'][i],v,[9,9,-20][i],[16,-9,16][i]));
+    label('origin','0',origin,8,17);label('plane',edgeOn?'Plane seen edge-on':'Plane f(0) = 0',planePoints[0],8,25);
+    label('component1',state.reveal&&!edgeOn?'(5/2) v₁':'',[0,3.5,0],8,-12);
+    label('component2',state.reveal?'−(8/3) v₂':'',[0,5,-8],-10,0,'end');
+    const o=project(origin);svg.select('.dp-origin').attr('cx',o[0]).attr('cy',o[1]);
+    // Keep all diagram labels within its actual responsive frame.
+    svg.selectAll('text').each(function(){const b=this.getBBox();let x=+this.getAttribute('x'),y=+this.getAttribute('y');if(b.x<8)x+=8-b.x;if(b.x+b.width>width-8)x-=b.x+b.width-width+8;if(b.y<12)y+=12-b.y;if(b.y+b.height>height-8)y-=b.y+b.height-height+8;this.setAttribute('x',x);this.setAttribute('y',y);});
+    el('yaw').value=state.yaw;el('tilt').value=state.tilt;el('yaw-out').textContent=Math.round(state.yaw)+'°';el('tilt-out').textContent=Math.round(state.tilt)+'°';
+    el('reveal').checked=state.reveal;el('relation-detail').hidden=!state.reveal;
+    el('view-note').textContent=edgeOn?'Edge-on view: the plane has no visible thickness. Some arrows overlap in this projection; they are not all parallel in 3D.':frontOn?'Looking along the value axis: both visible directions lie within f(0) = 0. A planar area can be nonzero while the 3D volume is zero.':'Rotate or tilt the view. All three arrows and every edge remain in the same plane. The volume stays zero.';
+    el('area').textContent=g.baseArea.toFixed(0);el('height').textContent=g.height.toFixed(0);el('volume').textContent=g.baseArea.toFixed(0)+' × '+g.height.toFixed(0)+' = '+g.volume.toFixed(0);
+    svg.select('title').text('At x = 0, all three vectors lie in the plane of zero function value. Base area 12, perpendicular height 0, volume 0. '+el('view-note').textContent);
+  }
+  for(const [id,yaw,tilt]of [['oblique',45,25],['front',90,0],['edge',0,0]])el(id).addEventListener('click',()=>{state.yaw=yaw;state.tilt=tilt;render();save();});
+  for(const name of ['yaw','tilt'])el(name).addEventListener('input',e=>{state[name]=+e.target.value;render();save();});
+  el('reveal').addEventListener('change',e=>{state.reveal=e.target.checked;render();save();});
+  svg.call(d3.drag().touchable(()=>false).on('drag',e=>{state.yaw=(state.yaw+e.dx*.5+360)%360;state.tilt=Math.max(-60,Math.min(60,state.tilt-e.dy*.3));render();}).on('end',save));
+  let lastWidth=0;new ResizeObserver(()=>{const width=el('space').clientWidth;if(width!==lastWidth){lastWidth=width;render();}}).observe(el('space'));
+  render();
+})();
+</script>

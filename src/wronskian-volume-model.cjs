@@ -14,12 +14,15 @@
     const [alpha,beta]=offsets(state.shape),l=state.lambda;
     return [[1,0,0],[x,1,0],[alpha+beta*x+l*x*x/2,beta+l*x,l]];
   }
-  function geometry(state) {
-    const v=vectors(state),normal=cross(v[0],v[1]),area=Math.hypot(...normal);
+  const dependentVectors=(x=0)=>[[2*x,2,0],[3*x*x,6*x,6],[5*x-8*x*x,5-16*x,-16]];
+  function geometryFor(v) {
+    const normal=cross(v[0],v[1]),area=Math.hypot(...normal);
     const signed=dot(normal,v[2]);
     const vertices=Array.from({length:8},(_,mask)=>v.reduce((p,vi,i)=>mask&(1<<i)?add(p,vi):p,[0,0,0]));
-    return {vectors:v,vertices,signed,volume:Math.abs(signed),baseArea:area,height:Math.abs(signed)/area};
+    return {vectors:v,vertices,normal,signed,volume:Math.abs(signed),baseArea:area,height:Math.abs(signed)/area};
   }
+  const geometry=state=>geometryFor(vectors(state));
+  const dependentGeometry=(x=0)=>geometryFor(dependentVectors(x));
   function combine(state,coefficients,x=state.a) {
     return vectors(state,x).reduce((sum,v,i)=>add(sum,scale(v,coefficients[i])),[0,0,0]);
   }
@@ -32,8 +35,8 @@
     const c3=b2/l,c2=b1-c3*(beta+l*a),c1=b0-a*c2-c3*(alpha+beta*a+l*a*a/2);
     return {kind:'unique',coefficients:[c1,c2,c3]};
   }
-  function project(point,yaw=45) {
-    const angle=yaw*Math.PI/180,elevation=Math.PI/6;
+  function project(point,yaw=45,elevationDegrees=30) {
+    const angle=yaw*Math.PI/180,elevation=elevationDegrees*Math.PI/180;
     const [x,y,z]=point;
     const horizontal=Math.sin(angle)*x+Math.cos(angle)*y;
     return {u:Math.cos(angle)*x-Math.sin(angle)*y,v:Math.sin(elevation)*horizontal-Math.cos(elevation)*z,
@@ -59,5 +62,5 @@
     if(Object.hasOwn(targets,saved.target))state.target=saved.target;
     return state;
   }
-  return {fresh,targets,offsets,add,scale,dot,cross,vectors,geometry,combine,match,project,reference,restore};
+  return {fresh,targets,offsets,add,scale,dot,cross,vectors,geometry,dependentVectors,dependentGeometry,combine,match,project,reference,restore};
 });

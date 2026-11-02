@@ -74,3 +74,35 @@ test('saved controls reject nonfinite or unrelated state and preserve valid choi
   assert.deepEqual(state,{shape:'slanted',lambda:1,a:-1,yaw:315,target:'flat'});
   assert.deepEqual(M.restore({version:1,lambda:NaN,a:Infinity,yaw:Infinity,shape:'invalid',target:'invalid'}),M.fresh());
 });
+
+test('the lecture polynomials give a noncollinear, coplanar set of initial data at zero',()=>{
+  const g=M.dependentGeometry();
+  assert.deepEqual(g.vectors,[[0,2,0],[0,0,6],[0,5,-16]]);
+  assert.deepEqual(g.normal,[12,0,0]);
+  assert.equal(g.baseArea,12);assert.equal(g.height,0);assert.equal(g.signed,0);assert.equal(g.volume,0);
+  assert(g.vertices.every(v=>v[0]===0));
+  assert.equal(new Set(g.vertices.map(v=>v.join(','))).size,8);
+});
+
+test('the same nontrivial constant relation holds for the functions and their derivatives everywhere',()=>{
+  const h=1e-5;
+  for(const a of [-2,-.7,0,.4,2]){
+    const v=M.dependentVectors(a),left=M.dependentVectors(a-h),right=M.dependentVectors(a+h);
+    for(let j=0;j<3;j++)close(v[2][j],2.5*v[0][j]-8/3*v[1][j]);
+    close(M.dependentGeometry(a).signed,0);
+    for(let i=0;i<3;i++){
+      close((right[i][0]-left[i][0])/(2*h),v[i][1],1e-8);
+      close((right[i][1]-left[i][1])/(2*h),v[i][2],1e-8);
+      close((right[i][2]-left[i][2])/(2*h),0);
+    }
+  }
+});
+
+test('view presets preserve lengths in 3D and show the plane exactly edge-on',()=>{
+  const g=M.dependentGeometry();
+  for(const [yaw,tilt]of [[45,25],[90,0],[0,0],[130,-35]])for(const v of g.vertices){
+    const p=M.project(v,yaw,tilt);close(p.u*p.u+p.v*p.v+p.depth*p.depth,M.dot(v,v));
+  }
+  assert(g.vertices.every(v=>Math.abs(M.project(v,0,0).u)<1e-12));
+  assert(g.vertices.every(v=>Math.abs(M.project(v,90,0).depth)<1e-12));
+});

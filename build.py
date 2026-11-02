@@ -179,7 +179,7 @@ def main():
                 replacements = {"D3_URL":href(path,"assets/vendor/d3.v7.9.0.min.js"), "INTERVAL_MODEL":(SOURCE / "interval-dependence-model.cjs").read_text()}
             elif example["slug"] == "nonhomogeneous-solutions":
                 replacements = {"D3_URL":href(path,"assets/vendor/d3.v7.9.0.min.js"), "NONHOMOGENEOUS_MODEL":(SOURCE / "nonhomogeneous-model.cjs").read_text()}
-            elif example["slug"] == "wronskian-volume":
+            elif example["slug"] in ("wronskian-volume", "dependent-polynomials"):
                 replacements = {"D3_URL":href(path,"assets/vendor/d3.v7.9.0.min.js"), "WRONSKIAN_VOLUME_MODEL":(SOURCE / "wronskian-volume-model.cjs").read_text()}
             elif example["slug"] == "vector-area":
                 replacements = {"D3_URL":href(path,"assets/vendor/d3.v7.9.0.min.js"), "VECTOR_AREA_MODEL":(SOURCE / "vector-area-model.cjs").read_text()}

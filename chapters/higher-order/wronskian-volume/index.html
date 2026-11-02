@@ -22,6 +22,7 @@
   <h1>See the Wronskian as volume</h1>
   <p class="lab-math">y‴ = 0 &emsp; vᵢ(a) = (yᵢ(a), yᵢ′(a), yᵢ″(a))</p>
   <p>Each solution gives three initial values at the same point. Treat them as the coordinates of an arrow. Can three such arrows fill three dimensions?</p>
+  <p class="lab-small">Lecture example: <a href="../dependent-polynomials/">see why 2x, 3x², and 5x − 8x² give zero volume at x = 0</a>.</p>
 </section>
 <div id="wv-explorer" class="lab-interactive">
   <p class="lab-math wv-functions">y₁ = 1 &emsp; y₂ = x &emsp; <span id="wv-third-function">y₃ = λx²/2</span></p>
@@ -171,12 +172,15 @@
     const [alpha,beta]=offsets(state.shape),l=state.lambda;
     return [[1,0,0],[x,1,0],[alpha+beta*x+l*x*x/2,beta+l*x,l]];
   }
-  function geometry(state) {
-    const v=vectors(state),normal=cross(v[0],v[1]),area=Math.hypot(...normal);
+  const dependentVectors=(x=0)=>[[2*x,2,0],[3*x*x,6*x,6],[5*x-8*x*x,5-16*x,-16]];
+  function geometryFor(v) {
+    const normal=cross(v[0],v[1]),area=Math.hypot(...normal);
     const signed=dot(normal,v[2]);
     const vertices=Array.from({length:8},(_,mask)=>v.reduce((p,vi,i)=>mask&(1<<i)?add(p,vi):p,[0,0,0]));
-    return {vectors:v,vertices,signed,volume:Math.abs(signed),baseArea:area,height:Math.abs(signed)/area};
+    return {vectors:v,vertices,normal,signed,volume:Math.abs(signed),baseArea:area,height:Math.abs(signed)/area};
   }
+  const geometry=state=>geometryFor(vectors(state));
+  const dependentGeometry=(x=0)=>geometryFor(dependentVectors(x));
   function combine(state,coefficients,x=state.a) {
     return vectors(state,x).reduce((sum,v,i)=>add(sum,scale(v,coefficients[i])),[0,0,0]);
   }
@@ -189,8 +193,8 @@
     const c3=b2/l,c2=b1-c3*(beta+l*a),c1=b0-a*c2-c3*(alpha+beta*a+l*a*a/2);
     return {kind:'unique',coefficients:[c1,c2,c3]};
   }
-  function project(point,yaw=45) {
-    const angle=yaw*Math.PI/180,elevation=Math.PI/6;
+  function project(point,yaw=45,elevationDegrees=30) {
+    const angle=yaw*Math.PI/180,elevation=elevationDegrees*Math.PI/180;
     const [x,y,z]=point;
     const horizontal=Math.sin(angle)*x+Math.cos(angle)*y;
     return {u:Math.cos(angle)*x-Math.sin(angle)*y,v:Math.sin(elevation)*horizontal-Math.cos(elevation)*z,
@@ -216,7 +220,7 @@
     if(Object.hasOwn(targets,saved.target))state.target=saved.target;
     return state;
   }
-  return {fresh,targets,offsets,add,scale,dot,cross,vectors,geometry,combine,match,project,reference,restore};
+  return {fresh,targets,offsets,add,scale,dot,cross,vectors,geometry,dependentVectors,dependentGeometry,combine,match,project,reference,restore};
 });
 </script>
 <script>
@@ -318,7 +322,7 @@
 })();
 </script>
 </main>
-<nav class="site-example-nav" aria-label="Example navigation"><a href="../vector-area/"><small>Previous example</small>← Why does sine give the height?</a><a class="site-all-examples" href="../">All chapter examples</a><a href="../nonhomogeneous-solutions/"><small>Next example</small>One particular solution. A whole family. →</a></nav>
+<nav class="site-example-nav" aria-label="Example navigation"><a href="../dependent-polynomials/"><small>Previous example</small>← Three functions, zero volume</a><a class="site-all-examples" href="../">All chapter examples</a><a href="../nonhomogeneous-solutions/"><small>Next example</small>One particular solution. A whole family. →</a></nav>
     <footer class="site-footer"><span>University of Washington · Autumn 2026</span><div><a href="https://shzhang3.github.io/#teaching">Shiheng Zhang · Teaching</a><a href="https://github.com/shzhang3/amath351-lab" target="_blank" rel="noopener">Contribute on GitHub ↗</a></div></footer>
   </div>
 
