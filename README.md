@@ -19,9 +19,10 @@ Chapter 1 currently includes the fluid-motion opening, direction fields,
 position/velocity/acceleration, Planet Gzyx, the tangent-to-slope-field exploration,
 separable and exact equations, the AI self-improvement growth models, phase lines,
 and Euler’s method.
-Chapter 2 now opens with two Section 3.1 experiments on initial conditions and
-characteristic equations. The remaining examples are explicitly labeled as planned and
-have no inactive or broken experiment links. Chapter groupings follow the
+Chapter 2 includes initial conditions, characteristic equations, independence,
+Wronskian geometry, nonhomogeneous solutions, and free mechanical vibrations.
+Future examples are explicitly labeled as planned and have no inactive or broken
+experiment links. Chapter groupings follow the
 Autumn 2026 syllabus, rather than the textbook's chapter numbering.
 
 Each available experiment has its own URL, breadcrumbs, and previous/next
@@ -369,3 +370,24 @@ motion is requested. Plots resize for narrow screens. Values are rounded for dis
 residuals, blowup termination, hand-calculated Euler steps, exact references,
 and convergence at a common endpoint. No lecture source or student material is
 included in the public site.
+
+## Section 3.4: free mechanical vibrations
+
+[Set an oscillator in motion](https://shzhang3.github.io/amath351-lab/chapters/higher-order/vibrations/)
+links a moving mass, spring, and damper to the exact displacement curve for
+`m x″ + c x′ + k x = 0`. Change mass, stiffness, resistance, and the two initial
+values. Presets compare no damping, underdamping, critical damping, and
+overdamping. The optional four-curve comparison holds mass, stiffness, and
+initial values fixed; a shared energy bound keeps the spatial scale unchanged
+when only resistance changes. Characteristic roots connect the pictures to
+earlier solution methods.
+
+The default release is `x(0) = 1`, `x′(0) = 0`, with `m = 1` and `k = 4`.
+Critical and overdamped curves can cross equilibrium once for other initial
+velocities; neither is described as always remaining on the initial side.
+Playback starts paused, stops on edits or page hiding, and becomes discrete
+steps with reduced motion. Source and mathematical helpers are
+**src/vibrations.html** and **src/vibration-model.cjs**. Tests check analytic
+reference solutions, the ODE, initial values, continuity through critical
+damping, and energy conservation or dissipation. Lecture source files are not
+published with the Lab.
