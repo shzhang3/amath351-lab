@@ -21,7 +21,7 @@ separable and exact equations, the AI self-improvement growth models, phase line
 and Euler’s method.
 Chapter 2 includes initial conditions, characteristic equations, independence,
 Wronskian geometry, nonhomogeneous solutions, complex roots and real solutions,
-and free mechanical vibrations.
+free mechanical vibrations, and undetermined coefficients.
 Future examples are explicitly labeled as planned and have no inactive or broken
 experiment links. Chapter groupings follow the
 Autumn 2026 syllabus, rather than the textbook's chapter numbering.
@@ -423,3 +423,25 @@ the entire solution for each choice of constants. The local model and tests
 check the roots, basis equations, initial values, derivatives, envelope,
 plot bounds, and saved-state validation. Lecture source files are not
 published with the Lab.
+
+## Section 3.5: multiplying a trial by x
+
+[What does multiplying by x change?](https://shzhang3.github.io/amath351-lab/chapters/higher-order/undetermined-coefficients/)
+compares the trial `A x^n e^(4x)` with its output in the ODE and the target
+`3 e^(4x)`. The lecture's simple-root equation `y″ − 3y′ − 4y = 3e^(4x)`
+needs `n = 1`, `A = 3/5`. The double-root equation
+`y″ − 8y′ + 16y = 3e^(4x)` needs `n = 2`, `A = 3/2`.
+
+Multiply by x step by step or select a power directly. The dashed prior
+trial and output always use the same current A, so multiplying by x changes
+only the trial family. A coefficient slider and match action then determine
+A. The match status checks the entire interval, not the inspection point.
+An extra x in the simple-root case illustrates why matching at one point
+is insufficient. Each plot holds its own axis scale across all three powers
+for the current A, and includes negative x on `[-0.5, 0.5]`.
+
+There is no autoplay. Brief curve transitions honor reduced motion.
+Tests check derivatives against finite differences, substitution into both
+original operators, successful and unsuccessful trial families, fixed
+comparison bounds, and saved-state validation. The page uses local D3 and
+does not publish lecture source or introduce variation of parameters.

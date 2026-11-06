@@ -187,6 +187,8 @@ def main():
                 replacements = {"D3_URL":href(path,"assets/vendor/d3.v7.9.0.min.js"), "VIBRATION_MODEL":(SOURCE / "vibration-model.cjs").read_text()}
             elif example["slug"] == "complex-roots":
                 replacements = {"D3_URL":href(path,"assets/vendor/d3.v7.9.0.min.js"), "COMPLEX_ROOTS_MODEL":(SOURCE / "complex-roots-model.cjs").read_text()}
+            elif example["slug"] == "undetermined-coefficients":
+                replacements = {"D3_URL":href(path,"assets/vendor/d3.v7.9.0.min.js"), "UNDETERMINED_MODEL":(SOURCE / "undetermined-model.cjs").read_text()}
             fragment = replace(fragment, **replacements)
             page(path, example["title"], example["description"], fragment, chapter=chapter, example=example, index=i)
 
