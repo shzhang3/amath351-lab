@@ -530,15 +530,41 @@
 
 <!-- ─── Styles (scoped to .lab-page) ───────────────────────────────────────── -->
 <style>
-/* Colour tokens — override in site.css if already defined */
-:root {
-  --msd-accent:  #624298;
-  --msd-accent2: #2a7ae2;
-  --msd-y-col:   #d44;
-  --msd-yp-col:  #2a7ae2;
+/* Color tokens for the student lab. */
+.lab-page {
+  --msd-accent:    #624298;
+  --msd-on-accent: #fff;
+  --msd-accent2:   #2a7ae2;
+  --msd-y-col:     #d44;
+  --msd-yp-col:    #2a7ae2;
+  --color-fg:      #222;
+  --color-muted:   #666;
+  --color-border:  #ddd;
+  --color-surface: #f9f9fb;
+  --color-code-bg: #f4f4f6;
+  --color-accent:  #624298;
+  --color-accent2: #2a7ae2;
 }
 
-.lab-page { max-width: 860px; margin: 0 auto; padding: 1rem 1.25rem 3rem; font-size: 1rem; }
+@media (prefers-color-scheme: dark) {
+  .lab-page {
+    --msd-accent:    #9d6fe0;
+    --msd-on-accent: #181020;
+    --msd-accent2:   #5b9ff5;
+    --msd-y-col:     #f07070;
+    --msd-yp-col:    #5b9ff5;
+    --color-fg:      #e8e8e8;
+    --color-muted:   #aaa;
+    --color-border:  #444;
+    --color-surface: #1e1e2e;
+    --color-code-bg: #252535;
+    --color-accent:  #9d6fe0;
+    --color-accent2: #5b9ff5;
+  }
+}
+
+.lab-page { max-width: 860px; margin: 0 auto; padding: 1rem 1.25rem 3rem; font-size: 1rem;
+  color: var(--color-fg); background: transparent; }
 
 /* ---- Section ---- */
 .lab-section { margin-top: 2.5rem; }
@@ -593,11 +619,11 @@
 .lab-preset { padding: .25rem .6rem; border-radius: 4px; border: 1px solid var(--msd-accent);
   background: transparent; color: var(--msd-accent); font-size: .82rem; cursor: pointer;
   transition: background .15s, color .15s; }
-.lab-preset:hover, .lab-preset:focus { background: var(--msd-accent); color: #fff; }
+.lab-preset:hover, .lab-preset:focus { background: var(--msd-accent); color: var(--msd-on-accent); }
 
 .lab-status { margin-top: .6rem; display: flex; gap: .8rem; align-items: center; flex-wrap: wrap; }
 .lab-damping-badge { padding: .15rem .55rem; border-radius: 999px; font-size: .8rem;
-  font-weight: 600; background: var(--msd-accent); color: #fff; }
+  font-weight: 600; background: var(--msd-accent); color: var(--msd-on-accent); }
 .lab-param-info { font-size: .85rem; color: var(--color-muted,#555); }
 
 /* ---- Visuals ---- */
@@ -608,7 +634,7 @@
 #spring-svg { width: 100%; height: auto; display: block; }
 .lab-anim-controls { display: flex; gap: .6rem; align-items: center; margin-top: .5rem; flex-wrap: wrap; }
 .lab-btn { padding: .3rem .8rem; border-radius: 5px; border: 1px solid var(--msd-accent);
-  background: var(--msd-accent); color: #fff; cursor: pointer; font-size: .9rem; }
+  background: var(--msd-accent); color: var(--msd-on-accent); cursor: pointer; font-size: .9rem; }
 .lab-btn-secondary { background: transparent; color: var(--msd-accent); }
 .lab-btn:hover, .lab-btn:focus { opacity: .85; }
 .lab-time-display { font-size: .9rem; font-variant-numeric: tabular-nums; }
@@ -660,7 +686,7 @@
   text-align: left;
 }
 .lab-compare-table th { background: var(--color-surface,#f4f4f8); font-weight: 600; }
-.lab-highlight-row td { background: color-mix(in srgb, var(--msd-accent,#624298) 8%, transparent); }
+.lab-highlight-row td { background: var(--color-surface); font-weight: 500; }
 
 /* ---- Explanation ---- */
 .lab-dlist dt { font-weight: 600; margin-top: .7rem; }
