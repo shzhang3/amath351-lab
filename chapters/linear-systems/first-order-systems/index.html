@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Build a first-order system one equation at a time, then see what each matrix row contributes to the system.">
+  <meta name="theme-color" content="#624298">
+  <title>From a scalar ODE to a system · AMATH 351 Lab</title>
+  <link rel="canonical" href="https://shzhang3.github.io/amath351-lab/chapters/linear-systems/first-order-systems/">
+  <link rel="stylesheet" href="../../../assets/lab.css">
+</head>
+<body>
+  <a class="site-skip" href="#main-content">Skip to content</a>
+  <div class="site-wrap">
+    <header class="site-header">
+      <a class="site-brand" href="../../../"><span class="site-brand-mark" aria-hidden="true">y′</span>AMATH 351 / Lab</a>
+      <nav aria-label="Main navigation"><a href="../../../">Chapters</a><a href="https://shzhang3.github.io/#teaching">Teaching</a><a href="https://github.com/shzhang3/amath351-lab" target="_blank" rel="noopener">GitHub ↗</a></nav>
+    </header>
+<nav class="site-breadcrumbs" aria-label="Breadcrumb"><a href="../../../">All chapters</a><span aria-hidden="true">/</span><a href="../">Chapter 03: Linear systems</a><span aria-hidden="true">/</span><span aria-current="page">From a scalar ODE to a system</span></nav>
+    <main id="main-content" tabindex="-1"><noscript>Enable JavaScript to use the interactive plots. Explanations and navigation remain available.</noscript><section class="lab-intro">
+  <div class="site-kicker">Section 4.1 · First-order systems</div>
+  <h1>From a scalar ODE to a system</h1>
+  <p>Write a third-order equation as three first-order equations, then multiply one matrix row at a time to see how the system fits into matrix form.</p>
+</section>
+<div id="amath41-lesson" class="lab-interactive">
+  <div class="lab-controls lesson-views" role="group" aria-label="Lesson view">
+    <button class="lab-button lab-stage-button" type="button" data-view="system" aria-pressed="true" aria-controls="amath41-system-panel">Build the system</button>
+    <button class="lab-button lab-stage-button" type="button" data-view="matrix" aria-pressed="false" aria-controls="amath41-matrix-panel">Multiply the matrix</button>
+  </div>
+  <div class="original lab-math" aria-label="x triple prime minus two x double prime plus x prime equals one plus t e to the t">
+    <span>x‴</span> <span>− 2x″ + x′</span> <span>= 1 + te<sup>t</sup></span>
+  </div>
+  <section id="amath41-system-panel" aria-labelledby="amath-scalar-title" data-panel="system">
+    <div id="amath-scalar-to-system" role="group" aria-labelledby="amath-scalar-title">
+      <h2 id="amath-scalar-title">Third-order ODE and first-order system</h2>
+      <table class="system-steps">
+        <thead>
+          <tr>
+            <th scope="col">State</th>
+            <th scope="col">Derivative</th>
+            <th scope="col">System equation</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr data-equation-row>
+            <th scope="row" class="equation">x₁ = x</th>
+            <td class="equation"><span data-reveal>x₁′ = x′</span></td>
+            <td class="equation"><span data-reveal>x₁′ = x₂</span></td>
+          </tr>
+          <tr data-equation-row>
+            <th scope="row" class="equation">x₂ = x′</th>
+            <td class="equation"><span data-reveal hidden>x₂′ = x″</span></td>
+            <td class="equation"><span data-reveal hidden>x₂′ = x₃</span></td>
+          </tr>
+          <tr data-equation-row>
+            <th scope="row" class="equation">x₃ = x″</th>
+            <td class="equation"><span data-reveal hidden>x₃′ = x‴</span></td>
+            <td class="equation"><span data-reveal hidden>x₃′ = 2x₃ − x₂ <span class="force">+ 1 + te<sup>t</sup></span></span></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="step-detail" aria-live="polite" aria-atomic="true">
+        <p data-detail>Differentiate the definition of <span class="equation">x₁</span>.</p>
+        <p data-detail hidden>Differentiate the definition of <span class="equation">x₂</span>.</p>
+        <p data-detail hidden>Use the original ODE to write <span class="equation">x‴</span> in terms of the state variables.</p>
+        <p data-detail hidden><span>Substitute the original variables back in.</span><br>
+          <span class="equation">x‴ = x₃′ = 2x″ − x′ <span class="force">+ 1 + te<sup>t</sup></span></span>
+        </p>
+      </div>
+      <div class="lab-controls">
+        <button type="button" class="lab-button lab-stage-button" data-previous disabled>Previous</button>
+        <button type="button" class="lab-button lab-primary" data-next>Next step</button>
+      </div>
+    </div>
+  </section>
+  <section id="amath41-matrix-panel" aria-labelledby="amath-matrix-vector-title" data-panel="matrix" hidden>
+    <div id="amath-matrix-vector" role="group" aria-labelledby="amath-matrix-vector-title">
+      <h2 id="amath-matrix-vector-title">Matrix–vector product</h2>
+
+      <div class="lab-controls row-picker" role="group" aria-label="Select a matrix row">
+        <button class="lab-button lab-stage-button" type="button" aria-pressed="true">Row 1</button>
+        <button class="lab-button lab-stage-button" type="button" aria-pressed="false">Row 2</button>
+        <button class="lab-button lab-stage-button" type="button" aria-pressed="false">Row 3</button>
+      </div>
+
+      <div class="product">
+        <div class="operand">
+          <div class="math-label">Matrix <span class="math">A</span></div>
+          <div class="brackets math" role="group" aria-label="Matrix A">
+            <div class="matrix-row active-row" data-matrix-row role="group" aria-label="Row 1"><span>0</span><span>1</span><span>0</span></div>
+            <div class="matrix-row" data-matrix-row role="group" aria-label="Row 2"><span>0</span><span>0</span><span>1</span></div>
+            <div class="matrix-row" data-matrix-row role="group" aria-label="Row 3"><span>0</span><span>−1</span><span>2</span></div>
+          </div>
+        </div>
+        <span class="operator math" aria-label="times">×</span>
+        <div class="operand">
+          <div class="math-label">State <b class="math">x</b></div>
+          <div class="brackets math input-vector" role="group" aria-label="State column vector">
+            <span>x₁</span><span>x₂</span><span>x₃</span>
+          </div>
+        </div>
+        <span class="operator math" aria-label="equals">=</span>
+        <div class="operand">
+          <div class="math-label">Product <span class="math">A<b>x</b></span></div>
+          <div class="brackets math output-vector" role="group" aria-label="Product column vector">
+            <span class="active-row" data-result-row>x₂</span>
+            <span data-result-row>x₃</span>
+            <span data-result-row>2x₃ − x₂</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="row-detail" aria-live="polite" aria-atomic="true">
+        <div data-detail>
+          <span class="lab-small">First entry of <span class="math">A<b>x</b></span></span>
+          <div class="math">0·x₁ + 1·x₂ + 0·x₃ = x₂</div>
+        </div>
+        <div data-detail hidden>
+          <span class="lab-small">Second entry of <span class="math">A<b>x</b></span></span>
+          <div class="math">0·x₁ + 0·x₂ + 1·x₃ = x₃</div>
+        </div>
+        <div data-detail hidden>
+          <span class="lab-small">Third entry of <span class="math">A<b>x</b></span></span>
+          <div class="math">0·x₁ + (−1)·x₂ + 2·x₃ = 2x₃ − x₂</div>
+        </div>
+      </div>
+
+      <hr>
+      <div class="system">
+        <span>Full ODE system</span>
+        <div class="math system-equation" role="group" aria-label="State derivative equals A times the state, plus the forcing column vector">
+          <b>x′</b><span>=</span><span>A<b>x</b></span><span>+</span>
+          <div class="brackets forcing-vector" role="group" aria-label="Forcing column vector">
+            <span>0</span><span>0</span><span>1 + te<sup>t</sup></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<style>
+  #amath41-lesson .lesson-views,
+  #amath41-lesson .original {
+    margin-block: calc(1rem * .75);
+  }
+  #amath41-lesson {
+    font-size: 16px;
+  }
+  #amath41-lesson h2 {
+    margin: 0 0 .7rem;
+  }
+  #amath41-lesson .original {
+    font-size: 24px;
+  }
+  #amath41-lesson hr {
+    border: 0;
+    border-top: 1px solid var(--site-line);
+    margin-block: 1.25rem;
+  }
+  #amath41-lesson .original span {
+    display: inline-block;
+  }
+  #amath41-lesson [data-panel][hidden] {
+    display: none;
+  }
+
+  #amath-scalar-to-system .step-detail,
+  #amath-scalar-to-system .viz-controls {
+    margin-block: calc(1rem * .75);
+  }
+  #amath-scalar-to-system .equation {
+    font-family: "STIX Two Math", "Times New Roman", serif;
+    font-weight: 400;
+  }
+  #amath-scalar-to-system .force {
+    display: inline-block;
+  }
+  #amath-scalar-to-system .system-steps {
+    width: 100%;
+    max-width: 720px;
+    border-collapse: collapse;
+    table-layout: fixed;
+    text-align: left;
+  }
+  #amath-scalar-to-system .system-steps :is(th, td) {
+    padding: .6rem .4rem;
+    border-bottom: 1px solid var(--site-line);
+    vertical-align: middle;
+  }
+  #amath-scalar-to-system thead th {
+    font-weight: 600;
+    overflow-wrap: anywhere;
+  }
+  #amath-scalar-to-system th:nth-child(1),
+  #amath-scalar-to-system th:nth-child(2) {
+    width: 25%;
+  }
+  #amath-scalar-to-system tr[data-active] > * {
+    background-color: var(--site-soft);
+    color: var(--site-ink);
+  }
+  #amath-scalar-to-system [hidden] {
+    display: none;
+  }
+
+
+  #amath-matrix-vector .row-picker,
+  #amath-matrix-vector .product,
+  #amath-matrix-vector .row-detail,
+  #amath-matrix-vector .system {
+    margin-block: calc(1rem * .8);
+  }
+  #amath-matrix-vector .product,
+  #amath-matrix-vector .system-equation {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: calc(1rem * .55);
+  }
+  #amath-matrix-vector .product {
+    align-items: end;
+  }
+  #amath-matrix-vector .math {
+    font-size: 18px;
+    font-family: "STIX Two Math", "Times New Roman", serif;
+  }
+  #amath-matrix-vector .math-label {
+    margin-bottom: calc(1rem * .35);
+    text-align: center;
+  }
+  #amath-matrix-vector .brackets {
+    --entry-height: calc(1rem * 1.85);
+    display: grid;
+    grid-auto-rows: var(--entry-height);
+    position: relative;
+    padding-inline: calc(1rem * .26);
+    border-inline: 1px solid var(--site-ink);
+    font-variant-numeric: tabular-nums;
+    text-align: center;
+  }
+  #amath-matrix-vector .brackets::before,
+  #amath-matrix-vector .brackets::after {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    height: 1px;
+    background: linear-gradient(to right, var(--site-ink) 5px, transparent 5px,
+      transparent calc(100% - 5px), var(--site-ink) calc(100% - 5px));
+    pointer-events: none;
+  }
+  #amath-matrix-vector .brackets::before { top: 0; }
+  #amath-matrix-vector .brackets::after { bottom: 0; }
+  #amath-matrix-vector .matrix-row {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(calc(1rem * 1.6), 1fr));
+  }
+  #amath-matrix-vector .brackets span {
+    align-content: center;
+    min-height: var(--entry-height);
+    padding-inline: calc(1rem * .35);
+    white-space: nowrap;
+  }
+  #amath-matrix-vector .input-vector {
+    background: var(--site-surface);
+  }
+  #amath-matrix-vector .active-row {
+    background: var(--site-soft);
+    color: var(--site-ink);
+  }
+  #amath-matrix-vector .operator {
+    margin-bottom: calc(1rem * 2.25);
+  }
+  #amath-matrix-vector .system-equation {
+    margin-top: calc(1rem * .3);
+  }
+  @media (max-width: 420px) {
+    #amath41-lesson .lab-button {
+      padding-inline: .6rem;
+    }
+    #amath-matrix-vector .math {
+      font-size: 16px;
+    }
+    #amath-matrix-vector .product {
+      gap: .25rem;
+    }
+    #amath-matrix-vector .matrix-row {
+      grid-template-columns: repeat(3, minmax(calc(1rem * 1.4), 1fr));
+    }
+    #amath-matrix-vector .brackets span {
+      padding-inline: .2rem;
+    }
+  }
+  #amath-matrix-vector [hidden] {
+    display: none;
+  }
+</style>
+
+<script>
+(() => {
+  const lesson = document.getElementById("amath41-lesson");
+  const views = [...lesson.querySelectorAll("[data-view]")];
+  const panels = [...lesson.querySelectorAll("[data-panel]")];
+  const system = document.getElementById("amath-scalar-to-system");
+  const systemRows = [...system.querySelectorAll("[data-equation-row]")];
+  const systemDetails = [...system.querySelectorAll("[data-detail]")];
+  const previous = system.querySelector("[data-previous]");
+  const next = system.querySelector("[data-next]");
+
+  const matrix = document.getElementById("amath-matrix-vector");
+  const rowButtons = [...matrix.querySelectorAll(".row-picker button")];
+  const matrixRows = [...matrix.querySelectorAll("[data-matrix-row]")];
+  const products = [...matrix.querySelectorAll("[data-result-row]")];
+  const matrixDetails = [...matrix.querySelectorAll("[data-detail]")];
+  const lastStep = systemDetails.length - 1;
+  let view = "system";
+  let step = 0;
+  let row = 0;
+
+  function selectView(selected) {
+    view = selected;
+    views.forEach(button => button.setAttribute("aria-pressed", String(button.dataset.view === selected)));
+    panels.forEach(panel => { panel.hidden = panel.dataset.panel !== selected; });
+  }
+
+  function showStep(selected) {
+    step = selected;
+    systemRows.forEach((item, index) => {
+      item.toggleAttribute("data-active", index === step || step === lastStep);
+      item.querySelectorAll("[data-reveal]").forEach(entry => { entry.hidden = index > step; });
+    });
+    systemDetails.forEach((item, index) => { item.hidden = index !== step; });
+    previous.disabled = step === 0;
+    next.disabled = step === lastStep;
+    next.textContent = step === 2 ? "Reverse the substitution" : "Next step";
+  }
+
+  function showRow(selected) {
+    row = selected;
+    rowButtons.forEach((button, index) => {
+      const active = index === row;
+      button.setAttribute("aria-pressed", String(active));
+      matrixRows[index].classList.toggle("active-row", active);
+      products[index].classList.toggle("active-row", active);
+      matrixDetails[index].hidden = !active;
+    });
+  }
+
+  const storageKey = "amath351-first-order-systems";
+
+  function save() {
+    try {
+      sessionStorage.setItem(storageKey, JSON.stringify({ view, step, row }));
+    } catch {
+      // The lesson remains usable when browser storage is unavailable.
+    }
+  }
+
+  function restore() {
+    let saved;
+    try {
+      saved = JSON.parse(sessionStorage.getItem(storageKey));
+    } catch {
+      return;
+    }
+    if (views.some(button => button.dataset.view === saved?.view)) selectView(saved.view);
+    if (Number.isInteger(saved?.step) && saved.step >= 0 && saved.step <= lastStep) showStep(saved.step);
+    if (Number.isInteger(saved?.row) && saved.row >= 0 && saved.row < rowButtons.length) showRow(saved.row);
+  }
+
+  views.forEach(button => {
+    button.addEventListener("click", () => {
+      selectView(button.dataset.view);
+      save();
+    });
+  });
+  previous.addEventListener("click", () => {
+    showStep(step - 1);
+    save();
+  });
+  next.addEventListener("click", () => {
+    showStep(step + 1);
+    save();
+  });
+  rowButtons.forEach((button, index) => {
+    button.addEventListener("click", () => {
+      showRow(index);
+      save();
+    });
+  });
+  showStep(step);
+  restore();
+})();
+</script>
+</main>
+<nav class="site-example-nav" aria-label="Example navigation"><span></span><a class="site-all-examples" href="../">All chapter examples</a><span></span></nav>
+    <footer class="site-footer"><span>University of Washington · Autumn 2026</span><div><a href="https://shzhang3.github.io/#teaching">Shiheng Zhang · Teaching</a><a href="https://github.com/shzhang3/amath351-lab" target="_blank" rel="noopener">Contribute on GitHub ↗</a></div></footer>
+  </div>
+
+</body>
+</html>

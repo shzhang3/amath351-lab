@@ -46,6 +46,7 @@
     "description": "Let matrices shape motion, and read solutions through eigenvalues and the phase plane.",
     "sections": "Sections 4.1–4.2 · 5.1–5.3, 5.5, 5.7",
     "examples": [
+      {"slug": "first-order-systems", "title": "From a scalar ODE to a system", "description": "Build a first-order system one equation at a time, then see what each matrix row contributes to the system.", "section": "Section 4.1 · First-order systems", "label": "x‴ − 2x″ + x′ = 1 + teᵗ", "source": "first-order-systems.html"},
       {"slug": "coupled-motion", "title": "Two variables, one motion", "description": "Rewrite an oscillator as a first-order system and track its state in the plane.", "section": "Sections 4.1–4.2"},
       {"slug": "eigendirections", "title": "Follow an eigendirection", "description": "Connect matrix action, eigenvectors, and the growth or decay of a solution.", "section": "Sections 5.1–5.2"},
       {"slug": "phase-plane", "title": "Read the phase portrait", "description": "Compare nodes, saddles, spirals, and centers through their trajectories.", "section": "Section 5.3"},
